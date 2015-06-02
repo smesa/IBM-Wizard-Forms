@@ -50,8 +50,8 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			path: "forms>/",
 			template: new sap.m.StandardListItem({
 				icon:"sap-icon://form",
-				title:"{forms>formtitle}",
-				//description:"{forms>formtitle}",
+				title:"Codigo: {forms>formid}",
+				description:"{forms>formtitle}",
 				type: sap.m.ListType.Navigation,
 				press: function(evt){
 					that.fieldListItemPress(evt);
