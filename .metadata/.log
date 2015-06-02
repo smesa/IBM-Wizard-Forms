@@ -45,3 +45,12 @@ Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/smesa/
 
 !ENTRY com.sap.ide.ui5.app 1 0 2015-06-01 12:44:26.032
 !MESSAGE Started Server for URL: http://localhost:53500/WizardFormsFields/index.html
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-06-01 12:50:08.823
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-06-01 12:50:18.552
+!MESSAGE Started Server for URL: http://localhost:53709/WizardFormsForms/index.html
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-06-01 14:33:02.799
+!MESSAGE Started Server for URL: http://localhost:38135/WizardFormsFields/index.html
