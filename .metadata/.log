@@ -112,3 +112,6 @@ org.eclipse.jgit.errors.TransportException: Nothing to push.
 
 !ENTRY com.sap.ide.ui5.app 1 0 2015-06-02 16:00:46.123
 !MESSAGE Started Server for URL: http://localhost:54482/WizardFormsForms/index.html
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-06-02 16:32:00.606
+!MESSAGE Stopped Server
