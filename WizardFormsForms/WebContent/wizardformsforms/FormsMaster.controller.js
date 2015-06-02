@@ -29,7 +29,8 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		if (query && query.length > 0) {
 			var filter = new sap.ui.model.Filter("formtitle", sap.ui.model.FilterOperator.Contains, query);
 			filters.push(filter);
-		}
+			//var filter = new sap.ui.model.Filter("formid", sap.ui.model.FilterOperator.Contains, query);
+			filters.push(filter);		}
 		
 		// update list binding
 		var list = this.getView().oList;
@@ -49,8 +50,8 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			path: "forms>/",
 			template: new sap.m.StandardListItem({
 				icon:"sap-icon://form",
-				title:"{forms>formid}",
-				description:"{forms>formtitle}",
+				title:"{forms>formtitle}",
+				//description:"{forms>formtitle}",
 				type: sap.m.ListType.Navigation,
 				press: function(evt){
 					that.fieldListItemPress(evt);

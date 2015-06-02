@@ -41,7 +41,13 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 									                 }
 											
 									     ]
-				                     }	
+				                     },
+				                     {
+				                    	 pattern: "create",
+									     name: "FormCreate",
+									     view: "FormCreate",
+									     targetAggregation: "detailPages",
+				                     },
 				         ]
 			         }
 			         

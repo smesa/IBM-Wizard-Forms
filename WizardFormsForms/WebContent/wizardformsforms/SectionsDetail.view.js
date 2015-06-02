@@ -124,14 +124,14 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 								    icon: "sap-icon://delete",
 								    type: "Reject",
 								    press: function(evt){
-									  //oController.deleteData(evt)
+									  oController.deleteData(evt)
 								  }
 								}),
 								new sap.m.Button({
 									text: "Guardar",
 									icon: "sap-icon://save",
 									press: function(evt){
-										//Controller.saveData(evt)
+										oController.saveData(evt)
 									}
 								}),
 				              

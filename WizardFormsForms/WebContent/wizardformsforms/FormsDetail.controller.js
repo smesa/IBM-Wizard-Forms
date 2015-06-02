@@ -124,7 +124,8 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		      			
 		      		data.sections.push({
 		      			sectiontitle: 	sap.ui.getCore().byId("oSectionTitle").getValue(),
-		      			sectioncolumn:  sap.ui.getCore().byId("oSectionColumns").getSelectedItem().getKey()					
+		      			sectioncolumn:  sap.ui.getCore().byId("oSectionColumns").getSelectedItem().getKey()	,
+		      			fields: []
 		      		})
 		      		
 		      		var forms = sap.ui.getCore().byId("app").getModel("forms").getData();		
@@ -148,6 +149,141 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		    this.getView().addDependent(dialog);
 		    dialog.open();
 		
+	},
+	saveData: function(evt){
+		
+		var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex);
+  		var path         = evt.getSource().getBindingContext('forms').getPath();			
+  		var data         = model.getProperty(path);  	
+  		var jsonsection  = [];
+  		
+  		
+  		// Conversion a json
+  		for(i = 0; i < data.sections.length; i++){ 			
+  			
+  			var fields       = "";
+  			
+  			for(j = 0; j < data.sections[i].fields.length; j++ ){	
+  				fields = data.sections[i].fields[j].fieldid + '/' + fields  ;
+  			}
+  			
+  			jsonsection.push({sectionid:data.sections[i].sectionid,sectiontitle:data.sections[i].sectiontitle, sectioncolumn: data.sections[i].sectioncolumn,sectionfields:fields})
+ 			
+  		}
+  		jsonsection = (JSON.stringify(jsonsection)).replace(/{"/g, '{').replace(/,"/g, ',').replace(/":/g, ':');
+  		
+  		var oModel       = new myJSONModel;
+  		
+  		var oParameters = {
+ 	           "formid" 			: data.formid,
+ 	           "formtitle" 		    : data.formtitle,
+ 	           "sections" 			: jsonsection
+ 		};
+  		
+  		var dialog = new sap.m.Dialog({
+		      title: 'Confirmación',
+		      type: 'Message',
+		      content: new sap.m.Text({ text: '¿Esta seguro de guardar estos cambios?' }),
+		      beginButton: new sap.m.Button({
+		        text: 'Aceptar',
+		        press: function () {	        	
+
+		    		// Llamo el metodo POST para crear los datos
+		    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+		    			
+		    			sap.m.MessageToast.show('Los datos fueron guardados con exito');
+		    			
+		    			// Consulto los datos actualizados			
+		    			var oModel2 = new myJSONModel;
+		    			
+		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+		    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
+		    			},function(){
+		    				sap.m.MessageToast.show('Error creando el elemento');
+		    			});		
+		    			
+		    		},function(){
+		    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
+		    		},oParameters, true,'PUT');	
+	    		  
+		          dialog.close();
+		        }
+		      }),
+		      endButton: new sap.m.Button({
+		        text: 'Cancelar',
+		        press: function () {
+		          dialog.close();
+		        }
+		      }),
+		      afterClose: function() {
+		        dialog.destroy();
+	      }
+	    });
+
+	    dialog.open();	
+		
+	},
+	
+	deleteData: function(evt){	
+		
+		var that = this;
+		var model = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.fieldIndex + '/');		
+		var path  = evt.getSource().getBindingContext('forms').getPath();			
+		var dataVal  = model.getProperty(path);		
+		
+		// Creo objeto del modelo
+		var oModel = new myJSONModel;		
+		
+		// Parametros del registro
+		var oParameters = {
+	           "formid" : dataVal.formid
+		};
+		
+		
+		var dialog = new sap.m.Dialog({
+		      title: 'Confirmación',
+		      type: 'Message',
+		      content: new sap.m.Text({ text: '¿Esta seguro de eliminar este formulario?' }),
+		      beginButton: new sap.m.Button({
+		        text: 'Aceptar',
+		        press: function () {	        	
+
+		    		// Llamo el metodo POST para crear los datos
+		    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/" + dataVal.fieldid, function(oData){
+		    			
+		    			sap.m.MessageToast.show('El formulario fue eliminado con exito');		    			
+		    			
+		    			// Consulto los datos actualizados			
+		    			var oModel2 = new myJSONModel;
+		    			
+		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+		    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);		
+		    				that.router.navTo("Blank");
+		    			},function(){
+		    				sap.m.MessageToast.show('Error eliminando el formulario');
+		    			});	
+		    			
+		    			
+		    			
+		    		},function(){
+		    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
+		    		},oParameters, false,'DELETE');	
+	    		  
+		          dialog.close();
+		        }
+		      }),
+		      endButton: new sap.m.Button({
+		        text: 'Cancelar',
+		        press: function () {
+		          dialog.close();
+		        }
+		      }),
+		      afterClose: function() {
+		        dialog.destroy();
+	      }
+	    });
+
+	    dialog.open();
 	}
 
 });

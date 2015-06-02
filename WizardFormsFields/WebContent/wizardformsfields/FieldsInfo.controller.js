@@ -133,6 +133,7 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 		var oTxtTitle = sap.ui.getCore().byId("fieldtitle").getValue();
 		var oTxtPlace = sap.ui.getCore().byId("fieldplaceholder").getValue();
 		var oCmbType  = sap.ui.getCore().byId("fieldtype").getSelectedItem().getKey();
+		
 		var oIcon 	  = "";
 		var oIsvalue  = "";
 

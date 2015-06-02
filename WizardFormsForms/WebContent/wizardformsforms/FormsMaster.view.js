@@ -34,7 +34,7 @@ sap.ui.jsview("wizardformsforms.FormsMaster", {
 						new sap.m.Button({
 							icon : "sap-icon://add",
 							press: function(evt){
-								//ibm.wizardforms.fields.common.addNewPress(evt,oController);
+								ibm.wizardforms.forms.common.addNewPress(evt,oController);
 							}
 						}),
 				]
