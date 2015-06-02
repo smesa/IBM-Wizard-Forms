@@ -103,3 +103,12 @@ org.eclipse.jgit.errors.TransportException: Nothing to push.
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:603)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1438)
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-06-02 16:00:37.070
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-06-02 16:00:38.046
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-06-02 16:00:46.123
+!MESSAGE Started Server for URL: http://localhost:54482/WizardFormsForms/index.html
