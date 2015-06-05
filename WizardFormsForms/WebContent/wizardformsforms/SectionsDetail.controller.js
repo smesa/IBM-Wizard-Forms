@@ -110,6 +110,7 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 		      title: 'Seleccione los elementos para la sección',
 		      verticalScrolling: true,
 			  contentHeight: "400px",
+			  contentWidth: "500px",
 		      content:[oInfoField],
 		      beginButton: new sap.m.Button({
 		          text: 'Agregar',
@@ -147,7 +148,8 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 		    this.getView().addDependent(dialog);
 		    dialog.open();		
 	},
-saveData: function(evt){
+	
+	saveData: function(evt){
 		
 		var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex);		
   		var data         = model.getProperty(model.sPath);  	

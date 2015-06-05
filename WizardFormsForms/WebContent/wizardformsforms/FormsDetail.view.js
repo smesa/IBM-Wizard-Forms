@@ -55,8 +55,25 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 	        content:[ oSectionsForm ]
 		});	
 		
+		var oItemBarEnhaForm = new sap.m.IconTabFilter({
+	        text: "Ampliaciones",
+	        icon:"sap-icon://instance",
+	        width: "100%",
+	        content:[ 
+	                 new sap.m.Label({}),
+			         new sap.m.Label({
+			        	 design: "Bold",
+			        	 text:"Clase de control para ampliaciones"
+			         }),
+			         new sap.m.Input({value:"{forms>classtitle}",enabled:false}),
+	                 
+	        ]
+		});	
+		
 		oIconTab.addItem(oItemBarInfoForm);	
 		oIconTab.addItem(oItemBarSectionsForm);	
+		oIconTab.addItem(oItemBarEnhaForm);	
+		
 		
 		var oTable = new sap.m.Table({
 			id: "oTableSections",
@@ -103,20 +120,92 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		});
 		
 		oTable.setHeaderToolbar(oHeader);	
-		//oTable.setMode(sap.m.ListMode.SingleSelect);
+		
 		oTable.setMode(sap.m.ListMode.Delete); // delete mode  	
 
 		oTable.bindAggregation("items","forms>sections",oTemplate);
-		
-		oTable.attachDelete(function(evt){
-			oController.deleteSection(evt)
-		});	
+				
 		oTable.attachItemPress(function(evt){
 			oController.sectionPress(evt)
 		})
 		
 		oSectionsForm.addContent(new sap.m.Label({}));
 		oSectionsForm.addContent(oTable);
+		
+		
+		var oTableEhn = new sap.m.Table({
+			id: "oTableEhn",
+			inset: false,
+			infoToolbar: new sap.m.Toolbar({
+				active: false,
+				content:[
+				         new sap.m.Label({
+				        	 text: "Encienda los puntos de ampliación que desea usar para este formulario"
+				         })
+				]
+			}),
+			columns: [
+			          //Value
+			          new sap.m.Column({
+			        	  halign: "left",
+			        	  width: "100px",
+			        	  demandPopin: true,
+			        	  popinDisplay: "Block",
+			        	  minScreenWidth: sap.m.ScreenSize.Medium
+			          }),
+			          new sap.m.Column({
+			        	  halign: "left",
+			        	  width: "20px",
+			        	  demandPopin: true,
+			        	  popinDisplay: "Block",
+			        	  minScreenWidth: sap.m.ScreenSize.Medium
+			          }),
+			          
+	        ]
+		});
+		
+		var oTemplateEhn = new sap.m.ColumnListItem({
+			//type: sap.m.ListType.Active ,
+			vAlign: "Middle",
+			cells: [
+			        new sap.m.ObjectIdentifier({
+			        	title: "{forms>name}"
+			        }),
+			        new sap.m.Switch({
+			        	state:"{forms>active}",
+			        	customTextOn:" ", 
+			        	customTextOff:" "
+			        })
+			        
+			]
+		});
+		
+		// Toolbar de la tabla
+		var oHeaderEhm = new sap.m.Toolbar({
+			content : [ 
+	            new sap.m.Title({
+	            	text : "Ampliaciones disponibles",
+	            	level: "H2"
+	            }), 
+	            new sap.m.ToolbarSpacer({})
+            ]
+		});
+		
+		oTableEhn.setHeaderToolbar(oHeaderEhm);	
+		
+		//oTableEhn.setMode(sap.m.ListMode.Delete); // delete mode  	
+
+		oTableEhn.bindAggregation("items","forms>enhancement",oTemplateEhn);
+				
+		oTableEhn.attachItemPress(function(evt){
+			oController.sectionPress(evt)
+		})
+		
+		oSectionsForm.addContent(new sap.m.Label({}));
+		oSectionsForm.addContent(oTable);
+		
+		
+		oItemBarEnhaForm.addContent(oTableEhn);
 		
  		return new sap.m.Page({
 			title: "Detalle de formulario",
