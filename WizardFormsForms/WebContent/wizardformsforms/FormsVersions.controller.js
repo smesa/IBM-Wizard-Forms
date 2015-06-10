@@ -20,7 +20,7 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
 	},
 	
 	goBack: function(){
-		window.history.go(-1);
+		this.router.navTo("FormsMaster")
 	},
 	
 	onChangeSearch: function(evt){

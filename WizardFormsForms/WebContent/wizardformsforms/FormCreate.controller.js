@@ -53,7 +53,7 @@ sap.ui.controller("wizardformsforms.FormCreate", {
 			    	  		
 			    	  		if(newLength > actLength){
 			    	  			newLength = newLength - 1;
-			    	  			that.router.navTo("FormsDetail",{formIndex:newLength});
+			    	  			that.router.navTo("FormsDetail",{formIndex:newLength,versionIndex: '0'});
 			    	  		}
 		    				
 		    			},function(){

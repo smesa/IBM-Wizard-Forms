@@ -19,7 +19,15 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 				         pattern: "",
 				         name: "Default",
 				         view: "FormsMaster",
-				         targetAggregation: "masterPages",				         
+				         targetAggregation: "masterPages",
+				         subroutes: [
+							{
+								pattern: "create",
+							    name: "FormCreate",
+							    view: "FormCreate",
+							    targetAggregation: "detailPages",
+							}  
+				         ]
 			         },
 		         	{
 			        	 pattern: "form/{formIndex}",
@@ -39,13 +47,12 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 							     view: "FormsDetail",
 							     targetAggregation: "detailPages",
 							     subroutes: [
-							                 {
-							                	pattern: "form/{formIndex}/{versionIndex}/section/{sectionIndex}",
-												name: "SectionsDetail",
-												view: "SectionsDetail",
-												targetAggregation: "detailPages",
-							                 }
-									
+					                 {
+					                	pattern: "form/{formIndex}/{versionIndex}/section/{sectionIndex}",
+										name: "SectionsDetail",
+										view: "SectionsDetail",
+										targetAggregation: "detailPages",
+					                 }							
 							     ]
 		                     },
 		                     {

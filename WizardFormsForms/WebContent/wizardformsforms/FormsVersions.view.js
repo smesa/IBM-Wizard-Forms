@@ -77,14 +77,6 @@ sap.ui.jsview("wizardformsforms.FormsVersions", {
 					    placeholder:"Buscar versión",
 					}),	
 					
-				],
-				contentRight:[
-						new sap.m.Button({
-							icon : "sap-icon://add",
-							press: function(evt){
-								//ibm.wizardforms.forms.common.addNewPress(evt,oController);
-							}
-						}),
 				]
 			}),
 			content: [this.oTableVersion]
