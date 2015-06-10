@@ -26,7 +26,7 @@ sap.ui.jsview("wizardformsforms.FormsMaster", {
 							oController.onChangeSearch(evt);
 						},
 					    width:"100%",
-					    placeholder:"Buscar elemento",
+					    placeholder:"Buscar formulario",
 					}),	
 					
 				],

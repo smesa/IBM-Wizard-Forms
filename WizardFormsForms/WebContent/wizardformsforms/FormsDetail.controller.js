@@ -10,12 +10,13 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 			return;
 		}
 		
-		this.formIndex = evt.getParameter("arguments").formIndex;			
+		this.formIndex = evt.getParameter("arguments").formIndex;
+		this.versionIndex = evt.getParameter("arguments").versionIndex;	
 		var app = sap.ui.getCore().byId("app");	
 		
 		
 		try {  		
-			var context = app.getModel('forms').getContext('/' + this.formIndex);		
+			var context = app.getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex);		
 			this.getView().setBindingContext(context,'forms');
 		
 		} catch(ex){  

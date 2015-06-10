@@ -95,7 +95,7 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 		});
 		
 		oTable.setHeaderToolbar(oHeader);	
-		//oTable.setMode(sap.m.ListMode.SingleSelect);
+		
 		oTable.setMode(sap.m.ListMode.Delete); // delete mode  	
 
 		oTable.bindAggregation("items","forms>fields",oTemplate);

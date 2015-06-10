@@ -21,18 +21,45 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 			content:[
 		         	 new sap.m.Label({}),
 			         new sap.m.Label({text:"Código de formulario"}),
-			         new sap.m.Input({value:"{forms>formid}",enabled:false}),
+			         new sap.m.Input({value:"{forms>formid} Versión N°. {forms>verformid} ",enabled:false}).addStyleClass("textRedBold"),
 			         new sap.m.Label({text:"Nombre de formulario"}),
 			         new sap.m.Input({value:"{forms>formtitle}",enabled:true}),
-			         new sap.m.Label({text:"Usuario creador"}),
-			         new sap.m.Input({value:"{forms>createuser}",enabled:false}),
-			         new sap.m.Label({text:"Fecha de creación"}),
-			         new sap.m.Input({value:"{forms>createdate}",enabled:false}),
+			         new sap.m.Label({text:"Descripción de versión"}),
+			         new sap.m.TextArea({value:"{forms>descpver}",enabled:true,cols:200,rows:3}),
+			         new sap.m.Label({text:"Versión creada por"}),
+			         new sap.m.Input({value:"{forms>createuser}",enabled:false,}),
+			         new sap.m.Label({text:"Versión creada el"}),
+			         new sap.m.Input({
+			        	 value:{
+			        		 path:"forms>createdate",
+			        		 type: 'sap.ui.model.type.Date',
+			        		 formatOptions: {
+			        	          style: 'long',
+			        	          source: {
+			        	            pattern: 'yyyyMMdd'
+			        	          }
+		        	         }
+			        	 },
+			        	 enabled:false
+			        }),
 			]
 		}).addStyleClass("layPadding10");
 		
 		var oSectionsForm = new sap.ui.layout.VerticalLayout({
 			width: "100%"
+		}).addStyleClass("layPadding10");
+		
+		
+		var oEnhaForm = new sap.ui.layout.VerticalLayout({
+			width: "100%",
+			content:[
+				new sap.m.Label({}),
+				new sap.m.Label({
+					 design: "Bold",
+					 text:"Clase de control para ampliaciones"
+				}),
+				new sap.m.Input({value:"{forms>classtitle}",enabled:false}).addStyleClass("textRedBold")
+			]
 		}).addStyleClass("layPadding10");
 		
 		
@@ -59,15 +86,7 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 	        text: "Ampliaciones",
 	        icon:"sap-icon://instance",
 	        width: "100%",
-	        content:[ 
-	                 new sap.m.Label({}),
-			         new sap.m.Label({
-			        	 design: "Bold",
-			        	 text:"Clase de control para ampliaciones"
-			         }),
-			         new sap.m.Input({value:"{forms>classtitle}",enabled:false}),
-	                 
-	        ]
+	        content:[ oEnhaForm ]
 		});	
 		
 		oIconTab.addItem(oItemBarInfoForm);	
@@ -181,7 +200,7 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		});
 		
 		// Toolbar de la tabla
-		var oHeaderEhm = new sap.m.Toolbar({
+		/*var oHeaderEhm = new sap.m.Toolbar({
 			content : [ 
 	            new sap.m.Title({
 	            	text : "Ampliaciones disponibles",
@@ -191,7 +210,7 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
             ]
 		});
 		
-		oTableEhn.setHeaderToolbar(oHeaderEhm);	
+		oTableEhn.setHeaderToolbar(oHeaderEhm);	*/
 		
 		//oTableEhn.setMode(sap.m.ListMode.Delete); // delete mode  	
 

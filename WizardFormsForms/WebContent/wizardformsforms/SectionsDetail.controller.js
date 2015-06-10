@@ -16,8 +16,7 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 	},
 	goBack: function(){
 		window.history.go(-1);
-	},
-	
+	},	
 	deleteField: function(evt){
 		
 		

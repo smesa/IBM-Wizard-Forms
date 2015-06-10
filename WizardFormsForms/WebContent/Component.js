@@ -19,37 +19,43 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 				         pattern: "",
 				         name: "Default",
 				         view: "FormsMaster",
+				         targetAggregation: "masterPages",				         
+			         },
+		         	{
+			        	 pattern: "form/{formIndex}",
+				         name: "FormsVersions",
+				         view: "FormsVersions",
 				         targetAggregation: "masterPages",
 				         subroutes: [
-				                     {
-				                    	 pattern: "",
-									     name: "Blank",
-									     view: "blank",
-									     targetAggregation: "detailPages",
-				                     },
-				                     {
-				                    	 pattern: "form/{formIndex}",
-									     name: "FormsDetail",
-									     view: "FormsDetail",
-									     targetAggregation: "detailPages",
-									     subroutes: [
-									                 {
-									                	pattern: "form/{formIndex}/section/{sectionIndex}",
-														name: "SectionsDetail",
-														view: "SectionsDetail",
-														targetAggregation: "detailPages",
-									                 }
-											
-									     ]
-				                     },
-				                     {
-				                    	 pattern: "create",
-									     name: "FormCreate",
-									     view: "FormCreate",
-									     targetAggregation: "detailPages",
-				                     },
+		                     {
+		                    	 pattern: "",
+							     name: "Blank",
+							     view: "blank",
+							     targetAggregation: "detailPages",
+		                     },
+		                     {
+		                    	 pattern: "form/{formIndex}/{versionIndex}",
+							     name: "FormsDetail",
+							     view: "FormsDetail",
+							     targetAggregation: "detailPages",
+							     subroutes: [
+							                 {
+							                	pattern: "form/{formIndex}/{versionIndex}/section/{sectionIndex}",
+												name: "SectionsDetail",
+												view: "SectionsDetail",
+												targetAggregation: "detailPages",
+							                 }
+									
+							     ]
+		                     },
+		                     {
+		                    	 pattern: "create",
+							     name: "FormCreate",
+							     view: "FormCreate",
+							     targetAggregation: "detailPages",
+		                     },
 				         ]
-			         }
+		         	}
 			         
 	        ]
 			

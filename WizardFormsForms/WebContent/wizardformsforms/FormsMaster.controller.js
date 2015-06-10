@@ -9,8 +9,6 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		if(evt.getParameter("name") !== "FormsMaster"){
 			return;
 		}
-		//var context = sap.ui.getCore().byId("app").getModel('fields').getContext('/');
-		//this.getView().setBindingContext(context,'fields');		
 		
 	},
 	
@@ -19,7 +17,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		var path = oBindingContext.sPath;
 		var start = path.lastIndexOf('/') + 1;
 		var formIndex = path.substring(start,path.length);		
-		this.router.navTo("FormsDetail",{formIndex:formIndex});
+		this.router.navTo("FormsVersions",{formIndex:formIndex});
 		
 	},	
 	
@@ -50,7 +48,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			path: "forms>/",
 			template: new sap.m.StandardListItem({
 				icon:"sap-icon://form",
-				title:"Codigo: {forms>formid}",
+				title:"Formulario N°. {forms>formid}",
 				description:"{forms>formtitle}",
 				type: sap.m.ListType.Navigation,
 				press: function(evt){
