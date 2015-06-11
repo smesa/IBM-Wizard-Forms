@@ -84,6 +84,100 @@ sap.ui.controller("wizardformsforms.FormCreate", {
 		
 	},
 	
+	getPackages: function(evt){
+		
+			var itemTemplate = new sap.m.StandardListItem({
+				title: "{packages>devclass}",
+				description: "{packages>ctext}",
+				active: true
+			});
+			
+			var dialog = new sap.m.SelectDialog({
+				title:"Paquetes",
+			    class:"sapUiPopupWithPadding",
+			    liveChange: function(evt){
+			    	
+			    	var filters = [];
+					var query = evt.getParameter("value");
+					if (query && query.length > 0) {
+						var filter = new sap.ui.model.Filter("devclass", sap.ui.model.FilterOperator.Contains, query);
+						filters.push(filter);
+					}
+					evt.getSource().getBinding("items").filter(filters);
+					
+			    },
+			    confirm: function(evt){
+			    	var oSelectedItem = evt.getParameter("selectedItem");
+			        if (oSelectedItem) {
+			          var packageInput =  sap.ui.getCore().byId("formPackageNew");
+			          packageInput.setValue(oSelectedItem.getTitle());
+			        }
+			        evt.getSource().getBinding("items").filter([]);
+			    },
+			    cancel: function(evt){
+			    	var oSelectedItem = evt.getParameter("selectedItem");
+			        if (oSelectedItem) {
+			          var packageInput =  sap.ui.getCore().byId("formPackageNew");
+			          packageInput.setValue(oSelectedItem.getTitle());
+			        }
+			        evt.getSource().getBinding("items").filter([]);
+			    }
+			});
+			
+			dialog.bindAggregation("items", "packages>/", itemTemplate);
+		
+		    this.getView().addDependent(dialog);
+		    dialog.open();
+
+	},
+	
+	getTransportOrder: function(evt){
+		
+		var itemTemplate = new sap.m.StandardListItem({
+			title: "{orders>trkorr}",
+			description: "{orders>as4text}",
+			active: true
+		});
+		
+		var dialog = new sap.m.SelectDialog({
+			title:"Ordenes de tranporte",
+		    class:"sapUiPopupWithPadding",
+		    liveChange: function(evt){
+		    	
+		    	var filters = [];
+				var query = evt.getParameter("value");
+				if (query && query.length > 0) {
+					var filter = new sap.ui.model.Filter("devclass", sap.ui.model.FilterOperator.Contains, query);
+					filters.push(filter);
+				}
+				evt.getSource().getBinding("items").filter(filters);
+				
+		    },
+		    confirm: function(evt){
+		    	var oSelectedItem = evt.getParameter("selectedItem");
+		        if (oSelectedItem) {
+		          var orderInput =  sap.ui.getCore().byId("formOrderNew");
+		          orderInput.setValue(oSelectedItem.getTitle());
+		        }
+		        evt.getSource().getBinding("items").filter([]);
+		    },
+		    cancel: function(evt){
+		    	var oSelectedItem = evt.getParameter("selectedItem");
+		        if (oSelectedItem) {
+		          var orderInput =  sap.ui.getCore().byId("formOrderNew");
+		          orderInput.setValue(oSelectedItem.getTitle());
+		        }
+		        evt.getSource().getBinding("items").filter([]);
+		    }
+		});
+		
+		dialog.bindAggregation("items", "orders>/", itemTemplate);
+	
+	    this.getView().addDependent(dialog);
+	    dialog.open();
+
+},
+	
 	
 	
 });

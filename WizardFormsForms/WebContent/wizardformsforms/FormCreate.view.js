@@ -19,7 +19,10 @@ sap.ui.jsview("wizardformsforms.FormCreate", {
 			        	 enabled:true, 
 			        	 showSuggestion:true,
 			        	 showValueHelp:true,
-			        	 placeholder:"Seleccione el paquete del formulario"
+			        	 placeholder:"Seleccione el paquete del formulario",
+			        	 valueHelpRequest: function(evt){
+			        		 oController.getPackages(evt)
+			        	 }
 	        		 }),
 			         new sap.m.Label({text:"Orden de transporte"}),
 			         new sap.m.Input({
@@ -27,7 +30,10 @@ sap.ui.jsview("wizardformsforms.FormCreate", {
 			        	 enabled:true, 
 			        	 showSuggestion:true,
 			        	 showValueHelp:true,
-			        	 placeholder:"Seleccione la orden de transporte"
+			        	 placeholder:"Seleccione la orden de transporte",
+			        	 valueHelpRequest: function(evt){
+			        		 oController.getTransportOrder(evt)
+			        	 }
 	        		 }),
 			         new sap.m.Label({text:"Nombre de formulario"}),
 			         new sap.m.Input({id:"formTitleNew",enabled:true, placeholder:"Ingrese el nombre del formulario"}),
