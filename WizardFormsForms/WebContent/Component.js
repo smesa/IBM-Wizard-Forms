@@ -55,12 +55,6 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 					                 }							
 							     ]
 		                     },
-		                     {
-		                    	 pattern: "create",
-							     name: "FormCreate",
-							     view: "FormCreate",
-							     targetAggregation: "detailPages",
-		                     },
 				         ]
 		         	}
 			         
@@ -100,7 +94,7 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		var oModel = new myJSONModel;
 		
 		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-			console.log(oData)
+			
 		},function(){
 			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
 		});
@@ -111,12 +105,39 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		var oModel2 = new myJSONModel;
 		
 		oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/fields_data/fields/", function(oData){
-			console.log(oData)
+			
 		},function(){
 			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
 		});
 		
 		oView.setModel(oModel2,'fields');	
+		
+		
+		var oParaOrders  = { "option" : "orders" };  
+		
+		var oModel3 = new myJSONModel;
+		
+		oModel3.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+			
+		},function(){
+			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
+		},oParaOrders);
+		
+		oView.setModel(oModel3,'orders');	
+		
+		
+		var oParaPackages  = { "option" : "packages" };  
+		
+		var oModel4 = new myJSONModel;
+		
+		oModel4.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+			
+		},function(){
+			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
+		},oParaPackages);
+		
+		oView.setModel(oModel4,'packages');	
+		
 		
 		return oView;
 		
