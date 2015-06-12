@@ -21,6 +21,12 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 				         view: "FormsMaster",
 				         targetAggregation: "masterPages",
 				         subroutes: [
+		                     {
+		                    	 pattern: "",
+							     name: "Blank",
+							     view: "blank",
+							     targetAggregation: "detailPages",
+		                     },
 							{
 								pattern: "create",
 							    name: "FormCreate",
@@ -29,18 +35,13 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 							}  
 				         ]
 			         },
-		         	{
+			        
+		         	 {
 			        	 pattern: "form/{formIndex}",
 				         name: "FormsVersions",
 				         view: "FormsVersions",
 				         targetAggregation: "masterPages",
-				         subroutes: [
-		                     {
-		                    	 pattern: "",
-							     name: "Blank",
-							     view: "blank",
-							     targetAggregation: "detailPages",
-		                     },
+				         subroutes: [		                     
 		                     {
 		                    	 pattern: "form/{formIndex}/{versionIndex}",
 							     name: "FormsDetail",

@@ -237,14 +237,15 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		
 		// Parametros del registro
 		var oParameters = {
-	           "formid" : dataVal.formid
+	           "formid"    : dataVal.formid,
+	           "verformid" : dataVal.verformid
 		};
 		
 		
 		var dialog = new sap.m.Dialog({
 		      title: 'Confirmación',
 		      type: 'Message',
-		      content: new sap.m.Text({ text: '¿Esta seguro de eliminar este formulario?' }),
+		      content: new sap.m.Text({ text: '¿Esta seguro de eliminar esta version del formulario?' }),
 		      beginButton: new sap.m.Button({
 		        text: 'Aceptar',
 		        press: function () {	        	
@@ -252,14 +253,15 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		    		// Llamo el metodo POST para crear los datos
 		    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/" + dataVal.fieldid, function(oData){
 		    			
-		    			sap.m.MessageToast.show('El formulario fue eliminado con exito');		    			
+		    			sap.m.MessageToast.show('El formulario fue eliminado con exito');	
+		    			that.router.navTo("Blank");
 		    			
 		    			// Consulto los datos actualizados			
 		    			var oModel2 = new myJSONModel;
 		    			
 		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
 		    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);		
-		    				that.router.navTo("Blank");
+		    				
 		    			},function(){
 		    				sap.m.MessageToast.show('Error eliminando el formulario');
 		    			});	

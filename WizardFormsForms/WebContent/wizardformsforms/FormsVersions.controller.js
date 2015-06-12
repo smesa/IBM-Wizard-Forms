@@ -45,7 +45,7 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
 	},
 	
 	activeVersion: function(evt){
-		
+		var that 			= this;
 		var oBindingContext = evt.getSource().getBindingContext('forms');
 		var path            = oBindingContext.sPath;
 		var start 		    = path.lastIndexOf('/') + 1;
@@ -61,7 +61,7 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
 		if(status === true){
 			mensaje = 'Si activa esta versión las otras versiones quedaran inactivas,¿Esta seguro de continuar?'
 		}else{
-			mensaje = 'Si desactiva esta versión no quedara ninguna version activa para el formulario,¿Esta seguro de continuar?'
+			mensaje = 'Si desactiva esta versión no quedara ninguna versión activa para el formulario,¿Esta seguro de continuar?'
 		}		
 		
 		
@@ -103,6 +103,14 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
 		      endButton: new sap.m.Button({
 		        text: 'Cancelar',
 		        press: function () {
+		        	// Consulto los datos actualizados			
+	    			var oModel2 = new myJSONModel;
+	    			
+	    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+	    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
+	    			},function(){
+	    				sap.m.MessageToast.show('Error activando la versión');
+	    			});	
 		          dialog.close();
 		        }
 		      }),

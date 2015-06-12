@@ -19,10 +19,14 @@ sap.ui.controller("wizardformsforms.FormCreate", {
   		var data         = model.getProperty(model.sPath);    		
   		var oModel       = new myJSONModel;
   		var formtitle    = sap.ui.getCore().byId("formTitleNew").getValue();
+  		var devclass     = sap.ui.getCore().byId("formPackageNew").getValue();
+  		var trkorr       = sap.ui.getCore().byId("formOrderNew").getValue();
   		var actLength    = data.length;
   		
   		var oParameters = {
- 	           "formtitle" 		    : formtitle
+ 	           "formtitle" : formtitle,
+ 	           "devclass"  : devclass,
+ 	           "trkorr"	   : trkorr
  		};
   		
   		sap.ui.getCore().byId("formTitleNew").setValue("");
@@ -53,7 +57,7 @@ sap.ui.controller("wizardformsforms.FormCreate", {
 			    	  		
 			    	  		if(newLength > actLength){
 			    	  			newLength = newLength - 1;
-			    	  			that.router.navTo("FormsDetail",{formIndex:newLength,versionIndex: '0'});
+			    	  			//that.router.navTo("FormsDetailC",{formIndex:newLength, versionIndex: '0'});
 			    	  		}
 		    				
 		    			},function(){
