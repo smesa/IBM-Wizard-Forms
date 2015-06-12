@@ -22,6 +22,9 @@ sap.ui.jsview("wizardformsforms.FormCreate", {
 			        	 placeholder:"Seleccione el paquete del formulario",
 			        	 valueHelpRequest: function(evt){
 			        		 oController.getPackages(evt)
+			        	 },
+			        	 liveChange: function(evt){
+			        		 oController.validateRequiredField(evt)
 			        	 }
 	        		 }),
 			         new sap.m.Label({text:"Orden de transporte"}),
@@ -33,10 +36,20 @@ sap.ui.jsview("wizardformsforms.FormCreate", {
 			        	 placeholder:"Seleccione la orden de transporte",
 			        	 valueHelpRequest: function(evt){
 			        		 oController.getTransportOrder(evt)
+			        	 },
+			        	 liveChange: function(evt){
+			        		 oController.validateRequiredField(evt)
 			        	 }
 	        		 }),
 			         new sap.m.Label({text:"Nombre de formulario"}),
-			         new sap.m.Input({id:"formTitleNew",enabled:true, placeholder:"Ingrese el nombre del formulario"}),
+			         new sap.m.Input({
+			        	 id:"formTitleNew",
+			        	 enabled:true, 
+			        	 placeholder:"Ingrese el nombre del formulario",
+			        	 liveChange: function(evt){
+			        		 oController.validateRequiredField(evt)
+			        	 }
+	        		 }),
 			]
 		}).addStyleClass("layPadding10");
 		
@@ -60,8 +73,10 @@ sap.ui.jsview("wizardformsforms.FormCreate", {
 			footer: new sap.m.Bar({
 				contentRight: [
 								new sap.m.Button({
+									id: "btnSaveNew",
 									text: "Guardar",
 									icon: "sap-icon://save",
+									enabled: false,
 									press: function(evt){
 										oController.saveData(evt)
 									}

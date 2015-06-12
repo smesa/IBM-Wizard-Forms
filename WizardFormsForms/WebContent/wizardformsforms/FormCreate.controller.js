@@ -180,7 +180,42 @@ sap.ui.controller("wizardformsforms.FormCreate", {
 	    this.getView().addDependent(dialog);
 	    dialog.open();
 
-},
+	},
+	
+	validateRequiredField: function(evt){
+		
+	    var view = sap.ui.getCore();
+	    
+	    // Armo el array de campos
+	    var inputs = [
+	      view.byId("formPackageNew"),
+	      view.byId("formOrderNew"),
+	      view.byId("formTitleNew"),
+	    ];
+	    
+	    // Recorro cada campo para validar
+	    jQuery.each(inputs, function (i, input) {
+	        if (!input.getValue()) {
+	          input.setValueState("Error");
+	        }
+	        else{
+	        	input.setValueState("None");
+	        }
+	    });
+	    
+	    // Valido si algun campo tiene error
+	    var canContinue = true;
+	    jQuery.each(inputs, function (i, input) {
+	      if ("Error" === input.getValueState()) {
+	        canContinue = false;
+	        return false;
+	      }
+	    });
+
+	    view.byId("btnSaveNew").setEnabled(canContinue);
+
+	    
+	}
 	
 	
 	

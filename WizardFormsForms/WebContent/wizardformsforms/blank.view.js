@@ -13,16 +13,11 @@ sap.ui.jsview("wizardformsforms.blank", {
 	* @memberOf wizardformsforms.blank
 	*/ 
 	createContent : function(oController) {
- 		return new sap.m.Page({
- 			enableScrolling: false,
-			content: [ 
-			    new sap.m.Image({
+ 		return new sap.m.Image({
 			    	src: "images/sap_fiori.png",
 			    	width: "100%",
 			    	height: "100%"
 			    })
-			]
-		})
 	}
 
 });
