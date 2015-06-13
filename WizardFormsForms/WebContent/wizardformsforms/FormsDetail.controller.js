@@ -12,8 +12,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		
 		this.formIndex = evt.getParameter("arguments").formIndex;
 		this.versionIndex = evt.getParameter("arguments").versionIndex;	
-		var app = sap.ui.getCore().byId("app");	
-		
+		var app = sap.ui.getCore().byId("app");		
 		
 		try {  		
 			var context = app.getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex);		
@@ -31,7 +30,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		var oPath        = oListItem.getBindingContextPath();
 		var start        = oPath.lastIndexOf('/') + 1;
 		var sectionIndex = oPath.substring(start,oPath.length);		
-		this.router.navTo("SectionsDetail",{formIndex:this.formIndex, sectionIndex: sectionIndex});
+		this.router.navTo("SectionsDetail",{formIndex:this.formIndex, versionIndex: this.versionIndex, sectionIndex: sectionIndex});
 	},
 	
 	deleteSection: function(evt){
@@ -46,7 +45,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		var app       = sap.ui.getCore().byId("app");
 		
 		try {  		
-			var context = app.getModel('forms').getData('/' + this.formIndex + '/sections/' + oId + '/');
+			var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + oId + '/');
 		
 		} catch(ex){  
 			window.history.go(-1);
@@ -60,10 +59,9 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	        text: 'Eliminar',
 	        press: function () {
 	        	
-	          context[that.formIndex].sections.splice(oId,1);		
+	          context[that.formIndex].versions[that.versionIndex].sections.splice(oId,1);		
 	    	  sap.ui.getCore().byId("app").getModel('forms').setData(context);  
-    		  sap.m.MessageToast.show('Sección eliminada');
-    		  
+    		  sap.m.MessageToast.show('Sección eliminada');    		  
 	          dialog.close();
 	        }
 	      }),
@@ -151,12 +149,14 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		    dialog.open();
 		
 	},
+	
 	saveData: function(evt){
 		
-		var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex);
+		var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex + '/versions/' + this.versionIndex);
   		var path         = evt.getSource().getBindingContext('forms').getPath();			
   		var data         = model.getProperty(path);  	
   		var jsonsection  = [];
+  		var jsonenha     = [];
   		
   		
   		// Conversion a json
@@ -171,14 +171,30 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
   			jsonsection.push({sectionid:data.sections[i].sectionid,sectiontitle:data.sections[i].sectiontitle, sectioncolumn: data.sections[i].sectioncolumn,sectionfields:fields})
  			
   		}
+  		
   		jsonsection = (JSON.stringify(jsonsection)).replace(/{"/g, '{').replace(/,"/g, ',').replace(/":/g, ':');
+  		
+  		// Conversion a json
+  		for(i = 0; i < data.enhancement.length; i++){ 			
+  			
+	
+  			jsonenha.push({method:data.enhancement[i].method,name:data.enhancement[i].name,active:data.enhancement[i].active})
+ 			
+  		}
+  		
+  		jsonenha = (JSON.stringify(jsonenha)).replace(/{"/g, '{').replace(/,"/g, ',').replace(/":/g, ':').replace(/true/g, '"true"').replace(/false/g, '"false"');
+  		
+  		
   		
   		var oModel       = new myJSONModel;
   		
   		var oParameters = {
- 	           "formid" 			: data.formid,
- 	           "formtitle" 		    : data.formtitle,
- 	           "sections" 			: jsonsection
+           "formid" 			: data.formid,
+           "formtitle" 		    : data.formtitle,
+           "verformid"          : data.verformid,
+           "descpver"			: data.descpver,
+           "sections" 			: jsonsection,
+           "enhancement"		: jsonenha
  		};
   		
   		var dialog = new sap.m.Dialog({

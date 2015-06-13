@@ -26,9 +26,9 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 			         new sap.m.Input({value:"{forms>formtitle}",enabled:true}),
 			         new sap.m.Label({text:"Descripción de versión"}),
 			         new sap.m.TextArea({value:"{forms>descpver}",enabled:true,cols:200,rows:3}),
-			         new sap.m.Label({text:"Versión creada por"}),
+			         new sap.m.Label({text:"Versión modificada por"}),
 			         new sap.m.Input({value:"{forms>createuser}",enabled:false,}),
-			         new sap.m.Label({text:"Versión creada el"}),
+			         new sap.m.Label({text:"Versión modificada el"}),
 			         new sap.m.Input({
 			        	 value:{
 			        		 path:"forms>createdate",
@@ -148,6 +148,10 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 			oController.sectionPress(evt)
 		})
 		
+		oTable.attachDelete(function(evt){
+			oController.deleteSection(evt)
+		});	
+		
 		oSectionsForm.addContent(new sap.m.Label({}));
 		oSectionsForm.addContent(oTable);
 		
@@ -159,7 +163,7 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 				active: false,
 				content:[
 				         new sap.m.Label({
-				        	 text: "Encienda los puntos de ampliación que desea usar para este formulario"
+				        	 text: "Encienda los puntos de ampliación que desea usar para este formulario, esto afectará a todas las versiones"
 				         })
 				]
 			}),
@@ -184,7 +188,6 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		});
 		
 		var oTemplateEhn = new sap.m.ColumnListItem({
-			//type: sap.m.ListType.Active ,
 			vAlign: "Middle",
 			cells: [
 			        new sap.m.ObjectIdentifier({
@@ -198,21 +201,6 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 			        
 			]
 		});
-		
-		// Toolbar de la tabla
-		/*var oHeaderEhm = new sap.m.Toolbar({
-			content : [ 
-	            new sap.m.Title({
-	            	text : "Ampliaciones disponibles",
-	            	level: "H2"
-	            }), 
-	            new sap.m.ToolbarSpacer({})
-            ]
-		});
-		
-		oTableEhn.setHeaderToolbar(oHeaderEhm);	*/
-		
-		//oTableEhn.setMode(sap.m.ListMode.Delete); // delete mode  	
 
 		oTableEhn.bindAggregation("items","forms>enhancement",oTemplateEhn);
 				

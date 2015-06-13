@@ -75,8 +75,17 @@ sap.ui.jsview("wizardformsforms.FormsVersions", {
 						},
 					    width:"100%",
 					    placeholder:"Buscar versión",
-					}),	
-					
+					}),						
+				],
+				contentRight:[
+						new sap.m.Button({
+							icon : "sap-icon://add",
+							tooltip: "Crear versión",
+							press: function(evt){
+								//ibm.wizardforms.forms.common.addNewPress(evt,oController);
+							}
+						})
+						
 				]
 			}),
 			content: [this.oTableVersion]

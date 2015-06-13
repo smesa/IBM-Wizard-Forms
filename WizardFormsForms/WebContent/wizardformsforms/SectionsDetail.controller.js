@@ -10,13 +10,16 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 			return;
 		}
 		this.formIndex = evt.getParameter("arguments").formIndex;
+		this.versionIndex = evt.getParameter("arguments").versionIndex;
 		this.sectionIndex = evt.getParameter("arguments").sectionIndex;
-		var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/sections/' + this.sectionIndex);
+		var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex);
 		this.getView().setBindingContext(context,'forms');
+		
 	},
 	goBack: function(){
 		window.history.go(-1);
 	},	
+	
 	deleteField: function(evt){
 		
 		
@@ -29,7 +32,7 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 		var app       = sap.ui.getCore().byId("app");
 		
 		try {  		
-			var context = app.getModel('forms').getData('/' + this.formIndex + '/sections/' + this.sectionIndex + '/fields/' + oId + '/');
+			var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + oId + '/');
 		
 		} catch(ex){  
 			window.history.go(-1);
@@ -43,9 +46,9 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 	        text: 'Eliminar',
 	        press: function () {
 	        	
-	          context[that.formIndex].sections[that.sectionIndex].fields.splice(oId,1);		
+	          context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].fields.splice(oId,1);		
 	    	  sap.ui.getCore().byId("app").getModel('forms').setData(context);  
-    		  sap.m.MessageToast.show('Sección eliminada');
+    		  sap.m.MessageToast.show('Elemento eliminado');
     		  
 	          dialog.close();
 	        }
@@ -150,7 +153,7 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 	
 	saveData: function(evt){
 		
-		var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex);		
+		var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex + '/versions/' + this.versionIndex);	
   		var data         = model.getProperty(model.sPath);  	
   		var jsonsection  = [];
   		
@@ -172,9 +175,11 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
   		var oModel       = new myJSONModel;
   		
   		var oParameters = {
- 	           "formid" 			: data.formid,
- 	           "formtitle" 		    : data.formtitle,
- 	           "sections" 			: jsonsection
+  		   "formid" 			: data.formid,
+           "formtitle" 		    : data.formtitle,
+           "verformid"          : data.verformid,
+           "descpver"			: data.descpver,
+           "sections" 			: jsonsection
  		};
   		
   		var dialog = new sap.m.Dialog({

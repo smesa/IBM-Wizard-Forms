@@ -29,8 +29,6 @@ sap.ui.controller("wizardformsforms.FormCreate", {
  	           "trkorr"	   : trkorr
  		};
   		
-  		sap.ui.getCore().byId("formTitleNew").setValue("");
-  		
   		var dialog = new sap.m.Dialog({
 		      title: 'Confirmación',
 		      type: 'Message',
@@ -48,17 +46,17 @@ sap.ui.controller("wizardformsforms.FormCreate", {
 		    			var oModel2 = new myJSONModel;
 		    			
 		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+		    				
 		    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
 		    				
-			    			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/');		
-			    	  		var data         = model.getProperty(model.sPath);  
-			    	  		var newLength    = data.length;
+			    			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/');	
+			    			
+			    			// Limpio los campos
+			    	  		sap.ui.getCore().byId("formTitleNew").setValue("");
+			    	  		sap.ui.getCore().byId("formPackageNew").setValue("");
+			    	  		sap.ui.getCore().byId("formOrderNew").setValue("");
 			    	  		
-			    	  		
-			    	  		if(newLength > actLength){
-			    	  			newLength = newLength - 1;
-			    	  			//that.router.navTo("FormsDetailC",{formIndex:newLength, versionIndex: '0'});
-			    	  		}
+
 		    				
 		    			},function(){
 		    				sap.m.MessageToast.show('Error creando el elemento');
@@ -197,6 +195,7 @@ sap.ui.controller("wizardformsforms.FormCreate", {
 	    jQuery.each(inputs, function (i, input) {
 	        if (!input.getValue()) {
 	          input.setValueState("Error");
+	          input.setValueStateText("Campo obligatorio");
 	        }
 	        else{
 	        	input.setValueState("None");

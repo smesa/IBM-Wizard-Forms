@@ -8,39 +8,94 @@ sap.ui.jsview("wizardformsforms.FormCreate", {
 
 	createContent : function(oController) {
 		
+		var oInputPackage = new sap.m.Input({
+	       	 id:"formPackageNew",
+	    	 enabled:true,			        	 
+	    	 showValueHelp:true,
+	    	 showSuggestion: true,
+	    	 suggestionColumns: [
+                 new sap.m.Column({
+                   header: new sap.m.Label({
+                     text: 'Paquete'
+                   })
+                 }),
+                 new sap.m.Column({
+                   header: new sap.m.Label({
+                     text: 'Descripción'
+                   })
+                 })
+             ],
+	    	 placeholder:"Seleccione el paquete del formulario",
+	    	 valueHelpRequest: function(evt){
+	    		 oController.getPackages(evt)
+	    	 },
+	    	 liveChange: function(evt){
+	    		 oController.validateRequiredField(evt)
+	    	 }
+		});
+		
+		var oColumnPackages = new sap.m.ColumnListItem({
+		    cells: [
+		      new sap.m.Label({
+		        text: '{packages>devclass}'
+		      }),
+		      new sap.m.Label({
+		        text: '{packages>ctext}'
+		      })
+		    ]
+		  });
+
+		oInputPackage.bindAggregation("suggestionRows", "packages>/", oColumnPackages);
+		
+		var oInputOrders = new sap.m.Input({
+	       	 id:"formOrderNew",
+	    	 enabled:true, 
+	    	 showValueHelp:true,
+	    	 showSuggestion: true,
+	    	 suggestionColumns: [
+                 new sap.m.Column({
+                   header: new sap.m.Label({
+                     text: 'Paquete'
+                   })
+                 }),
+                 new sap.m.Column({
+                   header: new sap.m.Label({
+                     text: 'Descripción'
+                   })
+                 })
+             ],
+	    	 placeholder:"Seleccione la orden de transporte",
+	    	 valueHelpRequest: function(evt){
+	    		 oController.getTransportOrder(evt)
+	    	 },
+	    	 liveChange: function(evt){
+	    		 oController.validateRequiredField(evt)
+	    	 }
+		});
+		
+		var oColumnOrders = new sap.m.ColumnListItem({
+		    cells: [
+		      new sap.m.Label({
+		        text: '{orders>trkorr}'
+		      }),
+		      new sap.m.Label({
+		        text: '{orders>as4text}'
+		      })
+		    ]
+		  });
+
+		oInputOrders.bindAggregation("suggestionRows", "orders>/", oColumnOrders);
+		
+		
 		// Formularios
 		var oInfoForm = new sap.ui.layout.VerticalLayout({
 			width: "100%",
 			content:[
 		         	 new sap.m.Label({}),
 		         	 new sap.m.Label({text:"Paquete"}),
-			         new sap.m.Input({
-			        	 id:"formPackageNew",
-			        	 enabled:true, 
-			        	 showSuggestion:true,
-			        	 showValueHelp:true,
-			        	 placeholder:"Seleccione el paquete del formulario",
-			        	 valueHelpRequest: function(evt){
-			        		 oController.getPackages(evt)
-			        	 },
-			        	 liveChange: function(evt){
-			        		 oController.validateRequiredField(evt)
-			        	 }
-	        		 }),
+		         	 oInputPackage,
 			         new sap.m.Label({text:"Orden de transporte"}),
-			         new sap.m.Input({
-			        	 id:"formOrderNew",
-			        	 enabled:true, 
-			        	 showSuggestion:true,
-			        	 showValueHelp:true,
-			        	 placeholder:"Seleccione la orden de transporte",
-			        	 valueHelpRequest: function(evt){
-			        		 oController.getTransportOrder(evt)
-			        	 },
-			        	 liveChange: function(evt){
-			        		 oController.validateRequiredField(evt)
-			        	 }
-	        		 }),
+			         oInputOrders,
 			         new sap.m.Label({text:"Nombre de formulario"}),
 			         new sap.m.Input({
 			        	 id:"formTitleNew",
