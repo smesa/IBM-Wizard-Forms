@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+		<script src="resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m, sap.ui.commons,sap.ui.unified"
+				data-sap-ui-xx-bindingSyntax = "complex"
+				data-sap-ui-resourceroots = '{
+					"wizardformsforms": "wizardformsforms",
+					"ibm.wizardforms.forms": "./"
+				}'
+				data-sap-ui-theme="sap_bluecrystal">
+		</script>
+		
+		<!-- only load the mobile lib "sap.m" and the "sap_bluecrystal" theme -->
+		
+		<script type="text/javascript" src="javascript/myJSONModel.js"></script>
+		
+		
+		<style type="text/css">
+		
+			.sapMPageScroll{
+				padding: 10px;
+			}
+			.sap-phone .sapMITBContainerContent, .sap-tablet .sapMITBContainerContent, html[data-sap-ui-os=win8] .sapMITBContainerContent {	
+				margin: 10px;
+			}
+			
+			.sapMInputBase {
+				padding-bottom: 60px !important;
+			}
+			.sapMTextArea {			
+				padding-bottom: 20px !important;
+			}
+			
+			.textRedBold {
+				font-weight: bold;
+				color: #FF0202 !important;
+			}
+			
+			section > .sapMPageScroll {
+				padding: 0px;
+			}
+			
+
+		
+		</style>
+		
+		
+		<script>
+			jQuery.sap.require("ibm.wizardforms.forms.common");
+			
+			new sap.m.Shell("Shell",{
+				app: new sap.ui.core.ComponentContainer({
+					name: 'ibm.wizardforms.forms'
+				})
+			}).placeAt('content');
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>

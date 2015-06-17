@@ -1,0 +1,23 @@
+<p>Seleccione un formulario a diligenciar:</p>
+
+<br>
+
+<!-- Split button -->
+<div class="btn-group">
+  <button type="button" class="btn btn-primary">Seleccione un formulario</button>
+  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+
+  <ul class="dropdown-menu" role="menu">
+    <li ng-repeat="item in list">
+      <a href="/#/llenar/{{item.formid}}">{{item.formtitle}}</a>
+    </li>
+  </ul>
+
+</div>
+
+
+
+<br><br><br>

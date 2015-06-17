@@ -119,7 +119,7 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 			},
 			footer: new sap.m.Bar({
 				contentRight: [
-								new sap.m.Button({
+								/*new sap.m.Button({
 									text: "Eliminar",
 								    icon: "sap-icon://delete",
 								    type: "Reject",
@@ -133,7 +133,7 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 									press: function(evt){
 										oController.saveData(evt)
 									}
-								}),
+								}),*/
 				              
 	            ]
 			}),

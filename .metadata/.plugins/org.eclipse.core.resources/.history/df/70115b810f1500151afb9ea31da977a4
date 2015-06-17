@@ -1,0 +1,13 @@
+angular.module('preview', ['ngRoute'])
+ 
+
+.config(function($routeProvider) {
+  $routeProvider
+    .when('/', {      
+      templateUrl:'views/preview.html',
+      controller:'PreviewCtrl'
+    })
+    .otherwise({
+      redirectTo:'/'
+    });
+})

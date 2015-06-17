@@ -1,0 +1,21 @@
+angular.module('preview', ['ngRoute'])
+ 
+
+.config(function($routeProvider) {
+  $routeProvider
+    .when('/', {      
+      templateUrl:'preview.html',
+      controller:'PreviewCtrl'
+    })
+    .when('/edit/:projectId', {
+      controller:'EditProjectController as editProject',
+      templateUrl:'detail.html'
+    })
+    .when('/new', {
+      controller:'NewProjectController as editProject',
+      templateUrl:'detail.html'
+    })
+    .otherwise({
+      redirectTo:'/'
+    });
+})

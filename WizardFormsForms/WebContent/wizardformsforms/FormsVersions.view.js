@@ -82,7 +82,7 @@ sap.ui.jsview("wizardformsforms.FormsVersions", {
 							icon : "sap-icon://add",
 							tooltip: "Crear versión",
 							press: function(evt){
-								//ibm.wizardforms.forms.common.addNewPress(evt,oController);
+								oController.newVersion(evt)
 							}
 						})
 						

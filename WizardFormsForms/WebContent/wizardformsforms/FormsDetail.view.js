@@ -41,7 +41,8 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		        	         }
 			        	 },
 			        	 enabled:false
-			        }),
+			        })
+			        
 			]
 		}).addStyleClass("layPadding10");
 		
@@ -62,12 +63,22 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 			]
 		}).addStyleClass("layPadding10");
 		
+		var oPreviewForm = new sap.ui.layout.VerticalLayout({
+			width: "100%",
+			height: "100%",
+			content:[ ]
+		});
 		
 		//Icon Tab
 		var oIconTab = new sap.m.IconTabBar({
+			id: "TabForm",
 			title: "IconTab",
 			showHeader: false
 		})
+		
+		oIconTab.attachSelect(function(evt){
+			oController.selectedTab(evt)
+		});
 		
 		// Agrego a la pestaña el formulario
 		var oItemBarInfoForm = new sap.m.IconTabFilter({
@@ -89,9 +100,21 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 	        content:[ oEnhaForm ]
 		});	
 		
+		var oItemBarPreviewForm = new sap.m.IconTabFilter({
+			id: "oItemBarPreviewForm",
+	        text: "Previsualizar",
+	        icon:"sap-icon://show",
+	        width: "100%",
+	        key: "preview",	        
+	        content:[ oPreviewForm ]
+		});	
+		
+		oItemBarPreviewForm.removeAllContent()
+		
 		oIconTab.addItem(oItemBarInfoForm);	
 		oIconTab.addItem(oItemBarSectionsForm);	
 		oIconTab.addItem(oItemBarEnhaForm);	
+		oIconTab.addItem(oItemBarPreviewForm);	
 		
 		
 		var oTable = new sap.m.Table({

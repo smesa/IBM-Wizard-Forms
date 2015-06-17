@@ -121,6 +121,89 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
 
 	    dialog.open();		
 		
+	},
+	
+	newVersion: function(evt){
+		
+		var that = this;
+		that.oTypeVersion = new sap.m.ComboBox({
+			  width: "100%",
+  			  selectedKey: "EMPTY",
+  			  items: [
+                    new sap.ui.core.ListItem({text: "Versión vacia",key:"EMPTY"}).bindProperty("text","StatusText").bindProperty("key","Status"),
+                    new sap.ui.core.ListItem({text: "Basada en ultima versión creada",key:"LAST"})
+              ]
+          }).bindProperty("value","StatusText");
+		
+		
+		var model =  sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex);	
+		var path  =  evt.getSource().getBindingContext('forms').getPath();	
+		that.data  = model.getProperty(path);	
+		
+		// Formularios
+		var oInfoVersion = new sap.ui.layout.VerticalLayout({
+			id: "oTypeVersion",
+			width: "100%",
+			placeholder: "Seleccione una opción",
+			content:[
+		         	new sap.m.Label({ text : "Seleccione una forma de crear la versión" }),
+		         	that.oTypeVersion,				
+			]
+		}).addStyleClass("layPadding10");
+		
+		var dialog = new sap.m.Dialog({
+		      title: 'Crear versión',
+		      verticalScrolling: true,
+			  contentWidth: "500px",
+		      content:[oInfoVersion],
+		      beginButton: new sap.m.Button({
+		          text: 'Crear',
+		          press: function (evt) {		
+		        	  
+		        	var oModel       = new myJSONModel;
+		        		
+	        		var oParameters = {
+		        		 "formid" 	: that.data.formid,
+		                 "typever" 	: that.oTypeVersion.getSelectedItem().getKey(),
+		                 "option"	: "new-version"
+	        		};
+	        		
+	        		// Llamo el metodo POST para crear los datos
+		    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+		    			
+		    			sap.m.MessageToast.show('Versión creada exitosamente');
+		    			
+		    			// Consulto los datos actualizados			
+		    			var oModel2 = new myJSONModel;
+		    			
+		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+		    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
+		    			},function(){
+		    				sap.m.MessageToast.show('Error creando el elemento');
+		    			});		
+		    			
+		    		},function(){
+		    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
+		    		},oParameters, true,'POST');	
+		    		
+		    		
+		            dialog.close();
+		          }
+		        }),
+		        endButton: new sap.m.Button({
+		          text: 'Cerrar',
+				  type: "Reject",
+		          press: function () {
+		            dialog.close();
+		          }
+		        }),
+		        afterClose: function() {
+		          dialog.destroy();
+		        }
+		    });
+		    dialog.open();	
+		
+		
 	}
 
 

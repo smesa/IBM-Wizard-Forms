@@ -1,0 +1,18 @@
+angular.module('preview', ['ngRoute'])
+ 
+
+.config(function($routeProvider) {
+  $routeProvider
+    .when('/', {      
+      templateUrl:'views/preview.html',
+      controller:'PreviewCtrl'
+    })
+    .otherwise({
+      redirectTo:'/'
+    });
+})
+
+.controller('PreviewCtrl', function($scope) {
+  var projectList = this;
+  projectList.projects = projects;
+})

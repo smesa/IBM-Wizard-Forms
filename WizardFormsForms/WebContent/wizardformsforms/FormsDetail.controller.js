@@ -21,8 +21,32 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		} catch(ex){  
 			window.history.go(-1);
 		}  
-	},
+	},	
 	
+	selectedTab: function(evt){
+		
+		var oTab  		= sap.ui.getCore().byId('TabForm');
+		var oPreview	= sap.ui.getCore().byId('oItemBarPreviewForm');
+		var sel         = oTab.getSelectedKey();
+		
+		if(sel === 'preview'){
+			
+			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex + '/versions/' + this.versionIndex);
+	  		var path         = evt.getSource().getBindingContext('forms').getPath();			
+	  		var data         = model.getProperty(path);  
+			
+			var iFrame 		= new sap.ui.core.HTML({
+	     		preferDOM:true,
+	     		content:"<iframe src='./preview/index.html#/get/" + data.formid + "/" + data.verformid + "' width='100%' height='700' ></iframe>"
+			})		
+					
+			oPreview.removeAllContent();
+			oPreview.addContent(iFrame);
+			
+		}
+		
+	},
+
 	sectionPress: function(oEvent){		
 		
 		var oTable       = sap.ui.getCore().byId('oTableSections');
@@ -280,8 +304,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		    				
 		    			},function(){
 		    				sap.m.MessageToast.show('Error eliminando el formulario');
-		    			});	
-		    			
+		    			});			    			
 		    			
 		    			
 		    		},function(){
@@ -303,6 +326,6 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	    });
 
 	    dialog.open();
-	}
+	},
 
 });

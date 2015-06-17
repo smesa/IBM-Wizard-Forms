@@ -1,0 +1,52 @@
+angular.module('preview', ['ngRoute'])
+ 
+
+.config(function($routeProvider) {
+  $routeProvider
+    .when('/', {      
+      templateUrl:'views/preview.html',
+      controller:'PreviewCtrl'
+    })
+    .when('/get/:formid/:verformid', {      
+      templateUrl:'views/preview.html',
+      controller:'PreviewCtrl'
+    })
+    .otherwise({
+      redirectTo:'/'
+    });
+})
+
+.controller('PreviewCtrl', function($scope, $routeParams) {
+	
+	var formid 			= $routeParams.formid;
+	var verformid		= $routeParams.verformid;
+	
+	var oParameters = {};
+	var sURL 		= 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/';
+	var sType       = "GET";
+	var bAsync 		= true;
+	var bMerge      = "";
+	var bCache      = "";
+	
+	if (bCache === undefined) {
+		bCache = this.bCache;
+	}
+	
+	jQuery.ajax({
+		  url: sURL,
+		  async: bAsync,
+		  dataType: 'json',
+		  data: oParameters,
+		  type: sType,
+		  success: function(oData) {
+			  
+			if (!oData) {
+				jQuery.sap.log.fatal("The following problem occurred: No data was retrieved by service: " + sURL);
+			}
+		  },
+		  error: function(XMLHttpRequest, textStatus, errorThrown){			  
+			jQuery.sap.log.fatal("The following problem occurred: " + textStatus, XMLHttpRequest.responseText + ","	+ XMLHttpRequest.status + "," + XMLHttpRequest.statusText);			
+		  }
+	});	
+	
+})
