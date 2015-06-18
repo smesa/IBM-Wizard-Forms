@@ -21,7 +21,7 @@ sap.ui.jsview("wizardformsmime.Images", {
 		
 // Se definen los datos de inicialización de la vista
  		return new sap.m.Page({
-			title: "Lista de Productos",
+			title: "Repositorio MIME",
 			subHeader: new sap.m.Bar({
 				
 				contentMiddle: [
@@ -34,11 +34,22 @@ sap.ui.jsview("wizardformsmime.Images", {
 			    		   
 			    		   oController.onChangeSearch(evt);
 			    		   
-			    	   }
+			    	   },
+			    	   width:"100%",
+					   placeholder:"Buscar Imagen",
 			    	   
 			       })         
 				                
                 ],
+                 // Se agrega un pulsador a la derecha del campo de búsqueda
+                contentRight:[
+      						new sap.m.Button({
+      							icon : "sap-icon://add",
+      							press: function(evt){
+      								ibm.wizardforms.mime.common.addNewPress(evt,oController);
+      							}
+      						}),
+      				]
 				
 			}),
 			content: [this.oList]

@@ -6,23 +6,35 @@
 
 		<script src="resources/sap-ui-core.js"
 				id="sap-ui-bootstrap"
-				data-sap-ui-libs="sap.m"
+				data-sap-ui-libs="sap.m, sap.ui.commons, sap.ui.unified"
 				data-sap-ui-theme="sap_bluecrystal"
 				data-sap-ui-resourceroots= '{
 				  
-				  ""wizardformsmime": "wizardformsmime",
+				  "wizardformsmime": "wizardformsmime",
 					"ibm.wizardforms.mime": "./"
 				
 				}'>
 		</script>
 		<!-- only load the mobile lib "sap.m" and the "sap_bluecrystal" theme -->
+		
+		<script type="text/javascript" src="javascript/myJSONModel.js"></script>
+
+		<style type="text/css">
+		
+			.sapMPageScroll{
+				padding: 10px;
+			}
+			.sap-phone .sapMITBContainerContent, .sap-tablet .sapMITBContainerContent, html[data-sap-ui-os=win8] .sapMITBContainerContent {	
+				margin: 10px;
+			}
+			
+			.sapMInputBase {
+				padding-bottom: 60px !important;
+			}
+		
+		</style>
 
 		<script>
-				//sap.ui.localResources("wizardformsmime");
-				//var app = new sap.m.App({initialPage:"idApp1"});
-				//var page = sap.ui.view({id:"idApp1", viewName:"wizardformsmime.App", type:sap.ui.core.mvc.ViewType.JS});
-				//app.addPage(page);
-				//app.placeAt("content");
 				
 		  jQuery.sap.require("ibm.wizardforms.mime.common");
 		  new sap.m.Shell("Shell",{

@@ -33,20 +33,28 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.mime.Component", {
 					       targetAggregation: "detailPages", 
 					       
 			    		   
-			    	   }         
-			    	            
+			    	   } ,
+{
+			    		   
+							pattern: "create",
+						    name: "MimeCreate",
+						    view: "MimeCreate",
+						    targetAggregation: "detailPages",
+					       
+			    		   
+			    	   } ,
+			    	   
+					   {
+					    	
+					    	pattern: "image/{imageIndex}",
+					    	name: "image",
+					    	view: "Data",
+					    	targetAggregation: "detailPages",
+					    	
+					   }			    	            
     	            ]
 			    	
 			    },
-			    
-			   {
-			    	
-			    	pattern: "product/{prdIndex}",
-			    	name: "product",
-			    	view: "Data",
-			    	targetAggregation: "detailPages",
-			    	
-			   }
 			          
 	         ]
 			
@@ -71,20 +79,28 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.mime.Component", {
 		
 	},
 	
+
+	
 	createContent: function(){
 		
 		var oView = sap.ui.view({
 			
 			id: "app",
-			viewName: "pruebaui.App",
+			viewName: "wizardformsmime.App",
 			type: "JS",
 			viewData: { component: this }
 			
 		});
 		
-		var oModel = new sap.ui.model.json.JSONModel("model/Product.json");
+		var oModel = new myJSONModel;
 		
-		oView.setModel(oModel, "products"); // contexto de datos, modelo
+		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/images_data/images/", function(oData){
+			
+		},function(){
+			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
+		});
+		
+		oView.setModel(oModel,'images');	
 		
         return oView;
 		
