@@ -39,9 +39,6 @@ sap.ui.controller("wizardformsmime.Data", {
 	           "imgid" : imgid
 		};
 		
-		var busyDialog = new sap.m.BusyDialog();
-		
-		
 		var dialog = new sap.m.Dialog({
 		      title: 'Confirmación',
 		      type: 'Message',
@@ -57,9 +54,6 @@ sap.ui.controller("wizardformsmime.Data", {
 		    			
 		    			// Consulto los datos actualizados			
 		    			var oModel2 = new myJSONModel;
-		    			
-		    			oModel2.attachRequestSent(function(){busyDialog.open();}); 
-		    			oModel2.attachRequestCompleted(function(){busyDialog.close();}); 
 		    			
 		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/images_data/images/", function(oData){
 		    				sap.ui.getCore().byId("app").getModel('images').setData(oData);	

@@ -15,13 +15,14 @@ sap.ui.jsview("wizardformsmime.MimeCreate", {
 			         	 new sap.m.Label({}),
 			         	 new sap.m.Label({text:"Imagen:"}),
 			         	 new sap.m.Image({
-			         		 id: "imageMime"
+			         		 id: "imageMime",			        
 			         	 }),
+			         	new sap.m.Label({}),
 			         	new sap.m.Label({text:"Tamaño:"}),
 		        		new sap.m.Input({
 				        	 id:"mimeSize",
 				        	 enabled:false, 
-				        	 placeholder:"Tamaño del archivo",
+				        	 placeholder:"Tamaño del archivo",			        	 
 		        		 }),
 			         	new sap.ui.unified.FileUploader({
 			                id:"mimeUploader",
@@ -31,12 +32,12 @@ sap.ui.jsview("wizardformsmime.MimeCreate", {
 			                style: "Accept",
 			                buttonOnly: true,
 			                uploadOnChange: true,
-			                buttonText: "Seleccione una imagen desde la computadora...",
+			                buttonText: "Seleccione una imagen desde la computadora...",			                
 			                uploadComplete: function(evt){
 			                	var fSize = evt.getParameter("fileSize");
 			                	oController.uploadData(evt)
+			                	oController.validateRequiredField(evt)
 			                },
-			                
 			               }),
 			              /*
 			         	 new sap.ui.unified.FileUploader({
@@ -58,12 +59,18 @@ sap.ui.jsview("wizardformsmime.MimeCreate", {
 				        	 id:"mimeName",
 				        	 enabled:true, 
 				        	 placeholder:"Nombre de la imagen",
+					    	 liveChange: function(evt){
+					    		 oController.validateRequiredField(evt)
+					    	 }
 		        		 }),
 				         new sap.m.Label({text:"Descripción:"}),
 				         new sap.m.Input({
 				        	 id:"mimeDescp",
 				        	 enabled:true, 
 				        	 placeholder:"Ingrese la descripción de la imagen",
+					    	 liveChange: function(evt){
+					    		 oController.validateRequiredField(evt)
+					    	 }			    
 		        		 }),
 			         ]
 		 }).addStyleClass("layPadding10");
@@ -88,8 +95,10 @@ sap.ui.jsview("wizardformsmime.MimeCreate", {
 			footer: new sap.m.Bar({
 				contentRight: [
 								new sap.m.Button({
+									id: "btnSaveNew",
 									text: "Guardar",
 									icon: "sap-icon://save",
+									enabled: false,
 									press: function(evt){
 										oController.saveData(evt)
 									}

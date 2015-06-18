@@ -35,7 +35,7 @@ sap.ui.controller("wizardformsmime.MimeCreate", {
  		};
   		
   		// Se define la variable de proceso en espera
-  		var busyDialog = new sap.m.BusyDialog();
+  		//var busyDialog = new sap.m.BusyDialog();
   		
   		// se ajusta la información para cargarla a SAP
   		
@@ -60,8 +60,10 @@ sap.ui.controller("wizardformsmime.MimeCreate", {
 		    			// Consulto los datos actualizados			
 		    			var oModel2 = new myJSONModel;
 		    			
+		    			/*
 		    			oModel2.attachRequestSent(function(){busyDialog.open();}); 
 		    			oModel2.attachRequestCompleted(function(){busyDialog.close();}); 	
+		    			*/
 		    			
 		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/images_data/images/", function(oData){
 		    				sap.ui.getCore().byId("app").getModel('images').setData(oData);
@@ -134,6 +136,56 @@ sap.ui.controller("wizardformsmime.MimeCreate", {
 		  //LLamo la carga desde la URL
 		  reader.readAsDataURL( file );
 		
-	}
+	},
 
+	validateRequiredField: function(evt){
+		
+	    var view = sap.ui.getCore();
+	    
+	    // Armo el array de campos
+	    var inputs = [
+	      view.byId("mimeDescp"),
+	      view.byId("mimeName"),
+	    ];
+	    
+	    // Recorro cada campo para validar
+	    jQuery.each(inputs, function (i, input) {
+	        if (!input.getValue()) {
+	          input.setValueState("Error");
+	          input.setValueStateText("Campo obligatorio");
+	        }
+	        else{
+	        	input.setValueState("None");
+	        }
+	    });
+	    
+	    // Armo el array de campos
+	    var inputs = [
+	      view.byId("mimeUploader"),
+	    ];
+	    // Se creó este nuevo arreglo ya que al intentar agregar el mensaje de advertencia al campo este generaba error
+	    // Recorro cada campo para validar
+	    jQuery.each(inputs, function (i, input) {
+	        if (!input.getValue()) {
+	          input.setValueState("Error");
+	        }
+	        else{
+	        	input.setValueState("None");
+	        }
+	    });
+	    
+	    // Valido si algun campo tiene error
+	    var canContinue = true;
+	    jQuery.each(inputs, function (i, input) {
+	      if ("Error" === input.getValueState()) {
+	        canContinue = false;
+	        return false;
+	      }
+	    });
+
+	    view.byId("btnSaveNew").setEnabled(canContinue);
+
+	    
+	}	
+	
 });
