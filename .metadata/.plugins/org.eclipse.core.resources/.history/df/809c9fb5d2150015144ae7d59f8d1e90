@@ -1,0 +1,23 @@
+angular.module('preview', ['ngRoute'])
+ 
+
+.config(function($routeProvider) {
+  $routeProvider
+    .when('/', {      
+      templateUrl:'views/preview.html',
+      controller:'PreviewCtrl'
+    })
+    .when('/get/:data', {      
+      templateUrl:'views/preview.html',
+      controller:'PreviewCtrl'
+    })
+    .otherwise({
+      redirectTo:'/'
+    });
+})
+
+.controller('PreviewCtrl', function($scope, $routeParams) {
+	
+	var data 			= $routeParams.data;
+	
+})

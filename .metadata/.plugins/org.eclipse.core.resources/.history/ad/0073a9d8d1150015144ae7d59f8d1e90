@@ -1,0 +1,23 @@
+angular.module('preview', ['ngRoute'])
+ 
+
+.config(function($routeProvider) {
+  $routeProvider
+    .when('/', {      
+      templateUrl:'views/preview.html',
+      controller:'PreviewCtrl'
+    })
+    .when('/get/:formid/:verformid', {      
+      templateUrl:'views/preview.html',
+      controller:'PreviewCtrl'
+    })
+    .otherwise({
+      redirectTo:'/'
+    });
+})
+
+.controller('PreviewCtrl', function($scope, $routeParams, $http) {
+	
+	var data 			= $routeParams.data;
+	
+})

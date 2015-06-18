@@ -1,0 +1,48 @@
+angular.module('preview', ['ngRoute'])
+ 
+
+.config(function($routeProvider) {
+  $routeProvider
+    .when('/', {      
+      templateUrl:'views/preview.html',
+      controller:'PreviewCtrl'
+    })
+    .when('/get/:formid/:verformid', {      
+      templateUrl:'views/preview.html',
+      controller:'PreviewCtrl'
+    })
+    .otherwise({
+      redirectTo:'/'
+    });
+})
+
+.controller('PreviewCtrl', function($scope, $routeParams, $http) {
+	
+	var formid 			= $routeParams.formid;
+	var verformid		= $routeParams.verformid;
+	var panel 			= $("#ppal");
+	
+	//$scope.data = [];	
+	
+	var sURL  = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms?formid=' + formid + '&verformid=' + verformid;
+		
+	$http.get( sURL ).
+		success(function(list){
+			list 		= list[0];
+			$scope.data = list;
+			
+			
+			// Recorro las secciones
+			angular.forEach(list[0].versions[0].sections, function(section){				
+				
+				// Agreso la seccion al panel
+				var elmsection = '<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">'+section.sectiontitle+'</h3></div><div class="panel-body" id="'+list[0].formid + section.sectionid+'"></div></div>';
+  				panel.append(elmsection);
+				
+			})		
+			
+			
+		});
+
+	
+})
