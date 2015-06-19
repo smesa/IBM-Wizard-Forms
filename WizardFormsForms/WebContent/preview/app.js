@@ -11,6 +11,10 @@ angular.module('preview', ['ngRoute'])
       templateUrl:'views/preview.html',
       controller:'PreviewCtrl'
     })
+    .when('/getfull/:formid/:verformid', {      
+      templateUrl:'views/preview_full.html',
+      controller:'PreviewCtrl'
+    })
     .otherwise({
       redirectTo:'/'
     });
@@ -25,7 +29,12 @@ angular.module('preview', ['ngRoute'])
 	
 	
 	$scope.openForm = function(){
-		window.open(window.location.href,'_blank');
+		var uri = window.location.href.replace(/get/g, 'getfull');		
+		window.open(uri,'_blank');
+	}
+	
+	$scope.closeForm = function(){
+		window.open('','_self').close();
 	}
 	
 	//$scope.data = [];	

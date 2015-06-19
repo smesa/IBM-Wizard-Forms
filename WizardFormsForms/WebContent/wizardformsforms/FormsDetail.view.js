@@ -69,6 +69,93 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 			content:[ ]
 		});
 		
+	
+		
+		var oCustomForm = new sap.ui.layout.VerticalLayout({
+			width: "100%",
+			content:[
+		         new sap.m.Panel({
+		        	 expandable:true,
+		        	 expanded:false,
+		        	 headerText:"Colores del formulario",
+		        	 content: [ 
+        	           	new sap.ui.layout.VerticalLayout({
+        	           		width: "100%",
+        	           		content: [
+								new sap.m.Label({ text:"Color base", design: "Bold"	}),
+								new sap.ui.layout.HorizontalLayout({
+									content: [
+										new sap.m.Input({
+											id: "inpColorBaseText",
+											liveChange: function(evt){
+												var view = sap.ui.getCore();
+												jQuery.sap.byId('inpColorBase-inner').css('background-color',view.byId('inpColorBaseText').getValue());												
+											}
+										}).addStyleClass("textRedBold"),
+										new sap.m.Input({
+											id: "inpColorBase",
+											width: "40px",
+										}),
+										new sap.m.Button({
+											press: function(evt){
+												var dialog = new sap.m.Dialog({
+												      title: 'Selección de color',
+												      type: 'Message',
+												      content: [
+															new sap.ui.commons.ColorPicker({
+																id: "oColorPickerBase",
+																liveChange: function(evt){
+																	var colors = evt.getParameters();
+																	var view = sap.ui.getCore();
+																	jQuery.sap.byId('inpColorBase-inner').css('background-color',colors.hex);
+																	view.byId('inpColorBaseText').setValue(colors.hex);
+																}
+															})
+												      ],
+												      beginButton: new sap.m.Button({
+												        text: 'Aceptar',
+												        press: function () { 											    		  
+												          dialog.close();
+												        }
+												      }),
+												      endButton: new sap.m.Button({
+												        text: 'Cancelar',
+												        type: "Reject",
+												        press: function () {
+												          dialog.close();
+												        }
+												      }),
+												      afterClose: function() {
+												        dialog.destroy();
+											      }
+											    });
+											    dialog.open();
+												//jQuery.sap.byId('inpColorBase-inner').css('background-color',jQuery.sap.byId('inpColorBase').getValue());
+											}
+										}),
+									]
+								})
+	        	           	]
+        	           	})						
+    	             ]
+		         }),
+		         new sap.m.Panel({
+		        	 expandable:true,
+		        	 expanded:false,
+		        	 headerText:"Propiedades de textos",
+		        	 content: [ ]
+		         }),
+		         new sap.m.Panel({
+		        	 expandable:true,
+		        	 expanded:false,
+		        	 headerText:"Diseño de marca",
+		        	 content: [ ]
+		         }),
+		         
+		         
+			]
+		}).addStyleClass("layPadding10");
+		
 		//Icon Tab
 		var oIconTab = new sap.m.IconTabBar({
 			id: "TabForm",
@@ -109,12 +196,23 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 	        content:[ oPreviewForm ]
 		});	
 		
+		
+		var oItemBarCustomForm = new sap.m.IconTabFilter({
+	        text: "Diseño",
+	        icon:"sap-icon://palette",
+	        width: "100%",
+	        key: "customizing",	        
+	        content:[ oCustomForm ]
+		});	
+		
 		oItemBarPreviewForm.removeAllContent()
 		
 		oIconTab.addItem(oItemBarInfoForm);	
 		oIconTab.addItem(oItemBarSectionsForm);	
 		oIconTab.addItem(oItemBarEnhaForm);	
+		oIconTab.addItem(oItemBarCustomForm);	
 		oIconTab.addItem(oItemBarPreviewForm);	
+		
 		
 		
 		var oTable = new sap.m.Table({

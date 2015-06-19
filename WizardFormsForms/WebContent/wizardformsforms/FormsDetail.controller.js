@@ -37,7 +37,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 			
 			var iFrame 		= new sap.ui.core.HTML({
 	     		preferDOM:true,
-	     		content:"<iframe id='iframeid' src='./preview/index.html#/get/" + data.formid + "/" + data.verformid + "' width='100%' height='700' zoom='0.5' position='fixed' frameborder='0' border='none'></iframe>"
+	     		content:"<iframe id='iframeid' src='./preview/index.html#/get/" + data.formid + "/" + data.verformid + "' width='100%' height='" + document.body.clientHeight + "' zoom='0.5' position='fixed' frameborder='0' border='none'></iframe>"
 			})		
 					
 			oPreview.removeAllContent();
