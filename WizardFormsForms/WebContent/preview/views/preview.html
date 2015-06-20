@@ -1,9 +1,11 @@
-<div class="panel panel-primary">
-	<div class="panel-heading">
+<div id="panel" class="panel panel-primary" style="border: none; background-color: {{data.colorfondo}};">
+	<div class="panel-heading" style="background-image:none;border-color:{{data.colorhead}} ;background-color: {{data.colorhead}};">
 		<h3 class="page-header">
 				
 			<div class="row">
-  				<div class="col-md-4 vcenter"><img src="http://rollupconsulting.com/wp-content/uploads/2015/04/IBM-White.png" width="50%" ></div>
+  				<div class="col-md-4 vcenter">
+  					<img ng-src="{{data.logoimg}}" width="200px" >
+  				</div>
   				<div class="col-md-4 vcenter"><h3><span>{{data.formtitle}}</span></h3></div>
 			</div>
 			

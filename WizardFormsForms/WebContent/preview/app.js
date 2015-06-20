@@ -45,13 +45,19 @@ angular.module('preview', ['ngRoute'])
 		success(function(list){
 			list 		= list[0];
 			$scope.data = list;
+			$scope.data.logoimg = list.versions[0].logoimg;
+			$scope.data.colorfondo = list.versions[0].colorfondo;
+			$scope.data.colorhead = list.versions[0].colorhead;
+			$scope.data.colorbase = list.versions[0].colorbase;
+			$scope.data.colorsections = list.versions[0].colorsections;
+			document.body.style.backgroundColor = list.versions[0].colorbase;
 			
 			
 			// Recorro las secciones
 			angular.forEach(list.versions[0].sections, function(section){				
 				
 				// Agrego la seccion al panel
-				var elmsection = '<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">'+section.sectiontitle+'</h3></div><div class="panel-body" id="'+list.formid + section.sectionid+'"></div></div>';
+				var elmsection = '<div class="panel panel-default" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + $scope.data.colorsections + ';"><h3 class="panel-title">'+section.sectiontitle+'</h3></div><div class="panel-body" id="'+list.formid + section.sectionid+'"></div></div>';
   				panel.append(elmsection);
   				
   				

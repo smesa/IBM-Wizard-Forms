@@ -15,7 +15,8 @@ sap.ui.jsview("wizardformsmime.MimeCreate", {
 			         	 new sap.m.Label({}),
 			         	 new sap.m.Label({text:"Imagen:"}),
 			         	 new sap.m.Image({
-			         		 id: "imageMime",			        
+			         		 id: "imageMime",	
+			         		 width:"200px"
 			         	 }),
 			         	new sap.m.Label({}),
 			         	new sap.m.Label({text:"Tamaño:"}),
