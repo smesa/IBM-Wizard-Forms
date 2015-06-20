@@ -69,6 +69,343 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 			content:[ ]
 		});
 		
+		
+		var oColorBase = new sap.ui.layout.VerticalLayout({
+       		width: "100%",
+       		content: [
+				new sap.m.Label({ text:"Color base", design: "Bold"	}),
+				new sap.ui.layout.HorizontalLayout({
+					content: [
+						new sap.m.Input({
+							id: "inpColorBaseText",
+							value:"{forms>colorbase}",
+							liveChange: function(evt){
+								var view = sap.ui.getCore();
+								jQuery.sap.byId('inpColorBase-inner').css('background-color',view.byId('inpColorBaseText').getValue());												
+							}
+						}).addStyleClass("textRedBold").addStyleClass("#inpColorBase-inner{background-color:#232055 !important }"),
+						new sap.m.Input({
+							id: "inpColorBase",
+							width: "40px",
+						}),
+						new sap.m.Button({
+							press: function(evt){
+								var dialog = new sap.m.Dialog({
+								      title: 'Selección de color',
+								      type: 'Message',
+								      content: [
+											new sap.ui.commons.ColorPicker({
+												liveChange: function(evt){
+													var colors = evt.getParameters();
+													var view = sap.ui.getCore();
+													jQuery.sap.byId('inpColorBase-inner').css('background-color',colors.hex);
+													view.byId('inpColorBaseText').setValue(colors.hex);
+												}
+											})
+								      ],
+								      beginButton: new sap.m.Button({
+								        text: 'Aceptar',
+								        press: function () { 											    		  
+								          dialog.close();
+								        }
+								      }),
+								      endButton: new sap.m.Button({
+								        text: 'Cancelar',
+								        type: "Reject",
+								        press: function () {
+								          dialog.close();
+								        }
+								      }),
+								      afterClose: function() {
+								        dialog.destroy();
+							      }
+							    });
+							    dialog.open();
+							}
+						}),
+					]
+				})
+           	]
+       	});
+		
+		var oColorFondo = new sap.ui.layout.VerticalLayout({
+       		width: "100%",
+       		content: [
+				new sap.m.Label({ text:"Color de fondo", design: "Bold"	}),
+				new sap.ui.layout.HorizontalLayout({
+					content: [
+						new sap.m.Input({
+							id: "inpColorFondoText",
+							value:"{forms>colorfondo}",
+							liveChange: function(evt){
+								var view = sap.ui.getCore();
+								jQuery.sap.byId('inpColorFondo-inner').css('background-color',view.byId('inpColorFondoText').getValue());												
+							}
+						}).addStyleClass("textRedBold"),
+						new sap.m.Input({
+							id: "inpColorFondo",
+							width: "40px",
+						}),
+						new sap.m.Button({
+							press: function(evt){
+								var dialog = new sap.m.Dialog({
+								      title: 'Selección de color',
+								      type: 'Message',
+								      content: [
+											new sap.ui.commons.ColorPicker({
+												liveChange: function(evt){
+													var colors = evt.getParameters();
+													var view = sap.ui.getCore();
+													jQuery.sap.byId('inpColorFondo-inner').css('background-color',colors.hex);
+													view.byId('inpColorFondoText').setValue(colors.hex);
+												}
+											})
+								      ],
+								      beginButton: new sap.m.Button({
+								        text: 'Aceptar',
+								        press: function () { 											    		  
+								          dialog.close();
+								        }
+								      }),
+								      endButton: new sap.m.Button({
+								        text: 'Cancelar',
+								        type: "Reject",
+								        press: function () {
+								          dialog.close();
+								        }
+								      }),
+								      afterClose: function() {
+								        dialog.destroy();
+							      }
+							    });
+							    dialog.open();
+							}
+						}),
+					]
+				})
+           	]
+       	});
+		
+		var oColorHead = new sap.ui.layout.VerticalLayout({
+       		width: "100%",
+       		content: [
+				new sap.m.Label({ text:"Color de cabecera formulario", design: "Bold"	}),
+				new sap.ui.layout.HorizontalLayout({
+					content: [
+						new sap.m.Input({
+							id: "inpColorHeadText",
+							value:"{forms>colorhead}",
+							liveChange: function(evt){
+								var view = sap.ui.getCore();
+								jQuery.sap.byId('inpColorHead-inner').css('background-color',view.byId('inpColorHeadText').getValue());												
+							}
+						}).addStyleClass("textRedBold"),
+						new sap.m.Input({
+							id: "inpColorHead",
+							width: "40px",
+						}),
+						new sap.m.Button({
+							press: function(evt){
+								var dialog = new sap.m.Dialog({
+								      title: 'Selección de color',
+								      type: 'Message',
+								      content: [
+											new sap.ui.commons.ColorPicker({
+												liveChange: function(evt){
+													var colors = evt.getParameters();
+													var view = sap.ui.getCore();
+													jQuery.sap.byId('inpColorHead-inner').css('background-color',colors.hex);
+													view.byId('inpColorHeadText').setValue(colors.hex);
+												}
+											})
+								      ],
+								      beginButton: new sap.m.Button({
+								        text: 'Aceptar',
+								        press: function () { 											    		  
+								          dialog.close();
+								        }
+								      }),
+								      endButton: new sap.m.Button({
+								        text: 'Cancelar',
+								        type: "Reject",
+								        press: function () {
+								          dialog.close();
+								        }
+								      }),
+								      afterClose: function() {
+								        dialog.destroy();
+							      }
+							    });
+							    dialog.open();
+							}
+						}),
+					]
+				})
+           	]
+       	});
+		
+		var oColorSections = new sap.ui.layout.VerticalLayout({
+       		width: "100%",
+       		content: [
+				new sap.m.Label({ text:"Color de cabecera secciones", design: "Bold"	}),
+				new sap.ui.layout.HorizontalLayout({
+					content: [
+						new sap.m.Input({
+							id: "inpColorSectionText",
+							value:"{forms>colorsections}",
+							liveChange: function(evt){
+								var view = sap.ui.getCore();
+								jQuery.sap.byId('inpColorSection-inner').css('background-color',view.byId('inpColorSectionText').getValue());												
+							}
+						}).addStyleClass("textRedBold"),
+						new sap.m.Input({
+							id: "inpColorSection",
+							width: "40px",
+						}),
+						new sap.m.Button({
+							press: function(evt){
+								var dialog = new sap.m.Dialog({
+								      title: 'Selección de color',
+								      type: 'Message',
+								      content: [
+											new sap.ui.commons.ColorPicker({
+												liveChange: function(evt){
+													var colors = evt.getParameters();
+													var view = sap.ui.getCore();
+													jQuery.sap.byId('inpColorSection-inner').css('background-color',colors.hex);
+													view.byId('inpColorSectionText').setValue(colors.hex);
+												}
+											})
+								      ],
+								      beginButton: new sap.m.Button({
+								        text: 'Aceptar',
+								        press: function () { 											    		  
+								          dialog.close();
+								        }
+								      }),
+								      endButton: new sap.m.Button({
+								        text: 'Cancelar',
+								        type: "Reject",
+								        press: function () {
+								          dialog.close();
+								        }
+								      }),
+								      afterClose: function() {
+								        dialog.destroy();
+							      }
+							    });
+							    dialog.open();
+							}
+						}),
+					]
+				})
+           	]
+       	});
+		
+		
+		var oTextOptions = new sap.ui.layout.VerticalLayout({
+       		width: "100%",
+       		content: [
+				new sap.m.Label({ text:"Mostrar título cabecera", design: "Bold"	}),
+				new sap.m.Switch({
+						state:"{forms>showtitle}",
+						customTextOn:"Si", 
+						customTextOff:"No",
+						change: function(evt){
+					}
+				}),
+				new sap.m.Label({ text:"Tamaño de título cabecera", design: "Bold"	}),
+				new sap.m.ComboBox({
+		        	  selectedKey:"{forms>sizetitlehead}",
+					  items: [
+		                          new sap.ui.core.ListItem({text: "H1 - Texto Bold 36px",key:"H1"}).bindProperty("text","StatusText").bindProperty("key","Status"),
+		                          new sap.ui.core.ListItem({text: "H2 - Texto Bold 30px",key:"H2"}),
+		                          new sap.ui.core.ListItem({text: "H3 - Texto Bold 24px",key:"H3"}),
+		                          new sap.ui.core.ListItem({text: "H4 - Texto Bold 18px",key:"H4"}),
+		                          new sap.ui.core.ListItem({text: "H5 - Texto Bold 14px",key:"H5"}),
+		                          new sap.ui.core.ListItem({text: "H6 - Texto Bold 12px",key:"H6"}),
+		                     ]
+		        }).bindProperty("value","StatusText"),
+				new sap.m.Label({ text:"Mostrar texto de cabecera", design: "Bold"	}),
+				new sap.m.Switch({
+						state:"{forms>showtexthead}",
+						customTextOn:"Si", 
+						customTextOff:"No",
+						change: function(evt){
+					}
+				}),
+		        new sap.m.Label({ text:"Mostrar texto de cabecera como observación", design: "Bold"	}),
+				new sap.m.Switch({
+						state:"{forms>showtextheadobj}",
+						customTextOn:"Si", 
+						customTextOff:"No",
+						change: function(evt){
+					}
+				}),
+		        new sap.m.Label({ text:"Mostrar títulos en secciones", design: "Bold"	}),
+				new sap.m.Switch({
+						state:"{forms>showtitlesection}",
+						customTextOn:"Si", 
+						customTextOff:"No",
+						change: function(evt){
+					}
+				}),
+		        new sap.m.Label({ text:"Tamaño de título secciones", design: "Bold"	}),
+				new sap.m.ComboBox({
+					  selectedKey:"{forms>sizetitlesections}",
+					  items: [
+		                          new sap.ui.core.ListItem({text: "H1 - Texto Bold 36px",key:"H1"}).bindProperty("text","StatusText").bindProperty("key","Status"),
+		                          new sap.ui.core.ListItem({text: "H2 - Texto Bold 30px",key:"H2"}),
+		                          new sap.ui.core.ListItem({text: "H3 - Texto Bold 24px",key:"H3"}),
+		                          new sap.ui.core.ListItem({text: "H4 - Texto Bold 18px",key:"H4"}),
+		                          new sap.ui.core.ListItem({text: "H5 - Texto Bold 14px",key:"H5"}),
+		                          new sap.ui.core.ListItem({text: "H6 - Texto Bold 12px",key:"H6"}),
+		                     ]
+		        }).bindProperty("value","StatusText"),
+		        new sap.m.Label({ text:"Mostrar pie pagina", design: "Bold"	}),
+				new sap.m.Switch({
+						state:"{forms>showfooter}",
+						customTextOn:"Si", 
+						customTextOff:"No",
+						change: function(evt){
+					}
+				})				
+           	]
+       	});
+		
+		var oImageOptions = new sap.ui.layout.VerticalLayout({
+       		width: "100%",
+       		content: [
+				new sap.m.Label({ text:"Logo compañia", design: "Bold"	}),
+				new sap.ui.layout.HorizontalLayout({
+					content: [
+						new sap.m.Input({
+							id: "inpImageLogo",
+							value:"{forms>logo}",
+							width: "400px",
+							liveChange: function(evt){
+								var view = sap.ui.getCore();
+																		
+							}
+						}).addStyleClass("textRedBold"),
+						new sap.m.Button({
+							icon: "sap-icon://picture",
+							press: function(evt){
+								oController.getLogo(evt)
+							}
+						}),
+					]
+				}),	
+				new sap.m.Image({
+					id:"imgLogo",
+					width: "50%",
+					src: "{forms>logoimg}",
+				}),				
+			]
+       	});
+		
+		
+		
 	
 		
 		var oCustomForm = new sap.ui.layout.VerticalLayout({
@@ -78,78 +415,19 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		        	 expandable:true,
 		        	 expanded:false,
 		        	 headerText:"Colores del formulario",
-		        	 content: [ 
-        	           	new sap.ui.layout.VerticalLayout({
-        	           		width: "100%",
-        	           		content: [
-								new sap.m.Label({ text:"Color base", design: "Bold"	}),
-								new sap.ui.layout.HorizontalLayout({
-									content: [
-										new sap.m.Input({
-											id: "inpColorBaseText",
-											liveChange: function(evt){
-												var view = sap.ui.getCore();
-												jQuery.sap.byId('inpColorBase-inner').css('background-color',view.byId('inpColorBaseText').getValue());												
-											}
-										}).addStyleClass("textRedBold"),
-										new sap.m.Input({
-											id: "inpColorBase",
-											width: "40px",
-										}),
-										new sap.m.Button({
-											press: function(evt){
-												var dialog = new sap.m.Dialog({
-												      title: 'Selección de color',
-												      type: 'Message',
-												      content: [
-															new sap.ui.commons.ColorPicker({
-																id: "oColorPickerBase",
-																liveChange: function(evt){
-																	var colors = evt.getParameters();
-																	var view = sap.ui.getCore();
-																	jQuery.sap.byId('inpColorBase-inner').css('background-color',colors.hex);
-																	view.byId('inpColorBaseText').setValue(colors.hex);
-																}
-															})
-												      ],
-												      beginButton: new sap.m.Button({
-												        text: 'Aceptar',
-												        press: function () { 											    		  
-												          dialog.close();
-												        }
-												      }),
-												      endButton: new sap.m.Button({
-												        text: 'Cancelar',
-												        type: "Reject",
-												        press: function () {
-												          dialog.close();
-												        }
-												      }),
-												      afterClose: function() {
-												        dialog.destroy();
-											      }
-											    });
-											    dialog.open();
-												//jQuery.sap.byId('inpColorBase-inner').css('background-color',jQuery.sap.byId('inpColorBase').getValue());
-											}
-										}),
-									]
-								})
-	        	           	]
-        	           	})						
-    	             ]
+		        	 content: [ oColorBase, oColorFondo, oColorHead, oColorSections ]
 		         }),
 		         new sap.m.Panel({
 		        	 expandable:true,
 		        	 expanded:false,
 		        	 headerText:"Propiedades de textos",
-		        	 content: [ ]
+		        	 content: [ oTextOptions ]
 		         }),
 		         new sap.m.Panel({
 		        	 expandable:true,
 		        	 expanded:false,
 		        	 headerText:"Diseño de marca",
-		        	 content: [ ]
+		        	 content: [ oImageOptions ]
 		         }),
 		         
 		         

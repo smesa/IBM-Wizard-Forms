@@ -3,6 +3,9 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	onInit: function() {
 		this.router = sap.ui.core.UIComponent.getRouterFor(this);
 		this.router.attachRoutePatternMatched(this._handleRouteMatched,this);
+		
+		var view = sap.ui.getCore();
+		var view = sap.ui.getCore();
 	},
 
 	_handleRouteMatched: function(evt){
@@ -41,8 +44,19 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 			})		
 					
 			oPreview.removeAllContent();
-			oPreview.addContent(iFrame);
+			oPreview.addContent(iFrame);			
+		}
+		
+		if(sel === 'customizing'){
 			
+			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex + '/versions/' + this.versionIndex);
+	  		var path         = evt.getSource().getBindingContext('forms').getPath();			
+	  		var data         = model.getProperty(path);  
+			
+	  		jQuery.sap.byId('inpColorBase-inner').css('background-color',data.colorbase);
+			jQuery.sap.byId('inpColorFondo-inner').css('background-color',data.colorfondo);
+			jQuery.sap.byId('inpColorHead-inner').css('background-color',data.colorhead);
+			jQuery.sap.byId('inpColorSection-inner').css('background-color',data.colorsection);		
 		}
 		
 	},
@@ -217,6 +231,19 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
            "formtitle" 		    : data.formtitle,
            "verformid"          : data.verformid,
            "descpver"			: data.descpver,
+           "colorbase" 			: data.colorbase,
+           "colorfondo" 		: data.colorfondo,
+           "colorhead" 			: data.colorhead,
+           "colorsections" 		: data.colorsections,
+           "showtitle" 			: data.showtitle,
+           "sizetitlehead" 		: data.sizetitlehead,
+           "showtexthead" 		: data.showtexthead,
+           "showtextheadobj" 	: data.showtextheadobj,
+           "showtitlesection" 	: data.showtitlesection,
+           "sizetitlesections" 	: data.sizetitlesections,
+           "showfooter" 		: data.showfooter,
+           "logo" 				: data.logo,
+           "logoimg" 			: data.logoimg,           
            "sections" 			: jsonsection,
            "enhancement"		: jsonenha
  		};
@@ -327,5 +354,58 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 
 	    dialog.open();
 	},
+	
+	getLogo: function(evt){		
+		
+		var view = sap.ui.getCore();		
+		
+		var itemTemplate = new sap.m.StandardListItem({
+			title: "{images>namefld}",
+			description: "{images>descpfld}",
+			icon:"{images>imagen}", 
+			iconDensityAware:false,
+		    iconInset:false,
+			active: true
+		});
+		
+		var dialog = new sap.m.SelectDialog({
+			title:"Selección de imagenes",
+		    class:"sapUiPopupWithPadding",
+		    liveChange: function(evt){	    	
+
+		    	var filters = [];
+				var query = evt.getParameter("value");
+				if (query && query.length > 0) {
+					var filter = new sap.ui.model.Filter("namefld", sap.ui.model.FilterOperator.Contains, query);
+					filters.push(filter);
+				}
+				evt.getSource().getBinding("items").filter(filters);
+		    },
+		    confirm: function(evt){
+		    	var oSelectedItem = evt.getParameter("selectedItem");
+		        if (oSelectedItem) {
+		        	view.byId("inpImageLogo").setValue(oSelectedItem.getTitle());
+		        	view.byId("imgLogo").setSrc(oSelectedItem.getIcon());
+		        }
+		        evt.getSource().getBinding("items").filter([]);
+		    },
+		    cancel: function(evt){
+		    	var oSelectedItem = evt.getParameter("selectedItem");
+		        if (oSelectedItem) {
+		        	view.byId("inpImageLogo").setValue(oSelectedItem.getTitle());
+		        	view.byId("imgLogo").setSrc(oSelectedItem.getIcon());
+		        }
+		        evt.getSource().getBinding("items").filter([]);
+		    }
+		});
+		
+		dialog.bindAggregation("items", "images>/", itemTemplate);
+	
+	    this.getView().addDependent(dialog);
+	    dialog.open();
+
+	},
+	
+
 
 });

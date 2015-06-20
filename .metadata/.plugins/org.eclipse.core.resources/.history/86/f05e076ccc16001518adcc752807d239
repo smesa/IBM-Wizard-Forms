@@ -1,0 +1,47 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">	
+		<div class="container">
+		    <div class="row row-centered">
+		        <div class="col-xs-3 col-centered">
+		        	<div class="item">
+		        		<div class="content">
+		        			<img src="http://rollupconsulting.com/wp-content/uploads/2015/04/IBM-White.png" width="100px" height="100px"  class="img-responsive center-block">
+		        		</div>
+        			</div>
+       			</div>
+       			<div class="col-xs-3 col-centered">
+		        	<div class="item">
+		        		<div class="content">
+		        			<h3><span>{{data.formtitle}}</span></h3>
+		        		</div>
+        			</div>
+       			</div>
+       			<div class="col-xs-3 col-centered">
+		        	<div class="item">
+		        		<div class="content">
+			        		<div class="btn-group" role="group">
+							  <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="left" title="Ver pantalla completa" ng-click="openForm()">
+							  	 <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+							  </button>
+							</div>
+		        		</div>
+        			</div>
+       			</div>
+		    </div>
+		</div>
+		<div width="100%">		
+			<div>
+				
+			</div>
+			<div>
+				
+			</div>
+			<div>
+				
+			</div>
+		</div>
+	</div>
+	<div class="panel-body">
+		<form id="ppal"></form>
+	</div>
+</div>

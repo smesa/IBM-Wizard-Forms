@@ -35,3 +35,17 @@ body {
     margin-left: auto;
   }
 }
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.page-header {
+  margin: 20px 0 20px; 
+}
+
+.page-header {
+  padding-bottom: 15px;
+}

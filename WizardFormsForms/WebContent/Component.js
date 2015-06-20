@@ -92,6 +92,7 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		});		
 		
 		
+		// Formularios
 		var oModel = new myJSONModel;
 		
 		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
@@ -103,6 +104,7 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		oView.setModel(oModel,'forms');	
 		
 		
+		// Elementos
 		var oModel2 = new myJSONModel;
 		
 		oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/fields_data/fields/", function(oData){
@@ -114,6 +116,7 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		oView.setModel(oModel2,'fields');	
 		
 		
+		// Ordenes
 		var oParaOrders  = { "option" : "orders" };  
 		
 		var oModel3 = new myJSONModel;
@@ -126,7 +129,7 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		
 		oView.setModel(oModel3,'orders');	
 		
-		
+		// Paquetes
 		var oParaPackages  = { "option" : "packages" };  
 		
 		var oModel4 = new myJSONModel;
@@ -138,6 +141,17 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		},oParaPackages);
 		
 		oView.setModel(oModel4,'packages');	
+		
+		// Imagenes		
+		var oModel5 = new myJSONModel;
+		
+		oModel5.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/images_data/images", function(oData){
+			
+		},function(){
+			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
+		});
+		
+		oView.setModel(oModel5,'images');	
 		
 		
 		return oView;

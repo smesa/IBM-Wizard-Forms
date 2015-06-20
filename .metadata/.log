@@ -1058,3 +1058,6 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY com.sap.ide.ui5.app 1 0 2015-06-18 13:33:44.542
 !MESSAGE Started Server for URL: http://localhost:21223/WizardFormsForms/index.html
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-06-19 18:27:53.614
+!MESSAGE Started Server for URL: http://localhost:4882/WizardFormsMIME/index.html
