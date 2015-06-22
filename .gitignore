@@ -32,6 +32,9 @@ local.properties
 # SNAP
 .snap
 
+# XMI
+.xmi
+
 #################
 ## Visual Studio
 #################
