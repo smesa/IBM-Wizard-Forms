@@ -326,7 +326,7 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		                          new sap.ui.core.ListItem({text: "H6 - Texto Bold 12px",key:"H6"}),
 		                     ]
 		        }).bindProperty("value","StatusText"),
-				new sap.m.Label({ text:"Mostrar texto de cabecera", design: "Bold"	}),
+				/*new sap.m.Label({ text:"Mostrar texto de cabecera", design: "Bold"	}),
 				new sap.m.Switch({
 						state:"{forms>showtexthead}",
 						customTextOn:"Si", 
@@ -341,7 +341,7 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 						customTextOff:"No",
 						change: function(evt){
 					}
-				}),
+				}),*/
 		        new sap.m.Label({ text:"Mostrar títulos en secciones", design: "Bold"	}),
 				new sap.m.Switch({
 						state:"{forms>showtitlesection}",
@@ -362,14 +362,14 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		                          new sap.ui.core.ListItem({text: "H6 - Texto Bold 12px",key:"H6"}),
 		                     ]
 		        }).bindProperty("value","StatusText"),
-		        new sap.m.Label({ text:"Mostrar pie pagina", design: "Bold"	}),
+		        /*new sap.m.Label({ text:"Mostrar pie pagina", design: "Bold"	}),
 				new sap.m.Switch({
 						state:"{forms>showfooter}",
 						customTextOn:"Si", 
 						customTextOff:"No",
 						change: function(evt){
 					}
-				})				
+				})*/				
            	]
        	});
 		

@@ -50,14 +50,36 @@ angular.module('preview', ['ngRoute'])
 			$scope.data.colorhead = list.versions[0].colorhead;
 			$scope.data.colorbase = list.versions[0].colorbase;
 			$scope.data.colorsections = list.versions[0].colorsections;
+			$scope.data.showtitle = list.versions[0].showtitle;
+			$scope.data.sizetitlehead = list.versions[0].sizetitlehead;
+			$scope.data.showtitlesection = list.versions[0].showtitlesection;
+			$scope.data.sizetitlesections = list.versions[0].sizetitlesections;			
+			
+			// Se muestra titulo
+			if($scope.data.showtitle === true){				
+				var headerTitle	= $("#headerTitle");
+				var titleElem = '<' + $scope.data.sizetitlehead + '><span>' + $scope.data.formtitle + '</span></' + $scope.data.sizetitlehead + '>';
+				headerTitle.append(titleElem);				
+			}			
+			
+			// Color base
 			document.body.style.backgroundColor = list.versions[0].colorbase;
 			
 			
 			// Recorro las secciones
 			angular.forEach(list.versions[0].sections, function(section){				
 				
+				var titlesection = ""
+					
 				// Agrego la seccion al panel
-				var elmsection = '<div class="panel panel-default" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + $scope.data.colorsections + ';"><h3 class="panel-title">'+section.sectiontitle+'</h3></div><div class="panel-body" id="'+list.formid + section.sectionid+'"></div></div>';
+				if($scope.data.showtitlesection){
+					var titlesection = section.sectiontitle
+				}
+				
+				var elmsection = '<div class="panel panel-default" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + 
+					$scope.data.colorsections + ';"><'+$scope.data.sizetitlesections+' >'+titlesection+'</'+$scope.data.sizetitlesections+'></div><div class="panel-body" id="'+
+					list.formid + section.sectionid+'"></div></div>';
+				
   				panel.append(elmsection);
   				
   				
@@ -74,7 +96,7 @@ angular.module('preview', ['ngRoute'])
 	  			    		break;
 	  			    case '4':
 	  			    	section.sectioncolumn = 'col-md-3 col-sm-3'
-	  			    		break
+	  			    		break;
   				}
   				
   				
