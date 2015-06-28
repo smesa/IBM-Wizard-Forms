@@ -13,10 +13,11 @@ sap.ui.jsview("wizardformsfields.blank", {
 	* @memberOf wizardformsfields.blank
 	*/ 
 	createContent : function(oController) {
- 		return new sap.m.Page({
-			title: "Maestro de elementos para formulario",
-			content: []
-		});
+ 		return new sap.m.Image({
+			    	src: "images/sap_fiori.png",
+			    	width: "100%",
+			    	height: "100%"
+			    })
 	}
 
 });

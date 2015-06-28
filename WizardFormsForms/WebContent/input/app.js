@@ -1,23 +1,24 @@
-angular.module('preview', ['ngRoute'])
+angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
  
 
-.config(function($routeProvider) {
+.config(function($routeProvider, $datepickerProvider) {
   $routeProvider
     .when('/', {      
-      templateUrl:'views/preview.html',
+      templateUrl:'views/input.html',
       controller:'PreviewCtrl'
     })
     .when('/get/:formid/:verformid', {      
-      templateUrl:'views/preview.html',
-      controller:'PreviewCtrl'
-    })
-    .when('/getfull/:formid/:verformid', {      
-      templateUrl:'views/preview_full.html',
-      controller:'PreviewCtrl'
+      templateUrl:'views/input.html',
+      controller:'InputCtrl'
     })
     .otherwise({
       redirectTo:'/'
     });
+  
+  angular.extend($datepickerProvider.defaults, {
+	    dateFormat: 'dd/MM/yyyy',
+	    startWeek: 1
+  });
   
   // Calendario en español
   $.fn.datepicker.dates['ES'] = {
@@ -29,14 +30,16 @@ angular.module('preview', ['ngRoute'])
 		    today: "Hoy",
 		    clear: "Borrar"
 	};
+  
 })
 
-.controller('PreviewCtrl', function($scope, $routeParams, $http) {
+.controller('InputCtrl', function($scope, $routeParams, $http) {
 	
 	
 	var formid 			= $routeParams.formid;
 	var verformid		= $routeParams.verformid;
 	var panel 			= $("#ppal");
+	
 	
 	
 	$scope.openForm = function(){
@@ -65,6 +68,9 @@ angular.module('preview', ['ngRoute'])
 			$scope.data.sizetitlehead = list.versions[0].sizetitlehead;
 			$scope.data.showtitlesection = list.versions[0].showtitlesection;
 			$scope.data.sizetitlesections = list.versions[0].sizetitlesections;		
+			
+			
+			
 			
 			
 			// Se muestra titulo
@@ -169,8 +175,7 @@ angular.module('preview', ['ngRoute'])
 });
 
 function addInput(elmparent,field,formid,seccion){	
-	//var elm = ' <div class="form-group"><label for="'+formid+sectionid+field.fieldid+'">'+field.fieldtitle+'</label><input type="text" class="form-control" id="'+formid+sectionid+field.fieldid+'"placeholder="'+field.fieldplaceholder+'"></div>';
-	
+
 	var newDiv = document.createElement('div');
 	newDiv.className = 'form-group ' +seccion.sectioncolumn;
 
@@ -183,6 +188,7 @@ function addInput(elmparent,field,formid,seccion){
 	newInput.id   =  formid+seccion.sectionid+field.fieldid;
 	newInput.className  = 'form-control';
 	newInput.placeholder = field.fieldplaceholder;
+	newInput.required = true;
 
 	var text = "";
 	angular.forEach(field.values, function(value){
@@ -253,7 +259,10 @@ function addTime(elmparent,field,formid,seccion){
 	newLabel.innerHTML  = field.fieldtitle;	
 	
 	var divTime = document.createElement('div');
-	divTime.className = 'input-group clockpicker';
+	divTime.className = 'input-group clockpicker';	
+	divTime.setAttribute("data-placement","right");
+	divTime.setAttribute("data-align","top");
+	divTime.setAttribute("data-autoclose","true");
 	
 	var newInput = document.createElement('input');
 	newInput.type = 'text';
@@ -271,6 +280,16 @@ function addTime(elmparent,field,formid,seccion){
 	span.appendChild(span2);
 	divTime.appendChild(newInput);
 	divTime.appendChild(span);
+	
+	
+
+	var text = "";
+	angular.forEach(field.values, function(value){
+
+		text = text + ' ' + value.value;
+		newInput.value = text;
+
+	})
 
 	newDiv.appendChild(newLabel);
 	newDiv.appendChild(divTime);
@@ -284,7 +303,6 @@ function addTime(elmparent,field,formid,seccion){
 		autoclose: true
 	});
 }
-
 
 function addRadio(elmparent,field,formid,seccion){	
 
