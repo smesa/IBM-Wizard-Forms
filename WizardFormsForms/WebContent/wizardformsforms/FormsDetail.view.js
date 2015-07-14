@@ -20,12 +20,18 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 			width: "100%",
 			content:[
 		         	 new sap.m.Label({}),
-			         new sap.m.Label({text:"Código de formulario"}),
-			         new sap.m.Input({value:"{forms>formid} Versión N°. {forms>verformid} ",enabled:false}).addStyleClass("textRedBold"),
-			         new sap.m.Label({text:"Nombre de formulario"}),
+		         	 new sap.m.Label({text:"Nombre del formulario"}),
+			         new sap.m.Input({value:"{forms>formtecname}",enabled:false}).addStyleClass("textRedBold"),
+			         new sap.m.Label({text:"Versión"}),
+			         new sap.m.Input({value:"N°. {forms>verformid} ",enabled:false}).addStyleClass("textRedBold"),			         
+			         new sap.m.Label({text:"Titulo del formulario"}),
 			         new sap.m.Input({value:"{forms>formtitle}",enabled:true}),
 			         new sap.m.Label({text:"Descripción de versión"}),
 			         new sap.m.TextArea({value:"{forms>descpver}",enabled:true,cols:200,rows:3}),
+			         new sap.m.Label({text:"Instrucciones/Introducción"}),
+				     new sap.m.TextArea ({value:"{forms>formintroduction}",width: "100%",rows: 4, enabled:true,placeholder: "Ingrese una introducción o un texto de instrucciones para el formulario"}),
+					 new sap.m.Label({text:"Pie de pagina"}),
+					 	new sap.m.TextArea({value:"{forms>formfooter}",width: "100%",rows: 4, enabled:true, placeholder: "Ingrese un pie de pagina para el formulario"}),
 			         new sap.m.Label({text:"Versión modificada por"}),
 			         new sap.m.Input({value:"{forms>createuser}",enabled:false,}),
 			         new sap.m.Label({text:"Versión modificada el"}),
@@ -47,7 +53,8 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		}).addStyleClass("layPadding10");
 		
 		var oSectionsForm = new sap.ui.layout.VerticalLayout({
-			width: "100%"
+			width: "100%",
+			content: [ ]
 		}).addStyleClass("layPadding10");
 		
 		
@@ -550,6 +557,8 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		oTable.attachDelete(function(evt){
 			oController.deleteSection(evt)
 		});	
+		
+		
 		
 		oSectionsForm.addContent(new sap.m.Label({}));
 		oSectionsForm.addContent(oTable);

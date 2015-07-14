@@ -229,6 +229,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
   		var oParameters = {
            "formid" 			: data.formid,
            "formtitle" 		    : data.formtitle,
+           "formtecname"		: data.formtecname,
            "verformid"          : data.verformid,
            "descpver"			: data.descpver,
            "colorbase" 			: data.colorbase,
@@ -243,7 +244,9 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
            "sizetitlesections" 	: data.sizetitlesections,
            "showfooter" 		: data.showfooter,
            "logo" 				: data.logo,
-           "logoimg" 			: data.logoimg,           
+           "logoimg" 			: data.logoimg,  
+           "formintroduction"	: data.formintroduction,
+           "formfooter"			: data.formfooter,
            "sections" 			: jsonsection,
            "enhancement"		: jsonenha
  		};

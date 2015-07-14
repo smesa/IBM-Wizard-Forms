@@ -16,12 +16,15 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 	addValuesDialog: function(evt,obj){
 		
 		var that = this; 
-		var oTxtValue  = new sap.m.Input({ id: "oTxtValue", placeholder: "Ingresa un valor para el elemento" });  
+		var oLblValueExt  = new sap.m.Label({ text : "Código" });  
+		var oTxtValueExt  = new sap.m.Input({ id: "oTxtValueExt", placeholder: "Ingresa el código del valor" });  
+		var oLblValue     = new sap.m.Label({ text : "Descripción" }); 
+		var oTxtValue     = new sap.m.Input({ id: "oTxtValue", placeholder: "Ingresa la descripción del valor" });  
 		
 		// Formulario de valores
 		var oValueForm = new sap.ui.layout.VerticalLayout({
 			width: "100%",
-			content:[oTxtValue]
+			content:[oLblValueExt,oTxtValueExt,oLblValue, oTxtValue]
 		}).addStyleClass("layPadding10");			
 		
 		var dialog = new sap.m.Dialog({
@@ -53,11 +56,13 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 	addValue: function(evt,obj){
 		
 		var oText = sap.ui.getCore().byId("oTxtValue");
+		var oTextExt = sap.ui.getCore().byId("oTxtValueExt");	
 		var model = sap.ui.getCore().byId("app").getModel("data");
 		var data  = model.getData();
 			
 		data.push({
-			value: oText.getValue()					
+			value: oText.getValue(),
+			valueext: oTextExt.getValue()
 		})
 		
 		sap.ui.getCore().byId("app").getModel('data').setData(data);    	
@@ -170,6 +175,7 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 		if(data.length > 0){
 			var valuesJson = JSON.stringify(data);
 			valuesJson = valuesJson.replace(/"value":/g, 'value:');
+			valuesJson = valuesJson.replace(/"valueext":/g, 'valueext:');
 			oParameters.values = valuesJson
 		}		
 		

@@ -315,7 +315,7 @@ function addRadio(elmparent,field,formid,seccion){
 		var option = document.createElement("input");
 		option.type = "radio";
 		option.name = formid+seccion.sectionid+field.fieldid;
-		option.value = value.value;
+		option.value = value.valueext;
 		option.setAttribute('autocomplete','off');
 
 

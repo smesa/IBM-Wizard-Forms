@@ -1851,3 +1851,300 @@ org.eclipse.core.internal.resources.ResourceException: Resource '/WizardFormsFor
 
 !ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-06-27 22:18:26.244
 !MESSAGE Stopped Server
+!SESSION 2015-06-30 10:56:25.937 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_CO
+Framework arguments:  -product org.eclipse.epp.package.standard.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.standard.product
+
+!ENTRY org.eclipse.emf.ecore 2 0 2015-06-30 10:56:38.022
+!MESSAGE Both 'com.sap.adt.datapreview.core.model' and 'com.sap.adt.datapreview.core.model' register an extension parser for 'model'
+
+!ENTRY com.sap.ide.ui5.services 1 1 2015-06-30 10:56:49.316
+!MESSAGE Internal Info
+   Plugin Name: SAPUI5 Services
+   Plugin ID  : com.sap.ide.ui5.services
+   Class      : com.sap.ide.ui5.services.preferences.UI5LibrariesRegistry
+   Method     : getBundleNamesUI5CoreLibs
+   Message    : found UI libraries null
+   Exception  : 
+
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-06-30 10:56:49.684
+!MESSAGE Started Server for URL: http://localhost:57782/WizardFormsMIME/index.html
+
+!ENTRY org.eclipse.egit.ui 2 0 2015-06-30 10:57:24.269
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Sergio'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-06-30 12:37:48.601
+!MESSAGE Started Server for URL: http://localhost:60784/WizardFormsForms/input/index.html
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-06-30 12:50:54.666
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-06-30 12:51:02.327
+!MESSAGE Started Server for URL: http://localhost:61141/WizardFormsForms/index.html
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-06-30 12:51:10.586
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-06-30 12:51:12.249
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-06-30 12:51:19.704
+!MESSAGE Started Server for URL: http://localhost:61156/WizardFormsForms/input/index.html
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-06-30 17:38:31.038
+!MESSAGE Started Server for URL: http://localhost:25428/WizardFormsForms/index.html
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-06-30 18:11:08.353
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-06-30 18:11:08.711
+!MESSAGE Stopped Server
+!SESSION 2015-07-01 09:23:38.489 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_CO
+Framework arguments:  -product org.eclipse.epp.package.standard.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.standard.product
+
+!ENTRY org.eclipse.emf.ecore 2 0 2015-07-01 09:23:42.403
+!MESSAGE Both 'com.sap.adt.datapreview.core.model' and 'com.sap.adt.datapreview.core.model' register an extension parser for 'model'
+
+!ENTRY com.sap.ide.ui5.services 1 1 2015-07-01 09:24:05.436
+!MESSAGE Internal Info
+   Plugin Name: SAPUI5 Services
+   Plugin ID  : com.sap.ide.ui5.services
+   Class      : com.sap.ide.ui5.services.preferences.UI5LibrariesRegistry
+   Method     : getBundleNamesUI5CoreLibs
+   Message    : found UI libraries null
+   Exception  : 
+
+
+!ENTRY org.eclipse.egit.ui 2 0 2015-07-01 09:24:15.333
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Sergio'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.jface 2 0 2015-07-01 09:24:15.907
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2015-07-01 09:24:15.907
+!MESSAGE A conflict occurred for ALT+SHIFT+C:
+Binding(ALT+SHIFT+C,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.modify.method.parameters,Change Method Signature,
+		Change method signature includes parameter names and parameter order,
+		Category(org.eclipse.jdt.ui.category.refactoring,Refactor - Java,Java Refactoring Actions,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@53785d1a,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+C,
+	ParameterizedCommand(Command(com.sap.adt.tools.abapsource.ui.compareWithLastUsedProject,Comparar con el último proyecto utilizado,
+		,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@75d454a4,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.sap.adt.tools.core.ui.abap,,,system)
+Binding(ALT+SHIFT+C,
+	ParameterizedCommand(Command(org.eclipse.wst.jsdt.ui.edit.text.java.modify.method.parameters,Change Function Signature,
+		Change function signature includes parameter names and parameter order,
+		Category(org.eclipse.wst.jsdt.ui.category.refactoring,Refactor - JavaScript,JavaScript Refactoring Actions,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@42cf08a1,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.wst.jsdt.ui.javascriptViewScope,,,system)
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-07-01 10:38:43.088
+!MESSAGE Started Server for URL: http://localhost:36868/WizardFormsForms/input/index.html
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-07-01 10:38:52.973
+!MESSAGE Started Server for URL: http://localhost:36875/WizardFormsForms/index.html
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-07-01 10:39:21.659
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-07-02 20:12:06.958
+!MESSAGE Stopped Server
+!SESSION 2015-07-06 09:56:20.216 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_CO
+Framework arguments:  -product org.eclipse.epp.package.standard.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.standard.product
+
+!ENTRY org.eclipse.emf.ecore 2 0 2015-07-06 09:56:23.768
+!MESSAGE Both 'com.sap.adt.datapreview.core.model' and 'com.sap.adt.datapreview.core.model' register an extension parser for 'model'
+
+!ENTRY com.sap.ide.ui5.services 1 1 2015-07-06 09:56:46.864
+!MESSAGE Internal Info
+   Plugin Name: SAPUI5 Services
+   Plugin ID  : com.sap.ide.ui5.services
+   Class      : com.sap.ide.ui5.services.preferences.UI5LibrariesRegistry
+   Method     : getBundleNamesUI5CoreLibs
+   Message    : found UI libraries null
+   Exception  : 
+
+
+!ENTRY org.eclipse.egit.ui 2 0 2015-07-06 09:56:57.617
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Sergio'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.jface 2 0 2015-07-06 09:56:58.788
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2015-07-06 09:56:58.788
+!MESSAGE A conflict occurred for ALT+SHIFT+C:
+Binding(ALT+SHIFT+C,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.modify.method.parameters,Change Method Signature,
+		Change method signature includes parameter names and parameter order,
+		Category(org.eclipse.jdt.ui.category.refactoring,Refactor - Java,Java Refactoring Actions,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@3f96ef2,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+C,
+	ParameterizedCommand(Command(com.sap.adt.tools.abapsource.ui.compareWithLastUsedProject,Comparar con el último proyecto utilizado,
+		,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@12039ae0,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.sap.adt.tools.core.ui.abap,,,system)
+Binding(ALT+SHIFT+C,
+	ParameterizedCommand(Command(org.eclipse.wst.jsdt.ui.edit.text.java.modify.method.parameters,Change Function Signature,
+		Change function signature includes parameter names and parameter order,
+		Category(org.eclipse.wst.jsdt.ui.category.refactoring,Refactor - JavaScript,JavaScript Refactoring Actions,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@1fb320de,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.wst.jsdt.ui.javascriptViewScope,,,system)
+!SESSION 2015-07-08 13:00:40.477 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_CO
+Framework arguments:  -product org.eclipse.epp.package.standard.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.standard.product
+
+!ENTRY org.eclipse.emf.ecore 2 0 2015-07-08 13:00:43.768
+!MESSAGE Both 'com.sap.adt.datapreview.core.model' and 'com.sap.adt.datapreview.core.model' register an extension parser for 'model'
+
+!ENTRY com.sap.ide.ui5.services 1 1 2015-07-08 13:01:13.500
+!MESSAGE Internal Info
+   Plugin Name: SAPUI5 Services
+   Plugin ID  : com.sap.ide.ui5.services
+   Class      : com.sap.ide.ui5.services.preferences.UI5LibrariesRegistry
+   Method     : getBundleNamesUI5CoreLibs
+   Message    : found UI libraries null
+   Exception  : 
+
+
+!ENTRY org.eclipse.egit.ui 2 0 2015-07-08 13:01:21.077
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Sergio'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.jface 2 0 2015-07-08 13:01:21.898
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2015-07-08 13:01:21.898
+!MESSAGE A conflict occurred for ALT+SHIFT+C:
+Binding(ALT+SHIFT+C,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.modify.method.parameters,Change Method Signature,
+		Change method signature includes parameter names and parameter order,
+		Category(org.eclipse.jdt.ui.category.refactoring,Refactor - Java,Java Refactoring Actions,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@404bca88,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+C,
+	ParameterizedCommand(Command(com.sap.adt.tools.abapsource.ui.compareWithLastUsedProject,Comparar con el último proyecto utilizado,
+		,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@509cf379,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.sap.adt.tools.core.ui.abap,,,system)
+Binding(ALT+SHIFT+C,
+	ParameterizedCommand(Command(org.eclipse.wst.jsdt.ui.edit.text.java.modify.method.parameters,Change Function Signature,
+		Change function signature includes parameter names and parameter order,
+		Category(org.eclipse.wst.jsdt.ui.category.refactoring,Refactor - JavaScript,JavaScript Refactoring Actions,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@4f517209,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.wst.jsdt.ui.javascriptViewScope,,,system)
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-07-08 13:02:02.924
+!MESSAGE Started Server for URL: http://localhost:53825/WizardFormsForms/index.html
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-07-08 13:42:53.254
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-07-08 13:43:26.984
+!MESSAGE Started Server for URL: http://localhost:39750/WizardFormsFields/index.html
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-07-08 16:29:28.215
+!MESSAGE Started Server for URL: http://localhost:3382/WizardFormsForms/index.html
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-07-08 16:30:10.615
+!MESSAGE Started Server for URL: http://localhost:3405/WizardFormsForms/preview/index.html
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-07-09 15:41:24.510
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-07-09 15:41:24.906
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-07-09 15:41:25.093
+!MESSAGE Stopped Server
+
+!ENTRY com.sap.ide.ui5.app 1 0 2015-07-09 15:41:32.537
+!MESSAGE Started Server for URL: http://localhost:60442/WizardFormsForms/index.html
+
+!ENTRY com.sap.ide.ui5.app.plugin 1 0 2015-07-10 15:06:04.829
+!MESSAGE Stopped Server
+!SESSION 2015-07-12 20:53:44.177 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_CO
+Framework arguments:  -product org.eclipse.epp.package.standard.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.standard.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-07-12 20:53:46.704
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.emf.ecore 2 0 2015-07-12 20:53:47.066
+!MESSAGE Both 'com.sap.adt.datapreview.core.model' and 'com.sap.adt.datapreview.core.model' register an extension parser for 'model'
+
+!ENTRY com.sap.ide.ui5.services 1 1 2015-07-12 20:55:22.184
+!MESSAGE Internal Info
+   Plugin Name: SAPUI5 Services
+   Plugin ID  : com.sap.ide.ui5.services
+   Class      : com.sap.ide.ui5.services.preferences.UI5LibrariesRegistry
+   Method     : getBundleNamesUI5CoreLibs
+   Message    : found UI libraries null
+   Exception  : 
+
+
+!ENTRY org.eclipse.egit.ui 2 0 2015-07-12 20:55:47.337
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Sergio'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.

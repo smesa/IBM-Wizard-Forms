@@ -32,9 +32,9 @@ sap.ui.jsview("wizardformsforms.FormsMaster", {
 				],
 				contentRight:[
 						new sap.m.Button({
-							icon : "sap-icon://add",
+							icon : "sap-icon://drop-down-list",
 							press: function(evt){
-								ibm.wizardforms.forms.common.addNewPress(evt,oController);
+								oController.handleResponsivePopoverPress(evt)
 							}
 						}),
 				]

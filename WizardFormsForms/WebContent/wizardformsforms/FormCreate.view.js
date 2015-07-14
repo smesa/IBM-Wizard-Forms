@@ -98,9 +98,18 @@ sap.ui.jsview("wizardformsforms.FormCreate", {
 			         oInputOrders,
 			         new sap.m.Label({text:"Nombre de formulario"}),
 			         new sap.m.Input({
+			        	 id:"formTecName",
+			        	 enabled:true, 
+			        	 placeholder:"Ingrese un nombre técnico para el formulario",
+			        	 liveChange: function(evt){
+			        		 oController.validateRequiredField(evt)
+			        	 }
+	        		 }),
+	        		 new sap.m.Label({text:"Titulo del formulario"}),
+	        		 new sap.m.Input({
 			        	 id:"formTitleNew",
 			        	 enabled:true, 
-			        	 placeholder:"Ingrese el nombre del formulario",
+			        	 placeholder:"Ingrese el titulo para el formulario",
 			        	 liveChange: function(evt){
 			        		 oController.validateRequiredField(evt)
 			        	 }

@@ -2,21 +2,23 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="form-group " key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="getData"/>
+			<item value="oSectionsForm"/>
+			<item value="required = true"/>
+			<item value="required"/>
 			<item value="form-group col-md-"/>
 			<item value="col-sm-"/>
 			<item value="col-xs"/>
 			<item value="col-md"/>
-			<item value="byId"/>
-			<item value="console"/>
-			<item value="for"/>
 		</list>
 		<list key="replacehistory">
+			<item value="required = false"/>
 			<item value="form-group "/>
 			<item value="col-md-"/>
 			<item value="col-sm"/>

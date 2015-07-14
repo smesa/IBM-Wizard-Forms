@@ -26,12 +26,16 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 	addValuesDialog: function(evt){
 		
 		var that = this; 
-		var oTxtValue  = new sap.m.Input({ id: "oTxtValue", placeholder: "Ingresa un valor para el elemento" });  
+		var oLblValueExt  = new sap.m.Label({ text : "Código" });  
+		var oTxtValueExt  = new sap.m.Input({ id: "oTxtValueExt", placeholder: "Ingresa el código del valor" });  
+		var oLblValue     = new sap.m.Label({ text : "Descripción" }); 
+		var oTxtValue     = new sap.m.Input({ id: "oTxtValue", placeholder: "Ingresa la descripción del valor" });  
+		
 		
 		// Formulario de valores
 		var oValueForm = new sap.ui.layout.VerticalLayout({
 			width: "100%",
-			content:[oTxtValue]
+			content:[oLblValueExt,oTxtValueExt,oLblValue, oTxtValue ]
 		}).addStyleClass("layPadding10");			
 		
 		var dialog = new sap.m.Dialog({
@@ -111,13 +115,15 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 	
 	addValue: function(evt){
 		
-		var oText = sap.ui.getCore().byId("oTxtValue");			
+		var oText = sap.ui.getCore().byId("oTxtValue");	
+		var oTextExt = sap.ui.getCore().byId("oTxtValueExt");	
 		var model = sap.ui.getCore().byId("app").getModel("fields").getContext('/' + this.fieldIndex + '/values/');		
 		var path  = evt.getSource().getBindingContext('fields').getPath();			
 		var data  = model.getProperty(path);
 			
 		data.values.push({
-			value: oText.getValue()					
+			value: oText.getValue(),
+			valueext: oTextExt.getValue()
 		})
 		
 		var fields = sap.ui.getCore().byId("app").getModel("fields").getData();		
@@ -190,6 +196,7 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 			// Obtengo datos del modelo de valores // dataVal	
 			var valuesJson = JSON.stringify(dataVal.values);
 			valuesJson = valuesJson.replace(/"value":/g, 'value:');
+			valuesJson = valuesJson.replace(/"valueext":/g, 'valueext:');
 			oParameters.values = valuesJson
 		}	
 		

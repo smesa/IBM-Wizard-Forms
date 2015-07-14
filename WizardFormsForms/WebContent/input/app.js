@@ -42,16 +42,11 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 	
 	
 	
-	$scope.openForm = function(){
-		var uri = window.location.href.replace(/get/g, 'getfull');		
-		window.open(uri,'_blank');
+	$scope.submit = function(){
+		console.log('Ya envio')
 	}
+
 	
-	$scope.closeForm = function(){
-		window.open('','_self').close();
-	}
-	
-	//$scope.data = [];	
 	
 	var sURL  = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms?formid=' + formid + '&verformid=' + verformid;
 		
@@ -188,7 +183,7 @@ function addInput(elmparent,field,formid,seccion){
 	newInput.id   =  formid+seccion.sectionid+field.fieldid;
 	newInput.className  = 'form-control';
 	newInput.placeholder = field.fieldplaceholder;
-	newInput.required = true;
+	newInput.required = false;
 
 	var text = "";
 	angular.forEach(field.values, function(value){
@@ -222,7 +217,7 @@ function addDate(elmparent,field,formid,seccion){
 	newInput.id   =  formid+seccion.sectionid+field.fieldid;
 	newInput.className  = 'form-control';
 	newInput.placeholder = field.fieldplaceholder;
-	newInput.required = true;
+	newInput.required = false;
 	
 	var span = document.createElement('span');
 	span.className = 'input-group-addon';
@@ -246,7 +241,8 @@ function addDate(elmparent,field,formid,seccion){
 		todayHighlight: true,
 		enableOnReadonly: true,
 		format: "dd/mm/yyyy",
-		keyboardNavigation: false
+		keyboardNavigation: false,
+		autoclose: true
 	});
 }
 
@@ -269,7 +265,7 @@ function addTime(elmparent,field,formid,seccion){
 	newInput.id   =  formid+seccion.sectionid+field.fieldid;
 	newInput.className  = 'form-control';
 	newInput.placeholder = field.fieldplaceholder;
-	newInput.required = true;
+	newInput.required = false;
 	
 	var span = document.createElement('span');
 	span.className = 'input-group-addon';

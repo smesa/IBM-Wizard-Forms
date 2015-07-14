@@ -79,7 +79,7 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 		var oTemplate = new sap.m.ColumnListItem({
 			cells: [
 			        new sap.m.Text({
-			        	text: "{data>value}",
+			        	text: "{data>valueExt} - {data>value}",
 			        })
 	        ]
 		});

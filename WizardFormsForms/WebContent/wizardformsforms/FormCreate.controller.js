@@ -21,12 +21,14 @@ sap.ui.controller("wizardformsforms.FormCreate", {
   		var formtitle    = sap.ui.getCore().byId("formTitleNew").getValue();
   		var devclass     = sap.ui.getCore().byId("formPackageNew").getValue();
   		var trkorr       = sap.ui.getCore().byId("formOrderNew").getValue();
+  		var formTecName  = sap.ui.getCore().byId("formTecName").getValue();
   		var actLength    = data.length;
   		
   		var oParameters = {
- 	           "formtitle" : formtitle,
- 	           "devclass"  : devclass,
- 	           "trkorr"	   : trkorr
+ 	           "formtitle" 		: formtitle,
+ 	           "devclass"  		: devclass,
+ 	           "trkorr"	   		: trkorr,
+ 	           "formTecName"	: formTecName,
  		};
   		
   		var dialog = new sap.m.Dialog({
@@ -55,6 +57,7 @@ sap.ui.controller("wizardformsforms.FormCreate", {
 			    	  		sap.ui.getCore().byId("formTitleNew").setValue("");
 			    	  		sap.ui.getCore().byId("formPackageNew").setValue("");
 			    	  		sap.ui.getCore().byId("formOrderNew").setValue("");
+			    	  		sap.ui.getCore().byId("formTecName").setValue("");
 			    	  		
 
 		    				
@@ -182,13 +185,17 @@ sap.ui.controller("wizardformsforms.FormCreate", {
 	
 	validateRequiredField: function(evt){
 		
-	    var view = sap.ui.getCore();
+	    var view  = sap.ui.getCore();
+	    var modelForm = view.byId("app").getModel("forms").getContext('/').oModel.oData;	
+	    var modelPack = view.byId("app").getModel("packages").getContext('/').oModel.oData;	
+	    var modelOrde = view.byId("app").getModel("orders").getContext('/').oModel.oData;	
 	    
 	    // Armo el array de campos
 	    var inputs = [
 	      view.byId("formPackageNew"),
 	      view.byId("formOrderNew"),
 	      view.byId("formTitleNew"),
+	      view.byId("formTecName"),
 	    ];
 	    
 	    // Recorro cada campo para validar
@@ -200,6 +207,38 @@ sap.ui.controller("wizardformsforms.FormCreate", {
 	        else{
 	        	input.setValueState("None");
 	        }
+	        
+	        
+	        if(input.sId == "formTecName"){
+	        	jQuery.each(modelForm, function (j, data) {
+	        		if(data.formtecname === input.getValue()){
+	        		  input.setValueState("Error");
+	      	          input.setValueStateText("El nombre del formulario ya ha sido usado");
+	        		}
+	        	})
+	        }
+	        
+	        if(input.sId == "formPackageNew"){
+	        	input.setValueState("Error");
+    	        input.setValueStateText("Paquete invalido o inexistente");
+	        	jQuery.each(modelPack, function (j, data) {
+	        		if(data.devclass === input.getValue()){
+	        		  input.setValueState("None");
+	        		}
+	        	})
+	        }
+	        
+	        if(input.sId == "formOrderNew"){
+	        	input.setValueState("Error");
+    	        input.setValueStateText("Orden invalida o inexistente");
+	        	jQuery.each(modelOrde, function (j, data) {
+	        		if(data.trkorr === input.getValue()){
+	        			input.setValueState("None");
+	        		}
+	        	})
+	        }
+	        
+	        
 	    });
 	    
 	    // Valido si algun campo tiene error
