@@ -101,7 +101,8 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 						path: "fields>/",
 						template: new sap.m.StandardListItem({
 							icon:"{fields>fieldicon}",
-							title:"{fields>fieldtitle}",
+							title:"{fields>fieldtecname}",
+							description: "{fields>fieldtitle}"
 						})					
 					})
 					

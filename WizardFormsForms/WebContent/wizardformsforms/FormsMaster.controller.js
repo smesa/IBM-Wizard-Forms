@@ -80,6 +80,13 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 	    		    		that.duplicateForm(evt)
 	    		    	}
 	    		    }),
+	    		    new sap.m.Button({
+	    		    	text: "Crear orden de transporte",
+	    		    	icon: "sap-icon://bus-public-transport",
+	    		    	press:function(evt){
+	    		    		that.createTransport(evt)
+	    		    	}
+	    		    }),
 	    		]
 	    	})
 	    	
@@ -244,70 +251,113 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 	      view.byId("formDest"),
 	    ];
 	    
-	    // Recorro cada campo para validar
-	    jQuery.each(inputs, function (i, input) {
-	        if (!input.getValue()) {
-	          input.setValueState("Error");
-	          input.setValueStateText("Campo obligatorio");
-	        }
-	        else{
-	        	input.setValueState("None");
-	        }
-	        
-	        
-	        if(input.sId == "formDest"){
-	        	jQuery.each(modelForm, function (j, data) {
-	        		if(data.formtecname === input.getValue()){
-	        		  input.setValueState("Error");
-	      	          input.setValueStateText("El nombre del formulario ya ha sido usado");
-	        		}
-	        	})
-	        }	 
-	        
-	        if(input.sId == "formOri"){
-	        	input.setValueState("Error");
-    	        input.setValueStateText("Formulario invalido o inexistente");
-	        	jQuery.each(modelForm, function (j, data) {
-	        		if(data.formtecname === input.getValue()){
-	        		  input.setValueState("None");
-	        		}
-	        	})
-	        }	
-	        
-	        
-	        if(input.sId == "formPackageNewDup"){
-	        	input.setValueState("Error");
-    	        input.setValueStateText("Paquete invalido o inexistente");
-	        	jQuery.each(modelPack, function (j, data) {
-	        		if(data.devclass === input.getValue()){
-	        		  input.setValueState("None");
-	        		}
-	        	})
-	        }
-	        
-	        if(input.sId == "formOrderNewDup"){
-	        	input.setValueState("Error");
-    	        input.setValueStateText("Orden invalida o inexistente");
-	        	jQuery.each(modelOrde, function (j, data) {
-	        		if(data.trkorr === input.getValue()){
-	        			input.setValueState("None");
-	        		}
-	        	})
-	        }
-	        
-	        
-	    });
+	    // Armo el array de campos
+	    var inputsOT = [
+	      view.byId("otDesc")
+	    ];
 	    
-	    // Valido si algun campo tiene error
-	    var canContinue = true;
-	    jQuery.each(inputs, function (i, input) {
-	      if ("Error" === input.getValueState()) {
-	        canContinue = false;
-	        return false;
-	      }
-	    });
+	    
+	    // Recorro cada campo para validar
+	    
+	    if(inputsOT.length){
+		    jQuery.each(inputsOT, function (i, input) {
+		    	if(input){
+		    	    if (!input.getValue()) {
+		    	    	input.setValueState("Error");
+		    	    	input.setValueStateText("Campo obligatorio");
+			        }
+			        else{
+			        	input.setValueState("None");
+			        }
+		    	    
+					// Valido si algun campo tiene error
+				    var canContinueOT = true;
+				    jQuery.each(inputsOT, function (i, input) {
+				      if ("Error" === input.getValueState()) {
+				    	  canContinueOT = false;
+				        return false;
+				      }
+				    });
+				    
+				    view.byId("btnSaveNewOT").setEnabled(canContinueOT);
+		    	    
+		    	}
+		    });
+		    
+	  
+		};	
+		
+	    // Recorro cada campo para validar
+		if(inputs.length){
+		    jQuery.each(inputs, function (i, input) {
+		    	if(input){
+		    	
+			        if (!input.getValue()) {
+			          input.setValueState("Error");
+			          input.setValueStateText("Campo obligatorio");
+			        }
+			        else{
+			        	input.setValueState("None");
+			        }
+			        
+			        
+			        if(input.sId == "formDest"){
+			        	jQuery.each(modelForm, function (j, data) {
+			        		if(data.formtecname === input.getValue()){
+			        		  input.setValueState("Error");
+			      	          input.setValueStateText("El nombre del formulario ya ha sido usado");
+			        		}
+			        	})
+			        }	 
+			        
+			        if(input.sId == "formOri"){
+			        	input.setValueState("Error");
+		    	        input.setValueStateText("Formulario invalido o inexistente");
+			        	jQuery.each(modelForm, function (j, data) {
+			        		if(data.formtecname === input.getValue()){
+			        		  input.setValueState("None");
+			        		}
+			        	})
+			        }	
+			        
+			        
+			        if(input.sId == "formPackageNewDup"){
+			        	input.setValueState("Error");
+		    	        input.setValueStateText("Paquete invalido o inexistente");
+			        	jQuery.each(modelPack, function (j, data) {
+			        		if(data.devclass === input.getValue()){
+			        		  input.setValueState("None");
+			        		}
+			        	})
+			        }
+			        
+			        if(input.sId == "formOrderNewDup"){
+			        	input.setValueState("Error");
+		    	        input.setValueStateText("Orden invalida o inexistente");
+			        	jQuery.each(modelOrde, function (j, data) {
+			        		if(data.trkorr === input.getValue()){
+			        			input.setValueState("None");
+			        		}
+			        	})
+			        }
+			        
+				    // Valido si algun campo tiene error
+				    var canContinue = true;
+				    jQuery.each(inputs, function (i, input) {
+				      if ("Error" === input.getValueState()) {
+				        canContinue = false;
+				        return false;
+				      }
+				    });
 
-	    view.byId("btnSaveNewDup").setEnabled(canContinue);	    
+				    view.byId("btnSaveNewDup").setEnabled(canContinue);	 	
+		        
+		    	}
+		        
+		    });	    
+   
+		}
+
 	},
 	
 	getPackages: function(evt){
@@ -459,6 +509,92 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 	    this.getView().addDependent(dialog);
 	    dialog.open();
 
+	},
+	
+	createTransport: function(evt){
+		
+		var that 	= this;
+	    var oModel  = new myJSONModel;
+
+		// Formularios
+		that.oInfoDuplicate = new sap.ui.layout.VerticalLayout({			
+			width: "100%",
+			//placeholder: "Crear orden de tranporte",
+			content:[
+		         	new sap.m.Label({ text : "Descripción de la orden" }),
+		         	new sap.m.Input({
+		         		id:"otDesc",
+		         		placeholder:"Ingrese una descripción para la orden",
+		         		liveChange: function(evt){
+		         			that.validateRequiredField(evt)
+		         		}
+		         	})
+			]
+		}).addStyleClass("layPadding10");
+		
+		
+		var dialog = new sap.m.Dialog({
+		      title: 'Crear orden de transporte',
+		      verticalScrolling: true,
+			  contentWidth: "500px",
+		      content:[that.oInfoDuplicate],
+		      beginButton: new sap.m.Button({
+		    	  id: "btnSaveNewOT",
+		          text: 'Crear',
+		          enabled: false,
+		          press: function (evt) {	
+		        	  
+		        	  
+		      		var oParameters = {
+		 	 	           "text" 		: sap.ui.getCore().byId("otDesc").getValue(),
+	 	 	               "option"		: 'create-ot',
+		      		};
+		        	  
+		        	// Llamo el metodo POST para crear los datos
+			    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+			    			
+			    			sap.m.MessageToast.show('Orden creada exitosamente');
+			    			
+			    			
+			    			// Ordenes
+			    			var oParaOrders  = { "option" : "orders" };  
+			    			
+			    			var oModel2 = new myJSONModel;
+			    			
+			    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+			    				
+		    					sap.ui.getCore().byId("app").getModel('orders').setData(oData);
+			    				
+				    			var model = sap.ui.getCore().byId("app").getModel("orders").getContext('/');	
+				    			
+				    			// Limpio los campos
+				    	  		sap.ui.getCore().byId("otDesc").setValue("");   
+			    				
+			    			},function(){
+			    				sap.ui.commons.MessageBox.alert(arguments[0].statusText);
+			    			},oParaOrders);
+			    			
+			    			  			
+
+			    			
+			    		},function(){
+			    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
+			    		},oParameters, true,'POST');
+		            dialog.close();
+		          }
+		        }),
+		        endButton: new sap.m.Button({
+		          text: 'Cerrar',
+				  type: "Reject",
+		          press: function () {
+		            dialog.close();
+		          }
+		        }),
+		        afterClose: function() {
+		          dialog.destroy();
+		        }
+		    });
+		    dialog.open();		
 	},
 
 });

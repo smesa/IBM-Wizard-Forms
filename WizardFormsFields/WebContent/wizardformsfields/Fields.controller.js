@@ -49,7 +49,7 @@ sap.ui.controller("wizardformsfields.Fields", {
 			path: "fields>/",
 			template: new sap.m.StandardListItem({
 				icon:"{fields>fieldicon}",
-				title:"{fields>fieldid}",
+				title:"{fields>fieldtecname}",
 				description:"{fields>fieldtitle}",
 				type: sap.m.ListType.Navigation,
 				press: function(evt){

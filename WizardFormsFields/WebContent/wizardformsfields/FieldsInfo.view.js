@@ -8,6 +8,10 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 		
 		// Nombre de elemento
 		var oLblblnk  = new sap.m.Label({ text : " " });  
+		
+		var oLblTecName = new sap.m.Label({ text : "Nombre técnico del elemento" });  
+		var oTxtTecName = new sap.m.Input({id:"fieldtecname" , value:"{fields>fieldtecname}", enabled: false}).addStyleClass("textRedBold");  
+		
 		var oLblTitle = new sap.m.Label({ text : "Nombre del elemento" });  
 		var oTxtTitle = new sap.m.Input({ id   : "fieldtitle", value:"{fields>fieldtitle}" });  
 		
@@ -36,7 +40,7 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 		// Formulario
 		var oInfoForm = new sap.ui.layout.VerticalLayout({
 			width: "100%",
-			content:[oLblblnk, oLblTitle,oTxtTitle,oLblPlace,oTxtPlace,oLblType,oCmbType]
+			content:[oLblblnk, oLblTecName,oTxtTecName, oLblTitle,oTxtTitle,oLblPlace,oTxtPlace,oLblType,oCmbType]
 		});		
 		
 		oInfoForm.addStyleClass("layPadding10");

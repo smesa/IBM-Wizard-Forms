@@ -333,22 +333,6 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		                          new sap.ui.core.ListItem({text: "H6 - Texto Bold 12px",key:"H6"}),
 		                     ]
 		        }).bindProperty("value","StatusText"),
-				/*new sap.m.Label({ text:"Mostrar texto de cabecera", design: "Bold"	}),
-				new sap.m.Switch({
-						state:"{forms>showtexthead}",
-						customTextOn:"Si", 
-						customTextOff:"No",
-						change: function(evt){
-					}
-				}),
-		        new sap.m.Label({ text:"Mostrar texto de cabecera como observación", design: "Bold"	}),
-				new sap.m.Switch({
-						state:"{forms>showtextheadobj}",
-						customTextOn:"Si", 
-						customTextOff:"No",
-						change: function(evt){
-					}
-				}),*/
 		        new sap.m.Label({ text:"Mostrar títulos en secciones", design: "Bold"	}),
 				new sap.m.Switch({
 						state:"{forms>showtitlesection}",
@@ -368,15 +352,7 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		                          new sap.ui.core.ListItem({text: "H5 - Texto Bold 14px",key:"H5"}),
 		                          new sap.ui.core.ListItem({text: "H6 - Texto Bold 12px",key:"H6"}),
 		                     ]
-		        }).bindProperty("value","StatusText"),
-		        /*new sap.m.Label({ text:"Mostrar pie pagina", design: "Bold"	}),
-				new sap.m.Switch({
-						state:"{forms>showfooter}",
-						customTextOn:"Si", 
-						customTextOff:"No",
-						change: function(evt){
-					}
-				})*/				
+		        }).bindProperty("value","StatusText"),				
            	]
        	});
 		
@@ -490,12 +466,22 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 	        content:[ oCustomForm ]
 		});	
 		
+		
+		var oItemBarRulesForm = new sap.m.IconTabFilter({
+	        text: "Reglas",
+	        icon:"sap-icon://chalkboard",
+	        width: "100%",
+	        key: "rules",	        
+	        content:[ ]
+		});	
+		
 		oItemBarPreviewForm.removeAllContent()
 		
 		oIconTab.addItem(oItemBarInfoForm);	
 		oIconTab.addItem(oItemBarSectionsForm);	
 		oIconTab.addItem(oItemBarEnhaForm);	
 		oIconTab.addItem(oItemBarCustomForm);	
+		oIconTab.addItem(oItemBarRulesForm);	
 		oIconTab.addItem(oItemBarPreviewForm);	
 		
 		
@@ -621,6 +607,71 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		
 		
 		oItemBarEnhaForm.addContent(oTableEhn);
+		
+		
+		// Reglas	
+		
+		var oTableRules = new sap.m.Table({
+			id: "oTableRules",
+			inset: false,
+			columns: [
+			          //Value
+			          new sap.m.Column({
+			        	  halign: "left",
+			        	  width: "100px",
+			        	  demandPopin: true,
+			        	  popinDisplay: "Block",
+			        	  minScreenWidth: sap.m.ScreenSize.Medium
+			          })
+	        ]
+		});		
+		
+		var oTemplateRules = new sap.m.ColumnListItem({
+			type: sap.m.ListType.Active ,
+			cells: [
+			        new sap.m.ObjectIdentifier({
+			        	title: "{forms>sectiontitle}"
+			        }),
+			        
+			]
+		});
+		
+		var oHeaderRules = new sap.m.Toolbar({
+			content : [ 
+	            new sap.m.Label({
+	            	text : "Reglas para derivación de valores"
+	            }), 
+	            new sap.m.ToolbarSpacer({}), 
+	            new sap.m.Button({
+	            	icon : "sap-icon://add",
+	            	press: function(evt){
+	            		//oController.addSection(evt)
+	            	}
+	            })
+            ]
+		});
+		
+		oTableRules.setHeaderToolbar(oHeaderRules);	
+		
+		oTableRules.setMode(sap.m.ListMode.Delete); // delete mode  	
+
+		oTableRules.bindAggregation("items","forms>sections",oTemplateRules);
+				
+		oTableRules.attachItemPress(function(evt){
+			oController.sectionPress(evt)
+		})
+		
+		oTableRules.attachDelete(function(evt){
+			oController.deleteSection(evt)
+		});
+				
+		oTableRules.attachItemPress(function(evt){
+			oController.sectionPress(evt)
+		})
+		
+		oItemBarRulesForm.addContent(oTableRules);
+		
+		
 		
  		return new sap.m.Page({
 			title: "Detalle de formulario",

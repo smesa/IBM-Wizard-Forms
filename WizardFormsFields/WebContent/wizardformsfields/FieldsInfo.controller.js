@@ -137,6 +137,7 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 		
 		// Obtengo valores
 		var oTxtTitle = sap.ui.getCore().byId("fieldtitle").getValue();
+		var oTxtTecName = sap.ui.getCore().byId("fieldtecname").getValue();
 		var oTxtPlace = sap.ui.getCore().byId("fieldplaceholder").getValue();
 		var oCmbType  = sap.ui.getCore().byId("fieldtype").getSelectedItem().getKey();
 		
@@ -183,6 +184,7 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 		// Parametros del registro
 		var oParameters = {
 	           "fieldid" 			: dataVal.fieldid,
+	           "fieldtecname"		: oTxtTecName,
 	           "fieldtitle" 		: oTxtTitle,
 	           "fieldplaceholder" 	: oTxtPlace,
 	           "fieldtype" 			: oCmbType,

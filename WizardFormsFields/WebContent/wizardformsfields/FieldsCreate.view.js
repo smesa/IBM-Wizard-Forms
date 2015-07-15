@@ -10,8 +10,21 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 
 		// Nombre de elemento
 		var oLblblnk  = new sap.m.Label({ text : " " });  
-		var oLblTitle = new sap.m.Label({ text : "Nombre del elemento" });  
-		var oTxtTitle = new sap.m.Input({id:"oTxtTitle"});  
+		var oLblTecName = new sap.m.Label({ text : "Nombre técnico del elemento" });  
+		var oTxtTecName = new sap.m.Input({
+			id:"oTxtTecName",
+			liveChange: function(evt){
+       		 	oController.validateRequiredField(evt)
+       	 	}
+		});  
+		
+		var oLblTitle = new sap.m.Label({ text : "Titulo del elemento" });  
+		var oTxtTitle = new sap.m.Input({
+			id:"oTxtTitle",
+			liveChange: function(evt){
+       		 	oController.validateRequiredField(evt)
+       	 	}
+		});  
 		
 		// Placeholder
 		var oLblPlace = new sap.m.Label({ text : "Marcador" });  
@@ -38,10 +51,8 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 		// Formulario
 		var oInfoForm = new sap.ui.layout.VerticalLayout({
 			width: "100%",
-			content:[oLblblnk, oLblTitle,oTxtTitle,oLblPlace,oTxtPlace,oLblType,oCmbType]
-		});		
-		
-		oInfoForm.addStyleClass("layPadding10");
+			content:[oLblblnk, oLblTecName,oTxtTecName, oLblTitle,oTxtTitle,oLblPlace,oTxtPlace,oLblType,oCmbType]
+		}).addStyleClass("layPadding10");
 		
 		//Icon Tab
 		var oIconTab = new sap.m.IconTabBar({
@@ -122,6 +133,8 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 			footer: new sap.m.Bar({
 				contentRight: [								
 								new sap.m.Button({
+									id: "btnSaveNewField",
+									enabled: false,
 									text: "Guardar",
 									icon: "sap-icon://save",
 									press: function(evt){
@@ -131,7 +144,7 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 				              
 	            ]
 			}),
-			content: [oInfoForm]
+			content: [oIconTab]
 		});
 	}
 

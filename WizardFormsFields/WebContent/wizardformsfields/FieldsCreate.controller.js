@@ -121,6 +121,7 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 				
 		// Obtengo valores
 		var oTxtTitle = sap.ui.getCore().byId("oTxtTitle").getValue();
+		var oTxtTecName = sap.ui.getCore().byId("oTxtTecName").getValue();
 		var oTxtPlace = sap.ui.getCore().byId("oTxtPlace").getValue();
 		var oCmbType  = sap.ui.getCore().byId("oCmbType").getSelectedItem().getKey();
 		var oIcon 	  = "";
@@ -164,6 +165,7 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 		var oParameters = {
 	           "fieldid" 			: "",
 	           "fieldtitle" 		: oTxtTitle,
+	           "fieldtecname"		: oTxtTecName,
 	           "fieldplaceholder" 	: oTxtPlace,
 	           "fieldtype" 			: oCmbType,
 	           "isvalues" 			: oIsvalue	
@@ -205,6 +207,54 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 		sap.ui.getCore().byId("oTxtPlace").setValue("");
 		sap.ui.getCore().byId("oCmbType").setSelectedKey("TEXT");	
 		sap.ui.getCore().byId("app").getModel('data').setData([]);
+	},
+	
+	validateRequiredField: function(evt){
+		
+	    var view  = sap.ui.getCore();
+	    var modelFields = view.byId("app").getModel("fields").getContext('/').oModel.oData;	
+	    
+	    
+	    // Armo el array de campos
+	    var inputs = [
+	      view.byId("oTxtTecName"),
+	      view.byId("oTxtTitle")
+	    ];
+	    
+	    // Recorro cada campo para validar
+	    jQuery.each(inputs, function (i, input) {
+	    	
+	        if (!input.getValue()) {
+	          input.setValueState("Error");
+	          input.setValueStateText("Campo obligatorio");
+	        }
+	        else{
+	        	input.setValueState("None");
+	        }
+	        
+	        
+	        if(input.sId == "oTxtTecName"){
+	        	jQuery.each(modelFields, function (j, data) {
+	        		if(data.fieldtecname === input.getValue()){
+	        		  input.setValueState("Error");
+	      	          input.setValueStateText("El nombre del campo ya ha sido usado");
+	        		}
+	        	})
+	        }	        
+	    });
+	    
+	    // Valido si algun campo tiene error
+	    var canContinue = true;
+	    jQuery.each(inputs, function (i, input) {
+	      if ("Error" === input.getValueState()) {
+	        canContinue = false;
+	        return false;
+	      }
+	    });
+
+	    view.byId("btnSaveNewField").setEnabled(canContinue);
+
+	    
 	}
 
 });

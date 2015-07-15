@@ -71,7 +71,7 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 		var oTemplate = new sap.m.ColumnListItem({
 			cells: [
 			        new sap.m.ObjectIdentifier({
-			        	title: "{forms>fieldtitle}"
+			        	title: "{forms>fieldtecname} - {forms>fieldtitle}"
 			        }),
 			        
 			]
@@ -118,24 +118,7 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 				oController.goBack();
 			},
 			footer: new sap.m.Bar({
-				contentRight: [
-								/*new sap.m.Button({
-									text: "Eliminar",
-								    icon: "sap-icon://delete",
-								    type: "Reject",
-								    press: function(evt){
-									  oController.deleteData(evt)
-								  }
-								}),
-								new sap.m.Button({
-									text: "Guardar",
-									icon: "sap-icon://save",
-									press: function(evt){
-										oController.saveData(evt)
-									}
-								}),*/
-				              
-	            ]
+				contentRight: [ ]
 			}),
 			content: [oIconTab]
 		});
