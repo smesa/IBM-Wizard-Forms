@@ -69,6 +69,7 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 		
 		
 		var oTemplate = new sap.m.ColumnListItem({
+			type: sap.m.ListType.Active ,
 			cells: [
 			        new sap.m.ObjectIdentifier({
 			        	title: "{forms>fieldtecname} - {forms>fieldtitle}"
@@ -104,7 +105,7 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 			oController.deleteField(evt)
 		});	
 		oTable.attachItemPress(function(evt){
-			oController.sectionPress(evt)
+			oController.fieldPress(evt)
 		})
 		
 		oInfoSections.addContent(new sap.m.Label({}));

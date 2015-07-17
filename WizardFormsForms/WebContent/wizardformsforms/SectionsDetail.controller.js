@@ -286,7 +286,17 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 	    });
 
 	    dialog.open();
-	}
+	},
+	
+	fieldPress: function(oEvent){		
+		
+		var oTable       = sap.ui.getCore().byId('oTableFields');
+		var oListItem    = oEvent.getParameters().listItem;
+		var oPath        = oListItem.getBindingContextPath();
+		var start        = oPath.lastIndexOf('/') + 1;
+		var fieldIndex = oPath.substring(start,oPath.length);		
+		this.router.navTo("FieldDetail",{formIndex:this.formIndex, versionIndex: this.versionIndex, sectionIndex: this.sectionIndex, fieldIndex: fieldIndex});
+	},
 	
 
 });
