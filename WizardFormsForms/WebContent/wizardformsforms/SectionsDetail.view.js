@@ -25,7 +25,7 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 						  selectedKey:"{forms>sectioncolumn}",
 						  width: "100%",
 						  items: [
-			                          new sap.ui.core.ListItem({text: "1 Columna",key:"1"}).bindProperty("text","StatusText").bindProperty("key","Status"),
+			                          new sap.ui.core.ListItem({text: "1 Columna", key:"1"}).bindProperty("text","StatusText").bindProperty("key","Status"),
 			                          new sap.ui.core.ListItem({text: "2 Columnas",key:"2"}),
 			                          new sap.ui.core.ListItem({text: "3 Columnas",key:"3"}),
 			                          new sap.ui.core.ListItem({text: "4 Columnas",key:"4"})

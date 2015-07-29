@@ -162,6 +162,11 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		oView.setModel(oModel5,'images');	
 		
 		
+		var json = []
+		var oModel6 = new sap.ui.model.json.JSONModel(json);
+		oView.setModel(oModel6,'rules');
+		
+		
 		return oView;
 		
 	},

@@ -75,7 +75,7 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 			type: sap.m.ListType.Active ,
 			cells: [
 			        new sap.m.ObjectIdentifier({
-			        	title: "{forms>value}"
+			        	title: "{forms>fldruldesc}"
 			        }),
 			        
 			]
@@ -100,19 +100,16 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 		
 		oTableRules.setMode(sap.m.ListMode.Delete); // delete mode  	
 
-		oTableRules.bindAggregation("items","forms>values",oTemplateRules);
+		oTableRules.bindAggregation("items","forms>rules",oTemplateRules);
 				
 		oTableRules.attachItemPress(function(evt){
-			oController.sectionPress(evt)
+			oController.editRule(evt)
 		})
 		
 		oTableRules.attachDelete(function(evt){
 			oController.deleteSection(evt)
 		});
-				
-		oTableRules.attachItemPress(function(evt){
-			oController.sectionPress(evt)
-		})
+
 		
 		oItemBarRulesForm.addContent(oTableRules);
 		
