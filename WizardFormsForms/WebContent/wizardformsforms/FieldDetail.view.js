@@ -22,10 +22,18 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 			         new sap.m.Input({value:"{forms>fieldtecname}", enabled:false}).addStyleClass("textRedBold"),
 			         new sap.m.Label({text:"Titulo del elemento"}),
 			         new sap.m.Input({value:"{forms>fieldtitle}", enabled:false}).addStyleClass("textRedBold"),
-			         new sap.m.Label({text:"Marcador del elemento"}),
-			         new sap.m.Input({value:"{forms>fieldplaceholder}", enabled:false}).addStyleClass("textRedBold"),
-			         new sap.m.Label({text:"Tipo de elemento"}),
-			         new sap.m.Input({value:"{forms>fieldtype}", enabled:false}).addStyleClass("textRedBold"),
+			         //new sap.m.Label({text:"Marcador del elemento"}),
+			         //new sap.m.Input({value:"{forms>fieldplaceholder}", enabled:false}).addStyleClass("textRedBold"),
+			         //new sap.m.Label({text:"Tipo de elemento"}),
+			         //new sap.m.Input({value:"{forms>fieldtype}", enabled:false}).addStyleClass("textRedBold"),
+			         new sap.m.Label({text:"Elemento obligatorio"}),
+			         new sap.m.Switch({
+							state:"{forms>isrequired}",
+							customTextOn:"Si", 
+							customTextOff:"No",
+							change: function(evt){
+						}
+					})
 			        			         
 			]
 		}).addStyleClass("layPadding10");
@@ -107,7 +115,7 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 		})
 		
 		oTableRules.attachDelete(function(evt){
-			oController.deleteSection(evt)
+			oController.deleteRule(evt)
 		});
 
 		
@@ -116,16 +124,21 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 		
 		var oTable = new sap.m.Table({
 			//id: "oTableFields",
+			width: "100%",
 			inset: false,
 			columns: [
-			          //Value
-			          new sap.m.Column({
-			        	  halign: "left",
-			        	  width: "100px",
-			        	  demandPopin: true,
-			        	  popinDisplay: "Block",
-			        	  minScreenWidth: sap.m.ScreenSize.Medium
-			          })
+				new sap.m.Column({
+					width: "20%",
+					header: new sap.m.Label({
+						text:"Valor",
+					})
+				}),
+				  //Value
+				new sap.m.Column({
+					header: new sap.m.Label({
+						text:"Descripción",
+					})
+				})
 	        ]
 		});
 		
@@ -134,7 +147,10 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 		var oTemplate = new sap.m.ColumnListItem({
 			cells: [
 			        new sap.m.ObjectIdentifier({
-			        	title: "{forms>valueext} - {forms>value}"
+			        	title: "{forms>valueext}"
+			        }),
+			        new sap.m.ObjectIdentifier({
+			        	title: "{forms>value}"
 			        }),
 			        
 			]

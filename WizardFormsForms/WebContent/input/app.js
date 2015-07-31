@@ -183,7 +183,7 @@ function addInput(elmparent,field,formid,seccion){
 	newInput.id   =  formid+seccion.sectionid+field.fieldid;
 	newInput.className  = 'form-control';
 	newInput.placeholder = field.fieldplaceholder;
-	newInput.required = false;
+	newInput.required = field.isrequired;
 
 	var text = "";
 	angular.forEach(field.values, function(value){
@@ -217,7 +217,7 @@ function addDate(elmparent,field,formid,seccion){
 	newInput.id   =  formid+seccion.sectionid+field.fieldid;
 	newInput.className  = 'form-control';
 	newInput.placeholder = field.fieldplaceholder;
-	newInput.required = false;
+	newInput.required = field.isrequired;
 	
 	var span = document.createElement('span');
 	span.className = 'input-group-addon';
@@ -265,7 +265,7 @@ function addTime(elmparent,field,formid,seccion){
 	newInput.id   =  formid+seccion.sectionid+field.fieldid;
 	newInput.className  = 'form-control';
 	newInput.placeholder = field.fieldplaceholder;
-	newInput.required = false;
+	newInput.required = field.isrequired;
 	
 	var span = document.createElement('span');
 	span.className = 'input-group-addon';
@@ -377,7 +377,8 @@ function addCombo(elmparent,field,formid,seccion){
 
 
 	})
-
+	
+	newselect.required = field.isrequired;
 	newDiv.appendChild(newselect);
 	elmparent.append(newDiv);
 }

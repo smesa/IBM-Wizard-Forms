@@ -55,28 +55,38 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 			id: "oTableFields",
 			inset: false,
 			columns: [
+			          
+					new sap.m.Column({
+						width: "30%",
+						header: new sap.m.Label({
+							text:"Elemento",
+						})
+					}),
 			          //Value
-			          new sap.m.Column({
-			        	  halign: "left",
-			        	  width: "100px",
-			        	  demandPopin: true,
-			        	  popinDisplay: "Block",
-			        	  minScreenWidth: sap.m.ScreenSize.Medium
-			          })
+			        new sap.m.Column({
+			        	header: new sap.m.Label({
+							text:"Descripción",
+						})
+			        })
 	        ]
 		});
-		
 		
 		
 		var oTemplate = new sap.m.ColumnListItem({
 			type: sap.m.ListType.Active ,
 			cells: [
 			        new sap.m.ObjectIdentifier({
-			        	title: "{forms>fieldtecname} - {forms>fieldtitle}"
+			        	title: "{forms>fieldtecname}"
+			        }),
+			        
+			        new sap.m.ObjectIdentifier({
+			        	title: "{forms>fieldtitle}"
 			        }),
 			        
 			]
 		});
+		
+	
 		
 		
 		// Toolbar de la tabla

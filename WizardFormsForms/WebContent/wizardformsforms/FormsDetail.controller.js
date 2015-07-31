@@ -203,7 +203,30 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
   			var fields       = "";
   			
   			for(j = 0; j < data.sections[i].fields.length; j++ ){	
-  				fields = data.sections[i].fields[j].fieldid + '/' + fields  ;
+  				
+  				// Concateno reglas
+  				var field =  data.sections[i].fields[j].fieldid + "#RQ" + data.sections[i].fields[j].isrequired + "#RLS";
+  				
+				for(z = 0; z < data.sections[i].fields[j].rules.length; z++){ 		
+					
+					field = field + data.sections[i].fields[j].rules[z].fldrulid + '|' + data.sections[i].fields[j].rules[z].fldruldesc + '|' + data.sections[i].fields[j].rules[z].fldasignacion + '|';
+						
+						for ( p = 0; p < data.sections[i].fields[j].rules[z].conditions.length; p++){
+							
+							field = field + data.sections[i].fields[j].rules[z].conditions[p].field + ' ' +
+											data.sections[i].fields[j].rules[z].conditions[p].option + ' ' +
+											data.sections[i].fields[j].rules[z].conditions[p].value + ' ' +
+											data.sections[i].fields[j].rules[z].conditions[p].connector + '?';	
+							
+						}		
+						
+						field = field + '$';
+							
+  				}
+  				
+  				
+  				fields = field + '/' + fields  ;
+ 				
   			}
   			
   			jsonsection.push({sectionid:data.sections[i].sectionid,sectiontitle:data.sections[i].sectiontitle, sectioncolumn: data.sections[i].sectioncolumn,sectionfields:fields})
@@ -213,16 +236,11 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
   		jsonsection = (JSON.stringify(jsonsection)).replace(/{"/g, '{').replace(/,"/g, ',').replace(/":/g, ':');
   		
   		// Conversion a json
-  		for(i = 0; i < data.enhancement.length; i++){ 			
-  			
-	
+  		for(i = 0; i < data.enhancement.length; i++){
   			jsonenha.push({method:data.enhancement[i].method,name:data.enhancement[i].name,active:data.enhancement[i].active})
- 			
   		}
   		
   		jsonenha = (JSON.stringify(jsonenha)).replace(/{"/g, '{').replace(/,"/g, ',').replace(/":/g, ':').replace(/true/g, '"true"').replace(/false/g, '"false"');
-  		
-  		
   		
   		var oModel       = new myJSONModel;
   		

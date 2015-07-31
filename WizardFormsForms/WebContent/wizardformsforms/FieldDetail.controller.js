@@ -21,6 +21,102 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 		window.history.go(-1);
 	},	
 	
+	deleteRule: function(evt){
+		
+		
+		var that = this;
+		
+		var oTable    = sap.ui.getCore().byId('oTableRules');
+		var oListItem = evt.getParameters().listItem;
+		var oPath     = oListItem.getBindingContextPath();
+		var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));		
+		var app       = sap.ui.getCore().byId("app");
+		
+		try {  		
+			var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex + '/rules/' + oId);
+		
+		} catch(ex){  
+			window.history.go(-1);
+		}  
+		
+		var dialog = new sap.m.Dialog({
+	      title: 'Confirmación',
+	      type: 'Message',
+	      content: new sap.m.Text({ text: '¿Esta seguro de eliminar esta regla?' }),
+	      beginButton: new sap.m.Button({
+	        text: 'Eliminar',
+	        press: function () {
+	        	
+	          context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].fields[that.fieldIndex].rules.splice(oId,1);		
+	    	  sap.ui.getCore().byId("app").getModel('forms').setData(context);  
+    		  sap.m.MessageToast.show('Regla eliminada');
+    		  
+	          dialog.close();
+	        }
+	      }),
+	      endButton: new sap.m.Button({
+	        text: 'Cancelar',
+	        press: function () {
+	          dialog.close();
+	        }
+	      }),
+	      afterClose: function() {
+	        dialog.destroy();
+	      }
+	    });
+
+	    dialog.open();
+		
+	},
+	
+	deleteCondition: function(evt){
+		
+		
+		var that = this;
+		
+		var oTable    = sap.ui.getCore().byId('oTableCondition');
+		var oListItem = evt.getParameters().listItem;
+		var oPath     = oListItem.getBindingContextPath();
+		var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));		
+		var app       = sap.ui.getCore().byId("app");
+		
+		try {  		
+			var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex + '/rules/' + this.ruleIndex + '/conditions/' + oId);
+		
+		} catch(ex){  
+			window.history.go(-1);
+		}  
+		
+		var dialog = new sap.m.Dialog({
+	      title: 'Confirmación',
+	      type: 'Message',
+	      content: new sap.m.Text({ text: '¿Esta seguro de eliminar esta condición?' }),
+	      beginButton: new sap.m.Button({
+	        text: 'Eliminar',
+	        press: function () {
+	        	
+	          context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].fields[that.fieldIndex].rules[that.ruleIndex].conditions.splice(oId,1);		
+	    	  sap.ui.getCore().byId("app").getModel('forms').setData(context);  
+    		  sap.m.MessageToast.show('Condición eliminada');
+    		  
+	          dialog.close();
+	        }
+	      }),
+	      endButton: new sap.m.Button({
+	        text: 'Cancelar',
+	        press: function () {
+	          dialog.close();
+	        }
+	      }),
+	      afterClose: function() {
+	        dialog.destroy();
+	      }
+	    });
+
+	    dialog.open();
+		
+	},
+	
 	
 	editRule: function(evt){
 		
@@ -47,12 +143,15 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 			width: "100%",			
 			content:[
 				new sap.m.Label({text:"Regla"}),
-				new sap.m.Input({value:"{forms>fldruldesc}"}),					
+				new sap.m.Input({value:"{forms>fldruldesc}"}),
+				new sap.m.Label({text:"Valor a asignar ( Para hacerlo obligatorio escribe REQUIRED )"}),
+				new sap.m.Input({value:"{forms>fldasignacion}", placeholder:"Ingrese el valor que se asignara al campo en caso de que se cumpla las condiciones"})
 			]
 		}).addStyleClass("layPadding10");
 		
 		var oTable = new sap.m.Table({
 			inset: false,
+			id: "oTableCondition",
 			columns: [
 	            new sap.m.Column({
 	            	header: new sap.m.Label({
@@ -113,22 +212,16 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 		oTable.setMode(sap.m.ListMode.Delete); // delete mode  
 		oTable.bindAggregation("items","forms>conditions",oTemplate);
 		oInfoField.addContent(oTable);
+		
+		oTable.attachDelete(function(evt){
+			that.deleteCondition(evt)
+		});
 	
 		var dialog = new sap.m.Dialog({
-		      title: 'Crear regla',
+		      title: 'Editar regla',
 		      verticalScrolling: true,
 			  contentWidth: "700px",
 		      content:[oInfoField],
-		      beginButton: new sap.m.Button({
-		          text: 'Agregar',
-		          press: function (evt) {	 
-		        	
-		            var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/versions/' + that.versionIndex + '/sections/' + that.sectionIndex + '/fields/' + that.fieldIndex);
-		            that.getView().setBindingContext(context,'forms');
-		    		        	  
-		            dialog.close();
-		          }
-		        }),
 		        endButton: new sap.m.Button({
 		          text: 'Cerrar',
 				  type: "Reject",
@@ -160,7 +253,9 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 			width: "100%",			
 			content:[
 				new sap.m.Label({text:"Titulo de la regla"}),
-				new sap.m.Input({id:"oTxtFldRulDesc",placeholder:"Ingrese un titulo descriptivo para la regla"}),					
+				new sap.m.Input({id:"oTxtFldRulDesc",placeholder:"Ingrese un titulo descriptivo para la regla"}),
+				new sap.m.Label({text:"Valor a asignar ( Para hacerlo obligatorio escribe REQUIRED )"}),
+				new sap.m.Input({id:"oTxtFldRulAsignacion",placeholder:"Ingrese el valor que se asignara al campo en caso de que se cumpla las condiciones"})
 			]
 		}).addStyleClass("layPadding10");
 		
@@ -237,14 +332,16 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 		          press: function (evt) {	
 
 
-		        	var otxtFldRulDesc = sap.ui.getCore().byId("oTxtFldRulDesc").getValue();
+		        	var oTxtFldRulDesc 		 = sap.ui.getCore().byId("oTxtFldRulDesc").getValue();
+		        	var oTxtFldRulAsignacion = sap.ui.getCore().byId("oTxtFldRulAsignacion").getValue();
 		        	var model =  sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/sections/' + that.sectionIndex + '/fields/' + that.fieldIndex);
 		        	var path  =  evt.getSource().getBindingContext('forms').getPath();	
 		        	var data  =  model.getProperty(path);	
 		        	
 		        	
 		        	data.rules.push({
-		        		fldruldesc: otxtFldRulDesc,
+		        		fldruldesc: oTxtFldRulDesc,
+		        		fldasignacion: oTxtFldRulAsignacion,
 		        		conditions: sap.ui.getCore().byId("app").getModel("rules").getData()
 		    		})
 		    		
