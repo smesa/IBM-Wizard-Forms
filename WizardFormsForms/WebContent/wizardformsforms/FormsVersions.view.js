@@ -15,6 +15,7 @@ sap.ui.jsview("wizardformsforms.FormsVersions", {
 	createContent : function(oController) {
 		
 		this.oTableVersion = new sap.m.Table({
+			id: "versionList",
 			inset: false,
 			columns: [
 			          //Value

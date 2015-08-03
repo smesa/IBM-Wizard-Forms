@@ -45,6 +45,10 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 	$scope.submit = function(){
 		console.log('Ya envio')
 	}
+	
+	$scope.validate = function(){
+		console.log('Yeah Mother Fucker')
+	}
 
 	
 	
@@ -183,7 +187,9 @@ function addInput(elmparent,field,formid,seccion){
 	newInput.id   =  formid+seccion.sectionid+field.fieldid;
 	newInput.className  = 'form-control';
 	newInput.placeholder = field.fieldplaceholder;
-	newInput.required = field.isrequired;
+	newInput.required = field.isrequired;	
+	newInput.onchange =  validation;
+	
 
 	var text = "";
 	angular.forEach(field.values, function(value){
@@ -426,4 +432,9 @@ function addCheck(elmparent,field,formid,seccion){
 
 	newDiv.appendChild(newDivButton);
 	elmparent.append(newDiv);
+}
+
+function validation(){
+	
+	console.log(this)	
 }
