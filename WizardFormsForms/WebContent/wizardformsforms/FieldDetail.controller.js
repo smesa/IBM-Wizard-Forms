@@ -509,6 +509,44 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 		
 		var that = this;
 		
+		
+		var contextfield = JSON.parse(JSON.stringify(sap.ui.getCore().byId("app").getModel('fields').getData('/')));
+		var oModel = new sap.ui.model.json.JSONModel(contextfield);
+		this.getView().setModel(oModel,'fields');	
+		
+		var fields   	=  this.getView().getModel('fields').getData('/');
+		var sections 	=  sap.ui.getCore().byId("app").getModel('forms').getData('/')[0].versions[this.versionIndex].sections;
+		var fieldsUsed 	=  [];
+		
+		// Saco los campos que se han usado en otras secciones
+		for(i = 0; i < sections.length; i++){			
+			for(j = 0; j < sections[i].fields.length; j++){				
+				fieldsUsed.push(sections[i].fields[j]);				
+			}			
+		}
+		
+		
+		// Recorro los campos para eliminar los que estan usados en las secciones
+		for(i = 0; i < fields.length; i++){	
+			
+			var finded = false;
+			
+			for(j = 0; j < fieldsUsed.length; j++){
+				
+				// Existe lo elimino del array
+				if(fields[i].fieldid == fieldsUsed[j].fieldid){	
+					finded = true;
+				}
+			}	
+			
+			if(!finded){
+				fields.splice(i,1);
+				i = 0;
+			}
+			
+		}
+		
+		
 		var itemTemplate = new sap.m.StandardListItem({
 			title: "{fields>fieldtecname}",
 			description: "{fields>fieldtitle}",

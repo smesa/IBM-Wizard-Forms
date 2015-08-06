@@ -209,23 +209,23 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
   				
 				for(z = 0; z < data.sections[i].fields[j].rules.length; z++){ 		
 					
-					field = field + data.sections[i].fields[j].rules[z].fldrulid + '|' + data.sections[i].fields[j].rules[z].fldruldesc + '|' + data.sections[i].fields[j].rules[z].fldasignacion + '|';
+					field = field + data.sections[i].fields[j].rules[z].fldrulid + '#-|-#' + data.sections[i].fields[j].rules[z].fldruldesc + '#-|-#' + data.sections[i].fields[j].rules[z].fldasignacion + '#-|-#';
 						
 						for ( p = 0; p < data.sections[i].fields[j].rules[z].conditions.length; p++){
 							
 							field = field + data.sections[i].fields[j].rules[z].conditions[p].field + ' ' +
 											data.sections[i].fields[j].rules[z].conditions[p].option + ' ' +
 											data.sections[i].fields[j].rules[z].conditions[p].value + ' ' +
-											data.sections[i].fields[j].rules[z].conditions[p].connector + '?';	
+											data.sections[i].fields[j].rules[z].conditions[p].connector + '#-?-#';	
 							
 						}		
 						
-						field = field + '$';
+						field = field + '#-$-#';
 							
   				}
   				
   				
-  				fields = field + '/' + fields  ;
+  				fields = field + '#-/-#' + fields  ;
  				
   			}
   			

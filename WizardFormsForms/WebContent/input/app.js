@@ -42,7 +42,18 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 	
 	
 	$scope.submit = function(){
-		console.log('Ya envio')
+		
+		var dataSave = formid + '#-|-#' + verformid + '#-|-#';
+		
+		angular.forEach($scope.data.versions[0].sections, function(section){
+			
+			angular.forEach(section.fields, function(field){				
+				dataSave = dataSave +  field.fieldid + ':' + $scope['model'+field.fieldid] + ',';					
+			})	
+		})
+		
+		dataSave = dataSave.substring(0, dataSave.length - 1);
+		console.log(dataSave);		
 	}
 	
 	$scope.change = function(id){
@@ -373,7 +384,7 @@ function addDate(elmparent,field,formid,seccion,$scope, $compile){
 	});
 }
 
-function addTime(elmparent,field,formid,seccion){	
+function addTime(elmparent,field,formid,seccion, $scope, $compile){	
 
 	var newDiv = document.createElement('div');
 	newDiv.className = 'form-group ' +seccion.sectioncolumn;
