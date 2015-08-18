@@ -40,6 +40,9 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 	var verformid		= $routeParams.verformid;
 	var panel 			= $("#ppal");
 	
+	$scope.message 		= "Prueba de mensaje";
+
+	
 	
 	$scope.submit = function(){
 		
@@ -48,12 +51,52 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 		angular.forEach($scope.data.versions[0].sections, function(section){
 			
 			angular.forEach(section.fields, function(field){				
-				dataSave = dataSave +  field.fieldid + ':' + $scope['model'+field.fieldid] + ',';					
+				dataSave = dataSave +  field.fieldid + '#-:-#' + $scope['model'+field.fieldid] + '#-,-#';					
 			})	
 		})
 		
-		dataSave = dataSave.substring(0, dataSave.length - 1);
-		console.log(dataSave);		
+		dataSave = dataSave.substring(0, dataSave.length - 5);
+		
+		var sURL  = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms';
+		var oParameters = {
+	           "data" 			: dataSave,
+	           "option"		    : 'save-data',
+	           "_method"		: 'POST',
+		 };
+		
+		jQuery.ajax({
+			  url: sURL,
+			  async: true,
+			  dataType: 'json',
+			  data: oParameters,
+			  type: 'GET',
+			  
+			  success: function(oData) {
+				  
+				  if(oData[0].messagetype == 'S'){
+					  $scope.message = oData[0].message ;
+					  $('#modalok').modal('show')
+				  }else{
+					  $('#modalerror').modal('show')
+				  }		
+				  
+				  angular.forEach($scope.data.versions[0].sections, function(section){
+						
+						angular.forEach(section.fields, function(field){				
+							$scope['model'+field.fieldid] = ' ';				
+						})	
+				  })
+				  
+				  $scope.$apply();
+
+			  },
+			  error: function(XMLHttpRequest, textStatus, errorThrown){
+				  
+				  $scope.message = "The following problem occurred: " + textStatus, XMLHttpRequest.responseText + ","	+ XMLHttpRequest.status + "," + XMLHttpRequest.statusText;
+				  $('#modalerror').modal('show')
+			  }
+		});
+		
 	}
 	
 	$scope.change = function(id){
@@ -176,17 +219,17 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 		
 	$http.get( sURL ).
 		success(function(list){
-			list 		= list[0];
-			$scope.data = list;
-			$scope.data.logoimg = list.versions[0].logoimg;
-			$scope.data.colorfondo = list.versions[0].colorfondo;
-			$scope.data.colorhead = list.versions[0].colorhead;
-			$scope.data.colorbase = list.versions[0].colorbase;
-			$scope.data.colorsections = list.versions[0].colorsections;
-			$scope.data.showtitle = list.versions[0].showtitle;
-			$scope.data.sizetitlehead = list.versions[0].sizetitlehead;
-			$scope.data.showtitlesection = list.versions[0].showtitlesection;
-			$scope.data.sizetitlesections = list.versions[0].sizetitlesections;			
+			list 							= list[0];
+			$scope.data 					= list;
+			$scope.data.logoimg 			= list.versions[0].logoimg;
+			$scope.data.colorfondo 			= list.versions[0].colorfondo;
+			$scope.data.colorhead 			= list.versions[0].colorhead;
+			$scope.data.colorbase 			= list.versions[0].colorbase;
+			$scope.data.colorsections 		= list.versions[0].colorsections;
+			$scope.data.showtitle 			= list.versions[0].showtitle;
+			$scope.data.sizetitlehead 		= list.versions[0].sizetitlehead;
+			$scope.data.showtitlesection 	= list.versions[0].showtitlesection;
+			$scope.data.sizetitlesections 	= list.versions[0].sizetitlesections;			
 			
 			
 			// Se muestra titulo
@@ -214,7 +257,14 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 			try{
 				document.getElementById('panel-head').style.border = 'none';
 				document.getElementById('panel-head').style.backgroundColor = $scope.data.colorhead;
-			}catch(err){}			
+			}catch(err){}		
+			
+			// Color de modal
+			try{
+				document.getElementById('modal-content-ok').style.border = 'none';
+				document.getElementById('modal-content-ok').style.backgroundColor = $scope.data.colorsections;
+			}catch(err){}	
+			
 			
 			// Recorro las secciones
 			angular.forEach(list.versions[0].sections, function(section){				
