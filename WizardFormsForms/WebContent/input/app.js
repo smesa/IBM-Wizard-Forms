@@ -7,7 +7,7 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
       templateUrl:'views/input.html',
       controller:'PreviewCtrl'
     })
-    .when('/get/:formid/:verformid', {      
+    .when('/get/:formid/:verformid/:inputs', {      
       templateUrl:'views/input.html',
       controller:'InputCtrl'
     })
@@ -38,6 +38,7 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 	
 	var formid 			= $routeParams.formid;
 	var verformid		= $routeParams.verformid;
+	var inputs          = $routeParams.inputs;
 	var panel 			= $("#ppal");
 	
 	$scope.message 		= "Prueba de mensaje";
@@ -63,7 +64,7 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 	           "option"		    : 'save-data',
 	           "_method"		: 'POST',
 		 };
-		
+	
 		jQuery.ajax({
 			  url: sURL,
 			  async: true,
@@ -207,10 +208,35 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 				
 			}
 			
-		} )
-		
+		} )	
 		
 	}
+	
+	var sURLInit  = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms';
+	var oParameters = {
+           "inputs" 		: inputs,
+           "option"		    : 'event_init',
+           "formid"			: formid,
+           "_method"		: 'GET',
+	 };
+
+	jQuery.ajax({
+		  url: sURLInit,
+		  async: true,
+		  dataType: 'json',
+		  data: oParameters,
+		  type: 'GET',
+		  
+		  success: function(oData) {
+			  
+			  console.log(oData)
+		  },
+		  error: function(XMLHttpRequest, textStatus, errorThrown){
+			  
+			  $scope.message = "The following problem occurred: " + textStatus, XMLHttpRequest.responseText + ","	+ XMLHttpRequest.status + "," + XMLHttpRequest.statusText;
+			  $('#modalerror').modal('show')
+		  }
+	});	
 	
 
 	var sURL  = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms?formid=' + formid + '&verformid=' + verformid;
