@@ -42,12 +42,65 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 	var panel 			= $("#ppal");
 	
 	$scope.message 		= "Prueba de mensaje";
+	
+	
+	// Carga de campos 	
+	var sURLFields = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/fields_data/fields'
+		
+	jQuery.ajax({
+		  url: sURLFields,
+		  async: true,
+		  dataType: 'json',
+		  type: 'GET',
+		  
+		  success: function(oData) {			  
+			  $scope.fields = oData;
+		  },
+		  error: function(XMLHttpRequest, textStatus, errorThrown){
 
+		  }
+	});		
+
+	// Evento init
+	if(inputs != 'NONE'){
+		var sURLInit  = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms';
+		var oParameters = {
+	           "inputs" 		: inputs,
+	           "option"		    : 'event_init',
+	           "formid"			: formid,
+	           "_method"		: 'GET',
+		 };
+	
+		jQuery.ajax({
+			  url: sURLInit,
+			  async: true,
+			  dataType: 'json',
+			  data: oParameters,
+			  type: 'GET',
+			  
+			  success: function(oData) {			  
+				  $scope.initial = oData;
+			  },
+			  error: function(XMLHttpRequest, textStatus, errorThrown){
+				  
+				  $scope.message = "The following problem occurred: " + textStatus, XMLHttpRequest.responseText + ","	+ XMLHttpRequest.status + "," + XMLHttpRequest.statusText;
+				  $('#modalerror').modal('show')
+			  }
+		});	
+	}
+	
 	
 	
 	$scope.submit = function(){
 		
-		var dataSave = formid + '#-|-#' + verformid + '#-|-#';
+		
+		var dataSave = inputs;
+		
+		if(dataSave == 'NONE'){
+			dataSave = '';
+		}
+		
+		dataSave = dataSave + '#-H-#' + formid + '#-|-#' + verformid + '#-|-#';
 		
 		angular.forEach($scope.data.versions[0].sections, function(section){
 			
@@ -78,6 +131,7 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 					  $scope.message = oData[0].message ;
 					  $('#modalok').modal('show')
 				  }else{
+					  $scope.message = oData[0].message ;
 					  $('#modalerror').modal('show')
 				  }		
 				  
@@ -111,8 +165,7 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 			
 			if(rule.field ==  id.substring(5,10)){
 				find = true;
-			}			
-			
+			}						
 			
 			if(find === true){
 				
@@ -212,36 +265,7 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 		
 	}
 	
-	var sURLInit  = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms';
-	var oParameters = {
-           "inputs" 		: inputs,
-           "option"		    : 'event_init',
-           "formid"			: formid,
-           "_method"		: 'GET',
-	 };
-
-	jQuery.ajax({
-		  url: sURLInit,
-		  async: true,
-		  dataType: 'json',
-		  data: oParameters,
-		  type: 'GET',
-		  
-		  success: function(oData) {
-			  
-			  console.log(oData)
-		  },
-		  error: function(XMLHttpRequest, textStatus, errorThrown){
-			  
-			  $scope.message = "The following problem occurred: " + textStatus, XMLHttpRequest.responseText + ","	+ XMLHttpRequest.status + "," + XMLHttpRequest.statusText;
-			  $('#modalerror').modal('show')
-		  }
-	});	
-	
-
 	var sURL  = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms?formid=' + formid + '&verformid=' + verformid;
-	
-	this.valor = 'Si lo hace yeah';
 		
 	$http.get( sURL ).
 		success(function(list){
@@ -360,10 +384,17 @@ angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
 
   				})
 				
-			})		
+			})	
+			
+			
+			// Recorro los eventos init para asignar los valores	
+			angular.forEach($scope.initial, function(init){
+		    	$scope['model'+init.fieldid] = init.value;
+			})
 			
 			
 		});	
+	
 });
 
 function addInput(elmparent,field,formid,seccion,$scope, $compile){	
@@ -383,7 +414,7 @@ function addInput(elmparent,field,formid,seccion,$scope, $compile){
 	newInput.className  	= 'form-control';
 	newInput.placeholder 	= field.fieldplaceholder;
 	newInput.required 		= field.isrequired;	
-	
+
 	// Nombre del modelo
 	var model = 'model' + field.fieldid;
 	
