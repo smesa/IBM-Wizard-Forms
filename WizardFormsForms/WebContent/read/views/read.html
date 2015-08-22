@@ -1,0 +1,58 @@
+
+<div id="panel" class="panel panel-primary" style="border: none; background-color: {{data.colorfondo}};">	
+	<div id="panel-head" class="panel-heading" style="background-image:none;border-color:{{data.colorhead}} ;background-color: {{data.colorhead}};">
+		<h3 class="page-header">				
+			<div class="row">
+  				<div class="col-md-4 vcenter">
+  					<img ng-src="{{data.logoimg}}" width="200px" >
+ 					</div>
+  				<div id="headerTitle" class="col-md-4 vcenter">
+  				</div>
+			</div>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<form id="ppal" ng-submit="submit()">
+			<div class="form-group" >    			
+  			</div>
+		</form>
+	</div>
+</div>
+
+
+<div class="modal fade" id="modalok">
+  <div class="modal-dialog">
+    <div class="modal-content panel-primary">
+      <div id="modal-content-ok" class="modal-header panel-heading">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Registro exitoso</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{message}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" id="modalerror">
+  <div class="modal-dialog">
+    <div class="modal-content panel-danger">
+      <div class="modal-header panel-heading">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Error de registro</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{message}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
