@@ -22,10 +22,6 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 			         new sap.m.Input({value:"{forms>fieldtecname}", enabled:false}).addStyleClass("textRedBold"),
 			         new sap.m.Label({text:"Titulo del elemento"}),
 			         new sap.m.Input({value:"{forms>fieldtitle}", enabled:false}).addStyleClass("textRedBold"),
-			         //new sap.m.Label({text:"Marcador del elemento"}),
-			         //new sap.m.Input({value:"{forms>fieldplaceholder}", enabled:false}).addStyleClass("textRedBold"),
-			         //new sap.m.Label({text:"Tipo de elemento"}),
-			         //new sap.m.Input({value:"{forms>fieldtype}", enabled:false}).addStyleClass("textRedBold"),
 			         new sap.m.Label({text:"Elemento obligatorio"}),
 			         new sap.m.Switch({
 							state:"{forms>isrequired}",
