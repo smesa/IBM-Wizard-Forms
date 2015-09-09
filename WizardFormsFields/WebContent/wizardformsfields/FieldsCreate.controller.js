@@ -20,11 +20,16 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 		var oTxtValueExt  = new sap.m.Input({ id: "oTxtValueExt", placeholder: "Ingresa el código del valor" });  
 		var oLblValue     = new sap.m.Label({ text : "Descripción" }); 
 		var oTxtValue     = new sap.m.Input({ id: "oTxtValue", placeholder: "Ingresa la descripción del valor" });  
+		var oLblGroup     = new sap.m.Label({ text : "Grupo de valores" });
+		var oCmbGroup     = new sap.m.ComboBox({id: "oCmbGroupNew", width: "100%"});
+		
+		var oTemplateGroup = new sap.ui.core.Item({key:"{groups>groupid}",text:"{groups>grouptitle}"})		
+		oCmbGroup.bindAggregation("items","groups>/",oTemplateGroup);		
 		
 		// Formulario de valores
 		var oValueForm = new sap.ui.layout.VerticalLayout({
 			width: "100%",
-			content:[oLblValueExt,oTxtValueExt,oLblValue, oTxtValue]
+			content:[oLblValueExt,oTxtValueExt,oLblValue, oTxtValue, oLblGroup, oCmbGroup]
 		}).addStyleClass("layPadding10");			
 		
 		var dialog = new sap.m.Dialog({
@@ -62,7 +67,9 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 			
 		data.push({
 			value: oText.getValue(),
-			valueext: oTextExt.getValue()
+			valueext: oTextExt.getValue(),
+			groupid: sap.ui.getCore().byId("oCmbGroupNew").getSelectedItem().getKey(),
+			grouptitle: sap.ui.getCore().byId("oCmbGroupNew").getSelectedItem().getText()
 		})
 		
 		sap.ui.getCore().byId("app").getModel('data').setData(data);    	
@@ -96,6 +103,113 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 	          context.splice(oId,1);		
 	    	  sap.ui.getCore().byId("app").getModel('data').setData(context);  
     		  sap.m.MessageToast.show('Valor de elemento eliminado');
+    		  
+	          dialog.close();
+	        }
+	      }),
+	      endButton: new sap.m.Button({
+	        text: 'Cancelar',
+	        press: function () {
+	          dialog.close();
+	        }
+	      }),
+	      afterClose: function() {
+	        dialog.destroy();
+	      }
+	    });
+
+	    dialog.open();			
+	},
+	
+	addGroupDialog: function(evt){
+		
+		var that = this; 
+		var oTxtValueExt  = new sap.m.Input({ id: "oTxtGroupNew", placeholder: "Ingresa el nombre del grupo" });  		
+		
+		// Formulario de valores
+		var oValueForm = new sap.ui.layout.VerticalLayout({
+			width: "100%",
+			content:[oTxtValueExt]
+		}).addStyleClass("layPadding10");			
+		
+		var dialog = new sap.m.Dialog({
+		      title: 'Ingreso de grupo de valores',
+		      content:[oValueForm],
+		      beginButton: new sap.m.Button({
+		          text: 'Agregar',
+		          press: function (evt) {
+		        	that.addGroup(evt);
+		            dialog.close();
+		          }
+		        }),
+		        endButton: new sap.m.Button({
+		          text: 'Cerrar',
+				  type: "Reject",
+		          press: function () {
+		            dialog.close();
+		          }
+		        }),
+		        afterClose: function() {
+		          dialog.destroy();
+		        }
+		    });
+		    this.getView().addDependent(dialog);
+		    dialog.open();
+		
+	},
+	
+	addGroup: function(evt){
+		
+    	
+		var oGroup = sap.ui.getCore().byId("oTxtGroupNew");
+		var model = sap.ui.getCore().byId("app").getModel("groups");
+		var data  = model.getData();
+		var groupid = 0;
+		
+		if(data.length > 0){
+			groupid = data[data.length - 1].groupid + 1
+		}else{
+			groupid = 1
+		}
+			
+		data.push({
+			grouptitle: oGroup.getValue(),
+			fieldid:  	"",
+			groupid: 	groupid
+		})
+		
+		sap.ui.getCore().byId("app").getModel('groups').setData(data);    	
+    	sap.m.MessageToast.show('Valor de elemento agregado');
+	},
+	
+	deleteGroupDialog: function(evt){	
+		
+		
+		var that = this;
+		var oTable    = sap.ui.getCore().byId('oTableGroupNew');
+		var oListItem = evt.getParameters().listItem;
+		var oPath     = oListItem.getBindingContextPath();
+		var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));		
+		var app       = sap.ui.getCore().byId("app");
+		
+		try {  		
+			var context = app.getModel('groups').getData();
+		
+		} catch(ex){  
+			window.history.go(-1);
+		}  
+		
+		var dialog = new sap.m.Dialog({
+	      title: 'Confirmación',
+	      type: 'Message',
+	      content: new sap.m.Text({ text: '¿Esta seguro de eliminar este grupo?' }),
+	      beginButton: new sap.m.Button({
+	        text: 'Eliminar',
+	        press: function () {
+	        	
+	          context.splice(oId,1);		
+	    	  sap.ui.getCore().byId("app").getModel('groups').setData(context);  
+    		  sap.m.MessageToast.show('Grupo de valor eliminado');
     		  
 	          dialog.close();
 	        }
@@ -178,8 +292,22 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 			var valuesJson = JSON.stringify(data);
 			valuesJson = valuesJson.replace(/"value":/g, 'value:');
 			valuesJson = valuesJson.replace(/"valueext":/g, 'valueext:');
+			valuesJson = valuesJson.replace(/"groupid":/g, 'groupid:');
+			valuesJson = valuesJson.replace(/"grouptitle":/g, 'grouptitle:');
 			oParameters.values = valuesJson
 		}		
+		
+		// Obtengo datos del modelo de grupos // data	
+		var groups = sap.ui.getCore().byId("app").getModel('groups').getData();	
+		if(groups.length > 0){
+			// Obtengo datos del modelo de grupos // dataVal	
+			var valuesJsonG = JSON.stringify(groups);
+			valuesJsonG = valuesJsonG.replace(/"groupid":/g, 'groupid:');
+			valuesJsonG = valuesJsonG.replace(/"grouptitle":/g, 'grouptitle:');
+			valuesJsonG = valuesJsonG.replace(/"fieldid":/g, 'fieldid:');
+			valuesJsonG = valuesJsonG.replace(/"mandt":/g, 'mandt:');
+			oParameters.groups = valuesJsonG
+		}
 		
 		// Llamo el metodo POST para crear los datos
 		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/fields_data/fields/", function(oData){

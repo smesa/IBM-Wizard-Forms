@@ -100,11 +100,6 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 		});			
 		
 		
-		var oGroupForm = new sap.ui.layout.VerticalLayout({
-			width: "100%",
-			content: [ ]
-		}).addStyleClass("layPadding10");	
-		
 		oInfoForm.addContent(oTableGroup);
 		
 		
@@ -143,7 +138,7 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 			        	text: "{fields>value}",
 			        }),
 			        new sap.m.Text({
-			        	text: "{fields>value}",
+			        	text: "{fields>grouptitle}",
 			        }),
 	        ]
 		});

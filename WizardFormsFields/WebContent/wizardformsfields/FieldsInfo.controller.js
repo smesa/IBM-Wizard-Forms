@@ -30,12 +30,17 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 		var oTxtValueExt  = new sap.m.Input({ id: "oTxtValueExt", placeholder: "Ingresa el código del valor" });  
 		var oLblValue     = new sap.m.Label({ text : "Descripción" }); 
 		var oTxtValue     = new sap.m.Input({ id: "oTxtValue", placeholder: "Ingresa la descripción del valor" });  
+		var oLblGroup     = new sap.m.Label({ text : "Grupo de valores" });
+		var oCmbGroup     = new sap.m.ComboBox({id: "oCmbGroup", width: "100%"});
+		
+		var oTemplateGroup = new sap.ui.core.Item({key:"{fields>groupid}",text:"{fields>grouptitle}"})		
+		oCmbGroup.bindAggregation("items","fields>groups",oTemplateGroup);		
 		
 		
 		// Formulario de valores
 		var oValueForm = new sap.ui.layout.VerticalLayout({
 			width: "100%",
-			content:[oLblValueExt,oTxtValueExt,oLblValue, oTxtValue ]
+			content:[oLblValueExt,oTxtValueExt,oLblValue, oTxtValue, oLblGroup, oCmbGroup ]
 		}).addStyleClass("layPadding10");			
 		
 		var dialog = new sap.m.Dialog({
@@ -123,7 +128,9 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 			
 		data.values.push({
 			value: oText.getValue(),
-			valueext: oTextExt.getValue()
+			valueext: oTextExt.getValue(),
+			groupid: sap.ui.getCore().byId("oCmbGroup").getSelectedItem().getKey(),
+			grouptitle: sap.ui.getCore().byId("oCmbGroup").getSelectedItem().getText()
 		})
 		
 		var fields = sap.ui.getCore().byId("app").getModel("fields").getData();		
@@ -311,18 +318,20 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 			var valuesJson = JSON.stringify(dataVal.values);
 			valuesJson = valuesJson.replace(/"value":/g, 'value:');
 			valuesJson = valuesJson.replace(/"valueext":/g, 'valueext:');
+			valuesJson = valuesJson.replace(/"groupid":/g, 'groupid:');
+			valuesJson = valuesJson.replace(/"grouptitle":/g, 'grouptitle:');
 			oParameters.values = valuesJson
 		}	
 				
 		// Obtengo datos del modelo de grupos // data		
 		if(dataVal.groups.length > 0){
 			// Obtengo datos del modelo de grupos // dataVal	
-			var valuesJson = JSON.stringify(dataVal.groups);
-			valuesJson = valuesJson.replace(/"groupid":/g, 'groupid:');
-			valuesJson = valuesJson.replace(/"grouptitle":/g, 'grouptitle:');
-			valuesJson = valuesJson.replace(/"fieldid":/g, 'fieldid:');
-			valuesJson = valuesJson.replace(/"mandt":/g, 'mandt:');
-			oParameters.groups = valuesJson
+			var valuesJsonG = JSON.stringify(dataVal.groups);
+			valuesJsonG = valuesJsonG.replace(/"groupid":/g, 'groupid:');
+			valuesJsonG = valuesJsonG.replace(/"grouptitle":/g, 'grouptitle:');
+			valuesJsonG = valuesJsonG.replace(/"fieldid":/g, 'fieldid:');
+			valuesJsonG = valuesJsonG.replace(/"mandt":/g, 'mandt:');
+			oParameters.groups = valuesJsonG
 		}
 		
 		

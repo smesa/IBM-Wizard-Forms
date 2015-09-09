@@ -54,6 +54,64 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 			content:[oLblblnk, oLblTecName,oTxtTecName, oLblTitle,oTxtTitle,oLblPlace,oTxtPlace,oLblType,oCmbType]
 		}).addStyleClass("layPadding10");
 		
+		
+		//===== Grupos de valores
+		var oTableGroup = new sap.m.Table({
+			id: "oTableGroupNew",
+			inset: false,
+			columns: [
+			          //Value
+			          new sap.m.Column({
+			        	  halign: "left",
+			        	  width: "100px",
+			        	  demandPopin: true,
+			        	  popinDisplay: "Block",
+			        	  minScreenWidth: sap.m.ScreenSize.Medium
+			          })
+	        ]
+		});		
+		
+		var oTemplateGroup = new sap.m.ColumnListItem({
+			type: sap.m.ListType.Active ,
+			cells: [
+			        new sap.m.ObjectIdentifier({
+			        	title: "{groups>grouptitle}"
+			        }),			        
+			]
+		});
+		
+		
+		// Toolbar de la tabla
+		var oHeaderGroup = new sap.m.Toolbar({
+			content : [ 
+	            new sap.m.Label({
+	            	text : "Grupos de valores"
+	            }), 
+	            new sap.m.ToolbarSpacer({}), 
+	            new sap.m.Button({
+	            	icon : "sap-icon://add",
+	            	press: function(evt){
+	            		oController.addGroupDialog(evt)
+	            	}
+	            })
+            ]
+		});
+		
+		oTableGroup.setHeaderToolbar(oHeaderGroup);	
+		
+		oTableGroup.setMode(sap.m.ListMode.Delete); // delete mode  	
+
+		oTableGroup.bindAggregation("items","groups>/",oTemplateGroup);
+				
+	
+		oTableGroup.attachDelete(function(evt){
+			oController.deleteGroupDialog(evt)
+		});		
+		
+		oInfoForm.addContent(oTableGroup);
+	
+		
+		
 		//Icon Tab
 		var oIconTab = new sap.m.IconTabBar({
 			title: "IconTab",
@@ -75,13 +133,23 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 			inset: false,
 			columns: [
 			          //Value
-			          new sap.m.Column({
-			        	  halign: "left",
-			        	  width: "100px",
-			        	  demandPopin: true,
-			        	  popinDisplay: "Block",
-			        	  minScreenWidth: sap.m.ScreenSize.Medium
-			          })
+			        new sap.m.Column({
+						width: "30%",
+						header: new sap.m.Label({
+							text:"Valor",
+						})
+					}),
+					  //Value
+					new sap.m.Column({
+						header: new sap.m.Label({
+							text:"Descripción",
+						})
+					}),
+					new sap.m.Column({
+						header: new sap.m.Label({
+							text:"Grupo",
+						})
+					})
 	        ]
 		});	
 		
@@ -90,10 +158,19 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 		var oTemplate = new sap.m.ColumnListItem({
 			cells: [
 			        new sap.m.Text({
-			        	text: "{data>valueExt} - {data>value}",
-			        })
+			        	textAlign: sap.ui.core.TextAlign.Center,
+			        	text: "{data>valueext}",
+			        }),
+			        new sap.m.Text({
+			        	text: "{data>value}",
+			        }),
+			        new sap.m.Text({
+			        	text: "{data>grouptitle}",
+			        }),
 	        ]
 		});
+		
+		
 		
 		oTable.bindAggregation("items","data>/",oTemplate);	
 

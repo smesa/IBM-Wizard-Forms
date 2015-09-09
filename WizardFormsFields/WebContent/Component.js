@@ -89,6 +89,10 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.fields.Component",{
 		var json = []
 		var oModel2 = new sap.ui.model.json.JSONModel(json);
 		oView.setModel(oModel2,'data');
+		
+		var json2 = []
+		var oModel3 = new sap.ui.model.json.JSONModel(json2);
+		oView.setModel(oModel3,'groups');
 
 		
 		return oView;
