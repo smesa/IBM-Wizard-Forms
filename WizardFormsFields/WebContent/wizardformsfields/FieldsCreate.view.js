@@ -42,8 +42,7 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
                           new sap.ui.core.ListItem({text: "Radio Button",key:"RADIO"}),
                           new sap.ui.core.ListItem({text: "Check Box",key:"CHECK"}),
                           new sap.ui.core.ListItem({text: "Calendario",key:"CALE"}),
-                          new sap.ui.core.ListItem({text: "Hora",key:"TIME"}),
-                          new sap.ui.core.ListItem({text: "Etiqueta",key:"LABEL"})
+                          new sap.ui.core.ListItem({text: "Hora",key:"TIME"})
                      ]
         }).bindProperty("value","StatusText");
 		
@@ -156,15 +155,16 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 		
 		
 		var oTemplate = new sap.m.ColumnListItem({
+			type: sap.m.ListType.Active ,
 			cells: [
-			        new sap.m.Text({
+			        new sap.m.ObjectIdentifier({
 			        	textAlign: sap.ui.core.TextAlign.Center,
 			        	text: "{data>valueext}",
 			        }),
-			        new sap.m.Text({
+			        new sap.m.ObjectIdentifier({
 			        	text: "{data>value}",
 			        }),
-			        new sap.m.Text({
+			        new sap.m.ObjectIdentifier({
 			        	text: "{data>grouptitle}",
 			        }),
 	        ]
@@ -185,8 +185,8 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 	            new sap.m.ToolbarSpacer({}), 
 	            new sap.m.Button({
 	            	icon : "sap-icon://add",
-	            	press: function(evt,obj){
-	            		oController.addValuesDialog(evt,obj)
+	            	press: function(evt){
+	            		oController.addValuesDialog(evt)
 	            	}
 	            }) 
             ]
@@ -201,6 +201,9 @@ sap.ui.jsview("wizardformsfields.FieldsCreate", {
 			oController.deleteValueDialog(evt)
 		});		
 		
+		oTable.attachItemPress(function(evt){
+			oController.addValuesDialog(evt)
+		})
 		
 		// Adiciono tabla al form
 		oInfoForm.addContent(oTable);

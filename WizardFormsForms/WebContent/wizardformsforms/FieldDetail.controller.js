@@ -6,15 +6,32 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 	},
 
 	_handleRouteMatched: function(evt){
-		if(evt.getParameter("name") !== "FieldDetail"){
+		if(evt.getParameter("name") !== "FieldDetail" && evt.getParameter("name") !== "SubFieldDetail"){
 			return;
 		}
-		this.formIndex = evt.getParameter("arguments").formIndex;
-		this.versionIndex = evt.getParameter("arguments").versionIndex;
-		this.sectionIndex = evt.getParameter("arguments").sectionIndex;
-		this.fieldIndex = evt.getParameter("arguments").fieldIndex;
-		var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex);
-		this.getView().setBindingContext(context,'forms');
+
+
+		if(evt.getParameter("name") == "FieldDetail"){
+			this.formIndex = evt.getParameter("arguments").formIndex;
+			this.versionIndex = evt.getParameter("arguments").versionIndex;
+			this.sectionIndex = evt.getParameter("arguments").sectionIndex;
+			this.fieldIndex = evt.getParameter("arguments").fieldIndex
+
+			var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex);
+			this.getView().setBindingContext(context,'forms');
+		}
+
+
+		if(evt.getParameter("name") == "SubFieldDetail"){
+			this.formIndex = evt.getParameter("arguments").formIndex;
+			this.versionIndex = evt.getParameter("arguments").versionIndex;
+			this.sectionIndex = evt.getParameter("arguments").sectionIndex;
+			this.fieldIndex = evt.getParameter("arguments").fieldIndex
+			this.subSectionIndex = evt.getParameter("arguments").subSectionIndex;
+
+			var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/subsections/' + this.subSectionIndex + '/fields/' + this.fieldIndex);
+			this.getView().setBindingContext(context,'forms');
+		}
 		
 	},
 	goBack: function(){
@@ -31,13 +48,22 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 		var oPath     = oListItem.getBindingContextPath();
 		var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));		
 		var app       = sap.ui.getCore().byId("app");
-		
-		try {  		
-			var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex + '/rules/' + oId);
-		
-		} catch(ex){  
-			window.history.go(-1);
-		}  
+
+		if(!that.subSectionIndex){
+			try {  		
+				var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex + '/rules/' + oId);
+			
+			} catch(ex){  
+				window.history.go(-1);
+			}  
+		}else{
+			try {  		
+				var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/subsections/' + this.subSectionIndex + '/fields/' + this.fieldIndex + '/rules/' + oId);
+			
+			} catch(ex){  
+				window.history.go(-1);
+			}  
+		}	
 		
 		var dialog = new sap.m.Dialog({
 	      title: 'Confirmación',
@@ -46,10 +72,13 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 	      beginButton: new sap.m.Button({
 	        text: 'Eliminar',
 	        press: function () {
-	        	
-	          context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].fields[that.fieldIndex].rules.splice(oId,1);		
-	    	  sap.ui.getCore().byId("app").getModel('forms').setData(context);  
-    		  sap.m.MessageToast.show('Regla eliminada');
+	        	if(!that.subSectionIndex){
+	        		context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].fields[that.fieldIndex].rules.splice(oId,1);	
+	        	}else{
+	        		context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].subsections[that.subSectionIndex].fields[that.fieldIndex].rules.splice(oId,1);
+	        	}	
+	    		sap.ui.getCore().byId("app").getModel('forms').setData(context);  
+    			sap.m.MessageToast.show('Regla eliminada');
     		  
 	          dialog.close();
 	        }
@@ -79,13 +108,24 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 		var oPath     = oListItem.getBindingContextPath();
 		var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));		
 		var app       = sap.ui.getCore().byId("app");
+
+		if(!that.subSectionIndex){
+			try {  		
+				var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex + '/rules/' + this.ruleIndex + '/conditions/' + oId);
+			
+			} catch(ex){  
+				window.history.go(-1);
+			} 
+		}else{
+			try {  		
+				var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/subsections/' + this.subSectionIndex + '/fields/' + this.fieldIndex + '/rules/' + this.ruleIndex + '/conditions/' + oId);
+			
+			} catch(ex){  
+				window.history.go(-1);
+			} 
+		}
 		
-		try {  		
-			var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex + '/rules/' + this.ruleIndex + '/conditions/' + oId);
-		
-		} catch(ex){  
-			window.history.go(-1);
-		}  
+		 
 		
 		var dialog = new sap.m.Dialog({
 	      title: 'Confirmación',
@@ -95,9 +135,14 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 	        text: 'Eliminar',
 	        press: function () {
 	        	
-	          context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].fields[that.fieldIndex].rules[that.ruleIndex].conditions.splice(oId,1);		
-	    	  sap.ui.getCore().byId("app").getModel('forms').setData(context);  
-    		  sap.m.MessageToast.show('Condición eliminada');
+	        	if(!that.subSectionIndex){
+	        		context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].fields[that.fieldIndex].rules[that.ruleIndex].conditions.splice(oId,1);		
+	        	}else{
+	        		context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].subsections[that.subSectionIndex].fields[that.fieldIndex].rules[that.ruleIndex].conditions.splice(oId,1);	
+	        	}
+
+	          	sap.ui.getCore().byId("app").getModel('forms').setData(context);  
+	    		sap.m.MessageToast.show('Condición eliminada');
     		  
 	          dialog.close();
 	        }
@@ -129,12 +174,23 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 		var app       = sap.ui.getCore().byId("app");
 		this.ruleIndex = oId;
 		
-		try {  		
-			var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex + '/rules/' + oId + '/');
-			this.getView().setBindingContext(context,'forms');
-		} catch(ex){  
-			window.history.go(-1);
-		}  
+		if(!that.subSectionIndex){
+			try {  		
+				var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex + '/rules/' + oId + '/');
+				this.getView().setBindingContext(context,'forms');
+			} catch(ex){  
+				window.history.go(-1);
+			} 
+		}else{
+
+			try {  		
+				var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/subsections/' + this.subSectionIndex + '/fields/' + this.fieldIndex + '/rules/' + oId + '/');
+				this.getView().setBindingContext(context,'forms');
+			} catch(ex){  
+				window.history.go(-1);
+			}
+		}
+ 
 		
 		
 		
@@ -226,15 +282,27 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 		          text: 'Cerrar',
 				  type: "Reject",
 		          press: function () {
-		        	var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/versions/' + that.versionIndex + '/sections/' + that.sectionIndex + '/fields/' + that.fieldIndex);
-		        	that.getView().setBindingContext(context,'forms');
+
+		          	if(!that.subSectionIndex){
+		          		var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/versions/' + that.versionIndex + '/sections/' + that.sectionIndex + '/fields/' + that.fieldIndex);
+		        		that.getView().setBindingContext(context,'forms');
+		          	}else{
+						var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/versions/' + that.versionIndex + '/sections/' + that.sectionIndex + '/subsections/' + that.subSectionIndex + '/fields/' + that.fieldIndex);
+		        		that.getView().setBindingContext(context,'forms');
+		          	}
+		        	
 		            dialog.close();
 		          }
 		        }),
 		        afterClose: function() {
-		          var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/versions/' + that.versionIndex + '/sections/' + that.sectionIndex + '/fields/' + that.fieldIndex);
-		          that.getView().setBindingContext(context,'forms');
-		          dialog.destroy();
+		         	if(!that.subSectionIndex){
+		          		var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/versions/' + that.versionIndex + '/sections/' + that.sectionIndex + '/fields/' + that.fieldIndex);
+		        		that.getView().setBindingContext(context,'forms');
+		          	}else{
+						var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/versions/' + that.versionIndex + '/sections/' + that.sectionIndex + '/subsections/' + that.subSectionIndex + '/fields/' + that.fieldIndex);
+		        		that.getView().setBindingContext(context,'forms');
+	          		}
+		          	dialog.destroy();
 		        }
 		    });
 		    this.getView().addDependent(dialog);
@@ -463,9 +531,13 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 			      		
 		        	} else{
 		        		
-		        		try {  		
-		        			var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/versions/' + that.versionIndex + '/sections/' + that.sectionIndex + '/fields/' + that.fieldIndex + '/rules/' + that.ruleIndex + '/');
-		        			//this.getView().setBindingContext(context,'forms');
+		        		try {  	
+		        			if(!that.subSectionIndex){	
+		        				var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/versions/' + that.versionIndex + '/sections/' + that.sectionIndex + '/fields/' + that.fieldIndex + '/rules/' + that.ruleIndex + '/');
+		        			}else{
+		        				var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex + '/versions/' + that.versionIndex + '/sections/' + that.sectionIndex + '/subsections/' + that.subSectionIndex + '/fields/' + that.fieldIndex + '/rules/' + that.ruleIndex + '/');
+		        			}
+
 		        		} catch(ex){  
 		        			window.history.go(-1);
 		        		}  
@@ -474,13 +546,22 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 		        		
 		        		//data = data[0].versions[that.versionIndex].sections[that.sectionIndex].fields[that.fieldIndex].rules[that.ruleIndex];
 		        		
-		        		data[0].versions[that.versionIndex].sections[that.sectionIndex].fields[that.fieldIndex].rules[that.ruleIndex].conditions.push({
-			      			field: oField,
-			      			option: oOption,
-			      			value: oValue,
-			      		    connector: oConnector
-			      		})
-			      		
+		        		if(!that.subSectionIndex){
+			        		data[0].versions[that.versionIndex].sections[that.sectionIndex].fields[that.fieldIndex].rules[that.ruleIndex].conditions.push({
+				      			field: oField,
+				      			option: oOption,
+				      			value: oValue,
+				      		    connector: oConnector
+				      		})
+			      		}else{
+			      			data[0].versions[that.versionIndex].sections[that.sectionIndex].subsections[that.subSectionIndex].fields[that.fieldIndex].rules[that.ruleIndex].conditions.push({
+				      			field: oField,
+				      			option: oOption,
+				      			value: oValue,
+				      		    connector: oConnector
+				      		})
+			      		}
+
 			      		that.getView().getModel('forms').setData(data);
 		        		
 		        	}
@@ -522,7 +603,14 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 		for(i = 0; i < sections.length; i++){			
 			for(j = 0; j < sections[i].fields.length; j++){				
 				fieldsUsed.push(sections[i].fields[j]);				
-			}			
+			}		
+
+			for(j = 0; j < sections[i].subsections.length; j++){	
+
+				for(x = 0; x < sections[i].subsections[j].fields.length; x++){				
+					fieldsUsed.push(sections[i].subsections[j].fields[x]);				
+				}				
+			}	
 		}
 		
 		

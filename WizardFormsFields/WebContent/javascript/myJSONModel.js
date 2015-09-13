@@ -5,6 +5,9 @@ sap.ui.model.json.JSONModel.extend("myJSONModel", {
 	//declare our new method including two new parameters fnSuccess and fnError, our callback functions
 	loadDataNew: function(sURL, fnSuccess, fnError, oParameters, bAsync, sType, bMerge, bCache){
 			
+			var busyDialog = new sap.m.BusyDialog();
+			busyDialog.open()
+			
 			var that = this;
  
 			if (bAsync !== false) {
@@ -32,6 +35,8 @@ sap.ui.model.json.JSONModel.extend("myJSONModel", {
 			  data: oParameters,
 			  type: sType,
 			  success: function(oData) {
+				
+				busyDialog.close();
 				if (!oData) {
 					jQuery.sap.log.fatal("The following problem occurred: No data was retrieved by service: " + sURL);
 				}

@@ -1,4 +1,4 @@
-sap.ui.controller("wizardformsforms.SectionsDetail", {
+sap.ui.controller("wizardformsforms.SubSectionsDetail", {
 
 	onInit: function() {
 		this.router = sap.ui.core.UIComponent.getRouterFor(this);
@@ -6,19 +6,20 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 	},
 
 	_handleRouteMatched: function(evt){
-		if(evt.getParameter("name") !== "SectionsDetail"){
+		if(evt.getParameter("name") !== "SubSectionsDetail"){
 			return;
 		}
 		this.formIndex = evt.getParameter("arguments").formIndex;
 		this.versionIndex = evt.getParameter("arguments").versionIndex;
 		this.sectionIndex = evt.getParameter("arguments").sectionIndex;
+		this.subSectionIndex = evt.getParameter("arguments").subSectionIndex;
+
 		
-		var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex);
+		var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/subsections/' + this.subSectionIndex + '/');
 		this.getView().setBindingContext(context,'forms');
 		
-	
-		
 	},
+
 	goBack: function(){
 		window.history.go(-1);
 	},	
@@ -35,7 +36,7 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 		var app       = sap.ui.getCore().byId("app");
 		
 		try {  		
-			var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + oId + '/');
+			var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/subsections/' + this.subSectionIndex + '/fields/' + oId + '/');
 		
 		} catch(ex){  
 			window.history.go(-1);
@@ -49,7 +50,7 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 	        text: 'Eliminar',
 	        press: function () {
 	        	
-	          context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].fields.splice(oId,1);		
+	          context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].subsections[that.subSectionIndex].fields.splice(oId,1);		
 	    	  sap.ui.getCore().byId("app").getModel('forms').setData(context);  
     		  sap.m.MessageToast.show('Elemento eliminado');
     		  
@@ -75,6 +76,7 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 		
 		var contextfield = JSON.parse(JSON.stringify(sap.ui.getCore().byId("app").getModel('fields').getData('/')));
 		var oModel = new sap.ui.model.json.JSONModel(contextfield);
+		
 		this.getView().setModel(oModel,'fields');	 
 		
 		
@@ -83,18 +85,19 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 		var fieldsUsed 	=  [];
 	
 		
-		// Saco los campos que se han usado en otras secciones
-		for(i = 0; i < sections.length; i++){			
+		// Saco los campos que se han usado en otras secciones y subsecciones
+		for(i = 0; i < sections.length; i++){	
+
 			for(j = 0; j < sections[i].fields.length; j++){				
 				fieldsUsed.push(sections[i].fields[j]);				
-			}		
+			}	
 
 			for(j = 0; j < sections[i].subsections.length; j++){	
 
 				for(x = 0; x < sections[i].subsections[j].fields.length; x++){				
 					fieldsUsed.push(sections[i].subsections[j].fields[x]);				
 				}				
-			}	
+			}			
 		}
 		
 		
@@ -121,7 +124,8 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 
 		
 		var oModel2 = new sap.ui.model.json.JSONModel(field_aux);
-		this.getView().setModel(oModel2,'fields');	
+		this.getView().setModel(oModel2,'fields');		
+
 		
 		var that = this; 
 		
@@ -214,7 +218,6 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 		var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex + '/versions/' + this.versionIndex);	
   		var data         = model.getProperty(model.sPath);  	
   		var jsonsection  = [];
-  		var sectionscopy = data.sections;
   		
   		
   		// Conversion a json
@@ -225,28 +228,10 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
   			for(j = 0; j < data.sections[i].fields.length; j++ ){	
   				fields = data.sections[i].fields[j].fieldid + '/' + fields  ;
   			}
-
-  			// Agrego la sección
-  			jsonsection.push({sectionid:data.sections[i].sectionid,sectiontitle:data.sections[i].sectiontitle, sectioncolumn: data.sections[i].sectioncolumn,sectionroot:0, sectionfields:fields})
+  			
+  			jsonsection.push({sectionid:data.sections[i].sectionid,sectiontitle:data.sections[i].sectiontitle, sectioncolumn: data.sections[i].sectioncolumn,sectionfields:fields})
  			
-
-  			// Recorro las subsecciones
-  			for(z = 0; z < sectionscopy.length; z++){
-
-  				var fieldsub 	= "";
-
-  				// Recorro los campos de las subsecciones
-  				for(x = 0; x < sectionscopy[z].fields.length; x++ ){	
-  					fieldsub = sectionscopy[z].fields[x].fieldid + '/' + fieldsub  ;
-  				}
-
-  				// Agrego la subseccion como una seccion normal pero con sectionroot
-  				jsonsection.push({ sectionid:sectionscopy.sectionid, sectiontitle:sectionscopy.sectiontitle, sectioncolumn: 0, sectionroot:data.sections[i].sectionid, sectionfields:fieldsub});
-  				
-  			}  			
-
   		}
-
   		jsonsection = (JSON.stringify(jsonsection)).replace(/{"/g, '{').replace(/,"/g, ',').replace(/":/g, ':');
   		
   		var oModel       = new myJSONModel;
@@ -370,140 +355,8 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 		var oListItem    = oEvent.getParameters().listItem;
 		var oPath        = oListItem.getBindingContextPath();
 		var start        = oPath.lastIndexOf('/') + 1;
-		var fieldIndex   = oPath.substring(start,oPath.length);		
-		this.router.navTo("FieldDetail",{formIndex:this.formIndex, versionIndex: this.versionIndex, sectionIndex: this.sectionIndex, fieldIndex: fieldIndex});
-	},
-
-	SubSectionPress: function(oEvent){		
-		
-		var oTable       	= sap.ui.getCore().byId('oTableSub');
-		var oListItem    	= oEvent.getParameters().listItem;
-		var oPath        	= oListItem.getBindingContextPath();
-		var start        	= oPath.lastIndexOf('/') + 1;
-		var subSectionIndex = oPath.substring(start,oPath.length);	
-		this.router.navTo("SubSectionsDetail",{formIndex:this.formIndex, versionIndex: this.versionIndex, sectionIndex: this.sectionIndex, subSectionIndex: subSectionIndex});
-	},
-
-
-	addSubSection: function(evt){
-		
-		var that = this; 
-		// Formularios
-		var oInfoSection = new sap.ui.layout.VerticalLayout({
-			width: "100%",			
-			content:[
-		         	 new sap.m.Label({}),
-			         new sap.m.Label({text:"Titulo de la subsección"}),
-			         new sap.m.Input({id:"oSubSectionTitle",required: true})
-			         
-			]
-		}).addStyleClass("layPadding10");
-	
-		var dialog = new sap.m.Dialog({
-		      title: 'Creación de nueva subsección',
-		      content:[oInfoSection],
-		      beginButton: new sap.m.Button({
-		          text: 'Agregar',
-		          press: function (evt) {
-		        	
-		        	  
-		        	var oTitle    = sap.ui.getCore().byId("oSubSectionTitle").getValue();	
-		        	
-		      		var model     = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + that.formIndex);
-		      		var path  	  = evt.getSource().getBindingContext('forms').getPath();			
-		      		var data  	  = model.getProperty(path);
-		      		var sectionid = 80000;
-
-
-		      		try{
-		      			sectionid = data.subsections[data.subsections.length - 1].sectionid + 1;
-		      		}catch(ex){} 
-		      			
-
-		      		try { 
-		      			data.subsections.push({
-		      				sectionid: sectionid,
-		      				sectiontitle: oTitle,
-		      				fields: []
-		      			})
-					} catch(ex){  
-						data.subsections = [];
-						data.subsections.push({
-							sectionid: sectionid,
-		      				sectiontitle: oTitle,
-		      				fields: []
-		      			})
-					}  
-		      		
-		      		
-		      		var forms = sap.ui.getCore().byId("app").getModel("forms").getData();		
-		      		sap.ui.getCore().byId("app").getModel('forms').setData(forms);    	
-		          	sap.m.MessageToast.show('Subsección creada');  
-		        	  
-		            dialog.close();
-		          }
-		        }),
-		        endButton: new sap.m.Button({
-		          text: 'Cerrar',
-				  type: "Reject",
-		          press: function () {
-		            dialog.close();
-		          }
-		        }),
-		        afterClose: function() {
-		          dialog.destroy();
-		        }
-		    });
-		    this.getView().addDependent(dialog);
-		    dialog.open();
-		
-	},
-
-	deleteSubSection: function(evt){
-		
-		
-		var that = this;
-		
-		var oTable    = sap.ui.getCore().byId('oTableSub');
-		var oListItem = evt.getParameters().listItem;
-		var oPath     = oListItem.getBindingContextPath();
-		var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));		
-		var app       = sap.ui.getCore().byId("app");
-		
-		try {  		
-			var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/subsections/' + oId + '/');
-		
-		} catch(ex){  
-			window.history.go(-1);
-		}  
-		
-		var dialog = new sap.m.Dialog({
-	      title: 'Confirmación',
-	      type: 'Message',
-	      content: new sap.m.Text({ text: '¿Esta seguro de eliminar esta subsección?' }),
-	      beginButton: new sap.m.Button({
-	        text: 'Eliminar',
-	        press: function () {
-	        	
-	          context[that.formIndex].versions[that.versionIndex].sections[that.sectionIndex].subsections.splice(oId,1);		
-	    	  sap.ui.getCore().byId("app").getModel('forms').setData(context);  
-    		  sap.m.MessageToast.show('Subsección eliminada');    		  
-	          dialog.close();
-	        }
-	      }),
-	      endButton: new sap.m.Button({
-	        text: 'Cancelar',
-	        press: function () {
-	          dialog.close();
-	        }
-	      }),
-	      afterClose: function() {
-	        dialog.destroy();
-	      }
-	    });
-
-	    dialog.open();
-		
+		var fieldIndex 	 = oPath.substring(start,oPath.length);		
+		this.router.navTo("SubFieldDetail",{formIndex:this.formIndex, versionIndex: this.versionIndex, sectionIndex: this.sectionIndex,subSectionIndex: this.subSectionIndex, fieldIndex: fieldIndex});
 	},
 	
 

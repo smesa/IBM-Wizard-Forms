@@ -31,8 +31,7 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
                           new sap.ui.core.ListItem({text: "Radio Button",key:"RADIO"}),
                           new sap.ui.core.ListItem({text: "Check Box",key:"CHECK"}),
                           new sap.ui.core.ListItem({text: "Calendario",key:"CALE"}),
-                          new sap.ui.core.ListItem({text: "Hora",key:"TIME"}),
-                          new sap.ui.core.ListItem({text: "Etiqueta",key:"LABEL"})
+                          new sap.ui.core.ListItem({text: "Hora",key:"TIME"})
                      ]
         }).bindProperty("value","StatusText");
 		
@@ -51,20 +50,27 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 			id: "oTableGroup",
 			inset: false,
 			columns: [
-			          //Value
 			          new sap.m.Column({
-			        	  halign: "left",
-			        	  width: "100px",
-			        	  demandPopin: true,
-			        	  popinDisplay: "Block",
-			        	  minScreenWidth: sap.m.ScreenSize.Medium
-			          })
+						width: "30%",
+						header: new sap.m.Label({
+							text:"Código",
+						})
+					}),
+					  //Value
+					new sap.m.Column({
+						header: new sap.m.Label({
+							text:"Descripción",
+						})
+					})
 	        ]
 		});		
 		
 		var oTemplateGroup = new sap.m.ColumnListItem({
 			type: sap.m.ListType.Active ,
 			cells: [
+					new sap.m.ObjectIdentifier({
+						title: "{fields>groupid}"
+					}),	
 			        new sap.m.ObjectIdentifier({
 			        	title: "{fields>grouptitle}"
 			        }),			        
@@ -100,6 +106,7 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 		});			
 		
 		
+		
 		oInfoForm.addContent(oTableGroup);
 		
 		
@@ -112,6 +119,8 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 						width: "30%",
 						header: new sap.m.Label({
 							text:"Valor",
+							demandPopin: true,
+				        	popinDisplay: "Block",
 						})
 					}),
 					  //Value
@@ -129,12 +138,12 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 		});
 		
 		var oTemplate = new sap.m.ColumnListItem({
+			type: sap.m.ListType.Active ,
 			cells: [
-			        new sap.m.Text({
-			        	textAlign: sap.ui.core.TextAlign.Center,
+			        new sap.m.ObjectIdentifier({
 			        	text: "{fields>valueext}",
 			        }),
-			        new sap.m.Text({
+			        new sap.m.ObjectIdentifier({
 			        	text: "{fields>value}",
 			        }),
 			        new sap.m.Text({
@@ -169,9 +178,83 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 			oController.deleteValueDialog(evt)
 		});		
 		
+		oTable.attachItemPress(function(evt){
+			oController.addValuesDialog(evt)
+		})
 		
 		// Adiciono tabla al form
-		oInfoForm.addContent(oTable);		
+		oInfoForm.addContent(oTable);	
+		
+		
+		// Tabla de valores	desde tablas SAP	
+		/*var oTableSAP = new sap.m.Table({
+			id: "oValueTableSAP",
+			inset: false,
+			columns: [
+					new sap.m.Column({
+						width: "30%",
+						header: new sap.m.Label({
+							text:"Tabla",
+						})
+					}),
+					  //Value
+					new sap.m.Column({
+						header: new sap.m.Label({
+							text:"Campo Clave",
+						})
+					}),
+					new sap.m.Column({
+						header: new sap.m.Label({
+							text:"Campo Descripción",
+						})
+					})
+	        ]
+		});
+		
+		var oTemplateSAP = new sap.m.ColumnListItem({
+			cells: [
+			        new sap.m.Text({
+			        	textAlign: sap.ui.core.TextAlign.Center,
+			        	text: "{fields>valueext}",
+			        }),
+			        new sap.m.Text({
+			        	text: "{fields>value}",
+			        }),
+			        new sap.m.Text({
+			        	text: "{fields>grouptitle}",
+			        }),
+	        ]
+		});
+		
+
+		// Toolbar de la tabla
+		var oHeaderSAP = new sap.m.Toolbar({
+			content : [ 
+	            new sap.m.Label({
+	            	text : "Valores desde tablas SAP"
+	            }), 
+	            new sap.m.ToolbarSpacer({}), 
+	            new sap.m.Button({
+	            	icon : "sap-icon://add",
+	            	press: function(evt){
+	            		oController.addValuesDialog(evt)
+	            	}
+	            }) 
+            ]
+		});
+		
+		oTableSAP.setHeaderToolbar(oHeaderSAP);			
+		oTableSAP.setMode(sap.m.ListMode.Delete); // delete mode  	
+
+		oTableSAP.bindAggregation("items","fields>values",oTemplateSAP);
+		
+		oTableSAP.attachDelete(function(evt){
+			oController.deleteValueDialog(evt)
+		});		
+		
+		
+		// Adiciono tabla al form
+		oInfoForm.addContent(oTableSAP);*/
 		
 		//Icon Tab
 		var oIconTab = new sap.m.IconTabBar({

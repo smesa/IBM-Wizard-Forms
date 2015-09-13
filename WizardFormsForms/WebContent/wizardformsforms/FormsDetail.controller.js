@@ -158,8 +158,14 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		      		var model = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex);
 		      		var path  = evt.getSource().getBindingContext('forms').getPath();			
 		      		var data  = model.getProperty(path);
+		      		var sectionid = 90000;
+
+		      		try{
+		      			sectionid = data.sections[data.sections.length - 1].sectionid + 1;
+		      		}catch(ex){}
 		      			
 		      		data.sections.push({
+		      			sectionid: 		sectionid,
 		      			sectiontitle: 	sap.ui.getCore().byId("oSectionTitle").getValue(),
 		      			sectioncolumn:  sap.ui.getCore().byId("oSectionColumns").getSelectedItem().getKey()	,
 		      			fields: []
@@ -197,16 +203,20 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
   		var jsonenha     = [];
   		
   		
+  		
   		// Conversion a json
-  		for(i = 0; i < data.sections.length; i++){ 			
+  		for(i = 0; i < data.sections.length; i++){ 	
   			
+  			// Campos de sección
   			var fields       = "";
   			
+  			// Recorro los campos
   			for(j = 0; j < data.sections[i].fields.length; j++ ){	
   				
   				// Concateno reglas
   				var field =  data.sections[i].fields[j].fieldid + "#RQ" + data.sections[i].fields[j].isrequired + "#RLS";
   				
+  				// Recorro las reglas de los campos de las secciones
 				for(z = 0; z < data.sections[i].fields[j].rules.length; z++){ 		
 					
 					field = field + data.sections[i].fields[j].rules[z].fldrulid + '#-|-#' + data.sections[i].fields[j].rules[z].fldruldesc + '#-|-#' + data.sections[i].fields[j].rules[z].fldasignacion + '#-|-#';
@@ -220,17 +230,62 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 							
 						}		
 						
-						field = field + '#-$-#';
-							
+						field = field + '#-$-#';							
   				}
   				
-  				
+  				// Concateno los campos
   				fields = field + '#-/-#' + fields  ;
  				
   			}
   			
+  			// Agrego las secciones
   			jsonsection.push({sectionid:data.sections[i].sectionid,sectiontitle:data.sections[i].sectiontitle, sectioncolumn: data.sections[i].sectioncolumn,sectionfields:fields})
  			
+  			
+  			// Recorro las seubsecciones de la sección
+
+  			var sectionscopy = data.sections[i].subsections;	
+
+  			for(w = 0; w < sectionscopy.length; w++){
+
+  				// Campos de subsección
+	  			var fields       = "";
+	  			
+	  			// Recorro los campos
+	  			for(j = 0; j < sectionscopy[w].fields.length; j++ ){	
+	  				
+	  				// Concateno reglas
+	  				var field =  sectionscopy[w].fields[j].fieldid + "#RQ" + sectionscopy[w].fields[j].isrequired + "#RLS";
+	  				
+	  				// Recorro las reglas de los campos de las secciones
+					for(z = 0; z < sectionscopy[w].fields[j].rules.length; z++){ 		
+						
+						field = field + sectionscopy[w].fields[j].rules[z].fldrulid + '#-|-#' + sectionscopy[w].fields[j].rules[z].fldruldesc + '#-|-#' + sectionscopy[w].fields[j].rules[z].fldasignacion + '#-|-#';
+							
+							for ( p = 0; p < sectionscopy[w].fields[j].rules[z].conditions.length; p++){
+								
+								field = field + sectionscopy[w].fields[j].rules[z].conditions[p].field + ' ' +
+												sectionscopy[w].fields[j].rules[z].conditions[p].option + ' ' +
+												sectionscopy[w].fields[j].rules[z].conditions[p].value + ' ' +
+												sectionscopy[w].fields[j].rules[z].conditions[p].connector + '#-?-#';	
+								
+							}		
+							
+							field = field + '#-$-#';							
+	  				}
+	  				
+	  				// Concateno los campos
+	  				fields = field + '#-/-#' + fields  ;
+	 				
+	  			}
+
+  				// Agrego la subseccion como una seccion normal pero con sectionroot
+  				jsonsection.push({ sectionid:sectionscopy[w].sectionid, sectiontitle:sectionscopy[w].sectiontitle, sectioncolumn: 0, sectionroot:data.sections[i].sectionid, sectionfields:fields});
+  				
+  			}  
+
+
+
   		}
   		
   		jsonsection = (JSON.stringify(jsonsection)).replace(/{"/g, '{').replace(/,"/g, ',').replace(/":/g, ':');

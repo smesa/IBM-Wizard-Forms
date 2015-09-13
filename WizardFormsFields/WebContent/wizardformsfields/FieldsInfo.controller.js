@@ -23,7 +23,7 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 		}  
 	},
 	
-	addValuesDialog: function(evt){
+	addValuesDialogx: function(evt){
 		
 		var that = this; 
 		var oLblValueExt  = new sap.m.Label({ text : "Código" });  
@@ -49,7 +49,7 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 		      beginButton: new sap.m.Button({
 		          text: 'Agregar',
 		          press: function (evt) {
-		        	that.addValue(evt);
+		        	that.addValue(evt,null,-1);
 		            dialog.close();
 		          }
 		        }),
@@ -67,6 +67,79 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 		    this.getView().addDependent(dialog);
 		    dialog.open();
 		
+	},
+	
+	addValuesDialog: function(evt){
+		
+		var that = this; 
+		var oLblValueExt  = new sap.m.Label({ text : "Código" });  
+		var oTxtValueExt  = new sap.m.Input({ id: "oTxtValueExt", placeholder: "Ingresa el código del valor" });  
+		var oLblValue     = new sap.m.Label({ text : "Descripción" }); 
+		var oTxtValue     = new sap.m.Input({ id: "oTxtValue", placeholder: "Ingresa la descripción del valor" });  
+		var oLblGroup     = new sap.m.Label({ text : "Grupo de valores" });
+		var oCmbGroup     = new sap.m.ComboBox({id: "oCmbGroup", width: "100%"});
+		
+		var oListItem = evt.getParameters().listItem;
+		var oPath     = oListItem.getBindingContextPath();
+		var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));		
+		var app       = sap.ui.getCore().byId("app");
+		var valext    = "";
+		var value     = "";
+		var group     = "";
+		var context   = null;
+		
+		try {  		
+			context = app.getModel('fields').getData('/' + this.fieldIndex + '/values/' + oId + '/');	
+			if(context.length > 0){
+				value  = context[that.fieldIndex].values[oId].value;
+				valext = context[that.fieldIndex].values[oId].valueext;
+				group  = context[that.fieldIndex].values[oId].groupid;				
+			}else{
+				context = null;
+			}
+
+		} catch(ex){  
+			context = null
+		} 
+		
+		var oTemplateGroup = new sap.ui.core.Item({key:"{fields>groupid}",text:"{fields>grouptitle}"})		
+		oCmbGroup.bindAggregation("items","fields>groups",oTemplateGroup);	
+		
+		oTxtValueExt.setValue(valext);
+		oTxtValue.setValue(value);
+		oCmbGroup.setSelectedKey(group);	
+		
+		
+		
+		// Formulario de valores
+		var oValueForm = new sap.ui.layout.VerticalLayout({
+			width: "100%",
+			content:[oLblValueExt,oTxtValueExt,oLblValue, oTxtValue, oLblGroup, oCmbGroup ]
+		}).addStyleClass("layPadding10");			
+		
+		var dialog = new sap.m.Dialog({
+		      title: 'Ingreso de valor para elemento',
+		      content:[oValueForm],
+		      beginButton: new sap.m.Button({
+		          text: 'Agregar',
+		          press: function (evt) {
+		        	that.addValue(evt,context,oId);
+		            dialog.close();
+		          }
+		        }),
+		        endButton: new sap.m.Button({
+		          text: 'Cerrar',
+				  type: "Reject",
+		          press: function () {
+		            dialog.close();
+		          }
+		        }),
+		        afterClose: function() {
+		          dialog.destroy();
+		        }
+		    });
+		    this.getView().addDependent(dialog);
+		    dialog.open();		
 	},
 	
 	deleteValueDialog: function(evt){	
@@ -118,24 +191,50 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 		
 	},
 	
-	addValue: function(evt){
-		
+	addValue: function(evt,context,oId){
+
 		var oText = sap.ui.getCore().byId("oTxtValue");	
 		var oTextExt = sap.ui.getCore().byId("oTxtValueExt");	
 		var model = sap.ui.getCore().byId("app").getModel("fields").getContext('/' + this.fieldIndex + '/values/');		
 		var path  = evt.getSource().getBindingContext('fields').getPath();			
 		var data  = model.getProperty(path);
-			
-		data.values.push({
-			value: oText.getValue(),
-			valueext: oTextExt.getValue(),
-			groupid: sap.ui.getCore().byId("oCmbGroup").getSelectedItem().getKey(),
-			grouptitle: sap.ui.getCore().byId("oCmbGroup").getSelectedItem().getText()
-		})
-		
-		var fields = sap.ui.getCore().byId("app").getModel("fields").getData();		
-		sap.ui.getCore().byId("app").getModel('fields').setData(fields);    	
-    	sap.m.MessageToast.show('Valor de elemento agregado');
+		var groupid = "";
+		var grouptitle = "";
+
+
+		try {
+			groupid = sap.ui.getCore().byId("oCmbGroup").getSelectedItem().getKey();
+			grouptitle = sap.ui.getCore().byId("oCmbGroup").getSelectedItem().getText()
+		}
+		catch(err) {
+		    //err
+		}
+
+
+		if(context != null){
+			context[this.fieldIndex].values[oId].value 		= oText.getValue();
+			context[this.fieldIndex].values[oId].valueext 	= oTextExt.getValue(),
+			context[this.fieldIndex].values[oId].groupid 	= groupid;
+			context[this.fieldIndex].values[oId].grouptitle = grouptitle;
+
+			sap.ui.getCore().byId("app").getModel('fields').setData(context);  
+			sap.m.MessageToast.show('Valor de elemento modificado');
+
+		}else{
+
+			data.values.push({
+				value: oText.getValue(),
+				valueext: oTextExt.getValue(),
+				groupid: groupid,
+				grouptitle: grouptitle
+			})
+
+			var fields = sap.ui.getCore().byId("app").getModel("fields").getData();		
+			sap.ui.getCore().byId("app").getModel('fields').setData(fields); 
+			sap.m.MessageToast.show('Valor de elemento agregado');
+
+		}		 	
+    	
 	},
 	
 	

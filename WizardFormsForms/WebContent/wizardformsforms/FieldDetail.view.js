@@ -176,7 +176,7 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 		
 		
  		return new sap.m.Page({
-			title: "Detalle de sección",
+			title: "Detalle de elemento",
 			showNavButton: true,
 			navButtonPress: function(){
 				oController.goBack();

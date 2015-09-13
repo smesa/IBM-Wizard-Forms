@@ -1,11 +1,11 @@
-sap.ui.jsview("wizardformsforms.SectionsDetail", {
+sap.ui.jsview("wizardformsforms.SubSectionsDetail", {
 
 	/** Specifies the Controller belonging to this View. 
 	* In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
 	* @memberOf wizardformsforms.SectionsDetail
 	*/ 
 	getControllerName : function() {
-		return "wizardformsforms.SectionsDetail";
+		return "wizardformsforms.SubSectionsDetail";
 	},
 
 	/** Is initially called once after the Controller has been instantiated. It is the place where the UI is constructed. 
@@ -18,20 +18,8 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 			width: "100%",			
 			content:[
 		         	 new sap.m.Label({}),
-			         new sap.m.Label({text:"Titulo de la sección"}),
-			         new sap.m.Input({value:"{forms>sectiontitle}"}),
-			         new sap.m.Label({text:"Nro de columnas de la sección"}),
-			         new sap.m.ComboBox({
-						  selectedKey:"{forms>sectioncolumn}",
-						  width: "100%",
-						  items: [
-			                          new sap.ui.core.ListItem({text: "1 Columna", key:"1"}).bindProperty("text","StatusText").bindProperty("key","Status"),
-			                          new sap.ui.core.ListItem({text: "2 Columnas",key:"2"}),
-			                          new sap.ui.core.ListItem({text: "3 Columnas",key:"3"}),
-			                          new sap.ui.core.ListItem({text: "4 Columnas",key:"4"})
-			                     ]
-			        }).bindProperty("value","StatusText")
-			         
+			         new sap.m.Label({text:"Titulo de la subsección"}),
+			         new sap.m.Input({value:"{forms>sectiontitle}"})			         
 			]
 		}).addStyleClass("layPadding10");
 		
@@ -51,65 +39,11 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 		oIconTab.addItem(oItemBarSectionsForm);	
 		
 
-		// Sub Secciopnes
-		var oTableSub = new sap.m.Table({
-			id: "oTableSub",
-			inset: false,
-			columns: [
-			          
-					new sap.m.Column({
-						width: "100%"
-					})
-	        ]
-		});
 		
-		
-		var oTemplateSub = new sap.m.ColumnListItem({
-			type: sap.m.ListType.Active ,
-			cells: [
-			        new sap.m.ObjectIdentifier({
-			        	title: "{forms>sectiontitle}"
-			        }),		        
-			]
-		});	
-		
-		
-		// Toolbar de la tabla
-		var oHeaderSub = new sap.m.Toolbar({
-			content : [ 
-	            new sap.m.Label({
-	            	text : "Subsecciones"
-	            }), 
-	            new sap.m.ToolbarSpacer({}), 
-	            new sap.m.Button({
-	            	icon : "sap-icon://add",
-	            	press: function(evt){
-	            		oController.addSubSection(evt)
-	            	}
-	            })
-            ]
-		});
-		
-		oTableSub.setHeaderToolbar(oHeaderSub);	
-		
-		oTableSub.setMode(sap.m.ListMode.Delete); // delete mode  	
-
-		oTableSub.bindAggregation("items","forms>subsections",oTemplateSub);
-		
-		oTableSub.attachDelete(function(evt){
-			oController.deleteSubSection(evt)
-		});	
-		oTableSub.attachItemPress(function(evt){
-			oController.SubSectionPress(evt)
-		})
-		
-		oInfoSections.addContent(new sap.m.Label({}));
-		oInfoSections.addContent(oTableSub);
-
 		// Elementos de la seccion
 		
 		var oTable = new sap.m.Table({
-			id: "oTableFields",
+			id: "oTableFieldsSub",
 			inset: false,
 			columns: [
 			          
@@ -147,7 +81,7 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 		var oHeader = new sap.m.Toolbar({
 			content : [ 
 	            new sap.m.Label({
-	            	text : "Elementos de la sección"
+	            	text : "Elementos de la subsección"
 	            }), 
 	            new sap.m.ToolbarSpacer({}), 
 	            new sap.m.Button({
@@ -177,7 +111,7 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 		
 		
  		return new sap.m.Page({
-			title: "Detalle de sección",
+			title: "Detalle de subsección",
 			showNavButton: true,
 			navButtonPress: function(){
 				oController.goBack();

@@ -59,7 +59,22 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 												  name: "FieldDetail",
 												  view: "FieldDetail",
 											      targetAggregation: "detailPages",
-										      }      
+										      },
+										      {
+										    	  pattern: "form/{formIndex}/{versionIndex}/section/{sectionIndex}/subsection/{subSectionIndex}",
+												  name: "SubSectionsDetail",
+												  view: "SubSectionsDetail",
+											      targetAggregation: "detailPages",
+											      subroutes: [
+												      {
+												    	  pattern: "form/{formIndex}/{versionIndex}/section/{sectionIndex}/subsection/{subSectionIndex}/field/{fieldIndex}",
+														  name: "SubFieldDetail",
+														  view: "FieldDetail",
+													      targetAggregation: "detailPages",
+												      }      
+												]
+
+										      }        
 										]
 					                 }							
 							     ]
