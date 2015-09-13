@@ -120,6 +120,7 @@ sap.ui.jsview("wizardformsforms.SubSectionsDetail", {
 		oInfoSections.addContent(new sap.m.Label({}));
 		oInfoSections.addContent(oTable);
 		
+		that = this;
 		
  		return new sap.m.Page({
 			title: "Detalle de subsección",
@@ -128,7 +129,23 @@ sap.ui.jsview("wizardformsforms.SubSectionsDetail", {
 				oController.goBack();
 			},
 			footer: new sap.m.Bar({
-				contentRight: [ ]
+				contentRight: [
+					new sap.m.Button({
+						text: "Eliminar",
+					    icon: "sap-icon://delete",
+					    type: "Reject",
+					    press: function(evt){
+						  sap.ui.controller("wizardformsforms.FormsDetail").deleteData(that);
+					  }
+					}),
+					new sap.m.Button({
+						text: "Guardar",
+						icon: "sap-icon://save",
+						press: function(evt){
+							sap.ui.controller("wizardformsforms.FormsDetail").saveData(that);
+						}
+					}),
+				]
 			}),
 			content: [oIconTab]
 		});

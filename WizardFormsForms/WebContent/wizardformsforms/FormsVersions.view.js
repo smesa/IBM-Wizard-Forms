@@ -61,6 +61,8 @@ sap.ui.jsview("wizardformsforms.FormsVersions", {
 		oTemplate.attachPress(function(evt){
 			oController.versionPress(evt)
 		})
+
+		
 		
  		return new sap.m.Page({
 			title: "Versiones formulario",

@@ -600,6 +600,7 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		
 		oItemBarEnhaForm.addContent(oTableEhn);	
 		
+		that = this;
 		
  		return new sap.m.Page({
 			title: "Detalle de formulario",
@@ -610,14 +611,14 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 								    icon: "sap-icon://delete",
 								    type: "Reject",
 								    press: function(evt){
-									  oController.deleteData(evt)
+									  oController.deleteData(that)
 								  }
 								}),
 								new sap.m.Button({
 									text: "Guardar",
 									icon: "sap-icon://save",
 									press: function(evt){
-										oController.saveData(evt)
+										oController.saveData(that)
 									}
 								}),
 				              

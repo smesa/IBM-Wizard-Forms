@@ -202,6 +202,8 @@ angular.module('preview', ['ngRoute'])
 					if($scope.data.showtitlesection){
 						var titlesection = subsection.sectiontitle
 					}
+
+					//var elmsection = '<div class="panel panel-default '+ section.sectioncolumn + '" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + 
 					
 					var elmsection = '<div class="panel panel-default" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + 
 						$scope.data.colorsections + ';"><'+$scope.data.sizetitlesections+' >'+titlesection+'</'+$scope.data.sizetitlesections+'></div><div class="panel-body" id="'+

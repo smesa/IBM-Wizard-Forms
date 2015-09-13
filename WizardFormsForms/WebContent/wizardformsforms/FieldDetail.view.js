@@ -192,6 +192,7 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 		})
 		oInfoSections.addContent(oTable);
 		
+		that = this;
 		
  		return new sap.m.Page({
 			title: "Detalle de elemento",
@@ -200,7 +201,26 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 				oController.goBack();
 			},
 			footer: new sap.m.Bar({
-				contentRight: [ ]
+				contentRight: [
+
+					new sap.m.Button({
+						text: "Eliminar",
+					    icon: "sap-icon://delete",
+					    type: "Reject",
+					    press: function(evt){
+						  sap.ui.controller("wizardformsforms.FormsDetail").deleteData(that);
+					  }
+					}),
+					new sap.m.Button({
+						text: "Guardar",
+						icon: "sap-icon://save",
+						press: function(evt){
+							sap.ui.controller("wizardformsforms.FormsDetail").saveData(that);
+						}
+					}),
+
+
+				]
 			}),
 			content: [oIconTab]
 		});

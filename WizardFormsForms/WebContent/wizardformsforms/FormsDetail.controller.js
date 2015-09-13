@@ -197,8 +197,9 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	saveData: function(evt){
 		
 		var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex + '/versions/' + this.versionIndex);
-  		var path         = evt.getSource().getBindingContext('forms').getPath();			
-  		var data         = model.getProperty(path);  	
+  		//var path         = evt.getSource().getBindingContext('forms').getPath();			
+  		//var data         = model.getProperty(path);
+  		var data         = model.oModel.oData[evt.oController.formIndex].versions[evt.oController.versionIndex];  	
   		var jsonsection  = [];
   		var jsonenha     = [];
   		
@@ -388,10 +389,12 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	
 	deleteData: function(evt){	
 		
-		var that = this;
+		var that = evt;
 		var model = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.fieldIndex + '/');		
-		var path  = evt.getSource().getBindingContext('forms').getPath();			
-		var dataVal  = model.getProperty(path);		
+		//var path  = evt.getSource().getBindingContext('forms').getPath();			
+		//var dataVal  = model.getProperty(path);		
+
+		var dataVal     = model.oModel.oData[evt.oController.formIndex].versions[evt.oController.versionIndex]; 
 		
 		// Creo objeto del modelo
 		var oModel = new myJSONModel;		
@@ -415,7 +418,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/" + dataVal.fieldid, function(oData){
 		    			
 		    			sap.m.MessageToast.show('El formulario fue eliminado con exito');	
-		    			that.router.navTo("Blank");
+		    			that.oController.router.navTo("Blank");
 		    			
 		    			// Consulto los datos actualizados			
 		    			var oModel2 = new myJSONModel;
