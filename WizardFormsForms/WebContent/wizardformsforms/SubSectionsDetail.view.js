@@ -19,7 +19,18 @@ sap.ui.jsview("wizardformsforms.SubSectionsDetail", {
 			content:[
 		         	 new sap.m.Label({}),
 			         new sap.m.Label({text:"Titulo de la subsección"}),
-			         new sap.m.Input({value:"{forms>sectiontitle}"})			         
+			         new sap.m.Input({value:"{forms>sectiontitle}"}),
+			         new sap.m.Label({text:"Nro de columnas de la sección"}),
+			         new sap.m.ComboBox({
+						  selectedKey:"{forms>sectioncolumn}",
+						  width: "100%",
+						  items: [
+			                          new sap.ui.core.ListItem({text: "1 Columna", key:"1"}).bindProperty("text","StatusText").bindProperty("key","Status"),
+			                          new sap.ui.core.ListItem({text: "2 Columnas",key:"2"}),
+			                          new sap.ui.core.ListItem({text: "3 Columnas",key:"3"}),
+			                          new sap.ui.core.ListItem({text: "4 Columnas",key:"4"})
+			                     ]
+			        }).bindProperty("value","StatusText")			         
 			]
 		}).addStyleClass("layPadding10");
 		

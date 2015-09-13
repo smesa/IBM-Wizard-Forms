@@ -3,6 +3,29 @@ body {
   padding-bottom: 20px;
 }
 
+
+.btn-primary.active, .btn-primary:active{
+    background-color: #EA1C1C;
+    border-color: #EA1C1C;
+}
+
+.btn-primary {
+  background-color: #337ab7;
+  background-image: none;
+  border-color: #fff;
+}
+
+.btn {
+
+  border-radius: 0px;
+}
+
+.radio, .checkbox {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

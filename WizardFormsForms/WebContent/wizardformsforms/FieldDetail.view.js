@@ -134,6 +134,15 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 					header: new sap.m.Label({
 						text:"Descripción",
 					})
+				}),
+				new sap.m.Column({
+					halign: "right",
+		        	demandPopin: true,
+		        	popinDisplay: "Block",
+		        	minScreenWidth: sap.m.ScreenSize.Medium,
+					header: new sap.m.Label({
+						text: "Activo"
+					})
 				})
 	        ]
 		});
@@ -148,6 +157,15 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 			        new sap.m.ObjectIdentifier({
 			        	title: "{forms>value}"
 			        }),
+			        ,
+			        new sap.m.Switch({
+			        	state:"{forms>status}",
+			        	customTextOn:"Si", 
+			        	customTextOff:"No",
+			        	change: function(evt){
+			        		//oController.activeVersion(evt)
+			        	}
+			        })
 			        
 			]
 		});

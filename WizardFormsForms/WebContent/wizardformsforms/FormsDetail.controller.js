@@ -208,13 +208,22 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
   		for(i = 0; i < data.sections.length; i++){ 	
   			
   			// Campos de sección
-  			var fields       = "";
+  			var fields       = "";  			
   			
   			// Recorro los campos
   			for(j = 0; j < data.sections[i].fields.length; j++ ){	
+
+				var disables	 = "";
+
+
+  				for(s = 0; s < data.sections[i].fields[j].values.length; s++){
+  					if(data.sections[i].fields[j].values[s].status == false){
+  						disables = data.sections[i].fields[j].values[s].valueext + '#,#' + disables;
+  					}
+  				}
   				
   				// Concateno reglas
-  				var field =  data.sections[i].fields[j].fieldid + "#RQ" + data.sections[i].fields[j].isrequired + "#RLS";
+  				var field =  data.sections[i].fields[j].fieldid + "#RQ" + data.sections[i].fields[j].isrequired +  "#RQ" + disables + "#RLS";
   				
   				// Recorro las reglas de los campos de las secciones
 				for(z = 0; z < data.sections[i].fields[j].rules.length; z++){ 		
@@ -253,9 +262,18 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	  			
 	  			// Recorro los campos
 	  			for(j = 0; j < sectionscopy[w].fields.length; j++ ){	
+
+	  				var disables	 = "";
+
+
+	  				for(s = 0; s < sectionscopy[w].fields[j].values.length; s++){
+	  					if(sectionscopy[w].fields[j].values[s].status == false){
+	  						disables = sectionscopy[w].fields[j].values[s].valueext + '#,#' + disables;
+	  					}
+	  				}
 	  				
 	  				// Concateno reglas
-	  				var field =  sectionscopy[w].fields[j].fieldid + "#RQ" + sectionscopy[w].fields[j].isrequired + "#RLS";
+	  				var field =  sectionscopy[w].fields[j].fieldid + "#RQ" + sectionscopy[w].fields[j].isrequired +  "#RQ" + disables + "#RLS";
 	  				
 	  				// Recorro las reglas de los campos de las secciones
 					for(z = 0; z < sectionscopy[w].fields[j].rules.length; z++){ 		
@@ -280,7 +298,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	  			}
 
   				// Agrego la subseccion como una seccion normal pero con sectionroot
-  				jsonsection.push({ sectionid:sectionscopy[w].sectionid, sectiontitle:sectionscopy[w].sectiontitle, sectioncolumn: 0, sectionroot:data.sections[i].sectionid, sectionfields:fields});
+  				jsonsection.push({ sectionid:sectionscopy[w].sectionid, sectiontitle:sectionscopy[w].sectiontitle, sectioncolumn: sectionscopy[w].sectioncolumn, sectionroot:data.sections[i].sectionid, sectionfields:fields});
   				
   			}  
 

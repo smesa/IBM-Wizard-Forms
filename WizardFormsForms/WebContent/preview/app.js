@@ -126,15 +126,24 @@ angular.module('preview', ['ngRoute'])
 	  			    	section.sectioncolumn = 'col-md-3 col-sm-3'
 	  			    		break;
   				}
+
+
+				// Elemento padre osea la seccion
+				var nameelmparent = list.formid + section.sectionid;
+				var elm = $('#'+nameelmparent);
   				
+  				var elmsection = '<div class="panel panel-default" style="border: none;"><div class="panel-body" id="'+
+					list.formid + section.sectionid + 'fields' +'"></div></div>';
+					
+  				elm.append(elmsection);	  				
+
   				
   				// Agrego los campos
   				angular.forEach(section.fields, function(field){
   					
-
-  					// Elemento padre osea la seccion
-  					var nameelmparent = list.formid + section.sectionid;
-  					var elm = $('#'+nameelmparent);
+  					var nameelmparent = list.formid + section.sectionid + 'fields';
+					var elm = $('#'+nameelmparent);
+  					
 
   					// Evaluo que tipo de elemento es
   					switch(field.fieldtype) {
@@ -159,6 +168,80 @@ angular.module('preview', ['ngRoute'])
 					    default:
 					        addInput(elm,field,list.formid,section);
 					}  					
+
+  				})
+
+  				// Agrego las subsecciones
+  				angular.forEach(section.subsections, function(subsection){
+
+
+  					//# de columnas
+	  				switch(subsection.sectioncolumn) {
+		  			    case '1':
+		  			    	subsection.sectioncolumn = 'col-md-12 col-sm-12'
+		  			        break;
+		  			    case '2':
+		  			    	subsection.sectioncolumn = 'col-md-6 col-sm-6'
+		  			        break;
+		  			    case '3':
+		  			    	subsection.sectioncolumn = 'col-md-4 col-sm-4'
+	  			    		break;
+		  			    case '4':
+		  			    	subsection.sectioncolumn = 'col-md-3 col-sm-3'
+	  			    		break;
+	  				}
+  					
+
+  					var titlesection = ""
+
+  					// Elemento padre osea la seccion
+  					var nameelmparent = list.formid + section.sectionid;
+  					var elm = $('#'+nameelmparent);
+					
+					// Agrego la seccion al panel
+					if($scope.data.showtitlesection){
+						var titlesection = subsection.sectiontitle
+					}
+					
+					var elmsection = '<div class="panel panel-default" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + 
+						$scope.data.colorsections + ';"><'+$scope.data.sizetitlesections+' >'+titlesection+'</'+$scope.data.sizetitlesections+'></div><div class="panel-body" id="'+
+						list.formid + subsection.sectionid+'"></div></div>';
+					
+	  				elm.append(elmsection);				
+
+	  				// Agrego los campos
+  					angular.forEach(subsection.fields, function(field){
+  					
+
+	  					// Elemento padre osea la seccion
+	  					var nameelmparent = list.formid + subsection.sectionid;
+	  					elm = $('#'+nameelmparent);
+
+	  					// Evaluo que tipo de elemento es
+	  					switch(field.fieldtype) {
+						    case 'TEXT':
+						        addInput(elm,field,list.formid,subsection);
+						        break;
+						    case 'CALE':
+						    	addDate(elm,field,list.formid,subsection);
+						        break;
+						    case 'TIME':
+						    	addTime(elm,field,list.formid,subsection);
+						        break;
+						    case 'RADIO':
+						        addRadio(elm,field,list.formid,subsection);
+						        break;
+						    case 'CHECK':
+						        addCheck(elm,field,list.formid,subsection);
+						        break;
+						    case 'COMBO':
+						        addCombo(elm,field,list.formid,subsection);
+						        break;
+						    default:
+						        addInput(elm,field,list.formid,subsection);
+						}  					
+
+  					})
 
   				})
 				
@@ -296,34 +379,35 @@ function addRadio(elmparent,field,formid,seccion){
 	newLabel.innerHTML  = field.fieldtitle;
 	newDiv.appendChild(newLabel);
 
-	var newbr = document.createElement('br');
-	newDiv.appendChild(newbr);
+	//var newbr = document.createElement('br');
+	//newDiv.appendChild(newbr);
 
 	var newDivButton = document.createElement('div');
-	newDivButton.className = "btn-group";
+	newDivButton.className = "radio";
 	newDivButton.id  = 'div' + formid+seccion.sectionid+field.fieldid;
 	newDivButton.setAttribute('data-toggle','buttons');
 
 
 	angular.forEach(field.values, function(value){
 
-		var newLabelBtn = document.createElement('label');
-		newLabelBtn.className = "btn btn-primary";
-		newLabelBtn.innerHTML = value.value;
+		if(value.status == true){
+
+			var newLabelBtn = document.createElement('label');
+			newLabelBtn.className = "btn btn-primary";
+			newLabelBtn.innerHTML = value.value;
 
 
-		var option = document.createElement("input");
-		option.type = "radio";
-		option.name = formid+seccion.sectionid+field.fieldid;
-		option.value = value.valueext;
-		option.setAttribute('autocomplete','off');
+			var option = document.createElement("input");
+			option.type = "radio";
+			option.name = formid+seccion.sectionid+field.fieldid;
+			option.value = value.valueext;
+			option.setAttribute('autocomplete','off');
 
 
-		newLabelBtn.appendChild(option);
-		newDivButton.appendChild(newLabelBtn);
+			newLabelBtn.appendChild(option);
+			newDivButton.appendChild(newLabelBtn);
 
-		console.log(value.value);
-
+		}
 
 	})
 
