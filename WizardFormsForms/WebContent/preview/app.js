@@ -101,7 +101,7 @@ angular.module('preview', ['ngRoute'])
 					
 				// Agrego la seccion al panel
 				if($scope.data.showtitlesection){
-					var titlesection = section.sectiontitle
+					var titlesection = section.sectionvi + ' ' + section.sectiontitle
 				}
 				
 				var elmsection = '<div class="panel panel-default" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + 
@@ -200,7 +200,7 @@ angular.module('preview', ['ngRoute'])
 					
 					// Agrego la seccion al panel
 					if($scope.data.showtitlesection){
-						var titlesection = subsection.sectiontitle
+						var titlesection = subsection.sectionvi + ' ' + subsection.sectiontitle
 					}
 
 					//var elmsection = '<div class="panel panel-default '+ section.sectioncolumn + '" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + 
@@ -261,7 +261,7 @@ function addInput(elmparent,field,formid,seccion){
 
 
 	var newLabel 		= document.createElement('label');
-	newLabel.innerHTML  = field.fieldtitle;	
+	newLabel.innerHTML  = field.vineta + ' ' + field.fieldtitle;	
 
 	var newInput = document.createElement('input');
 	newInput.type = 'text';
@@ -291,7 +291,7 @@ function addDate(elmparent,field,formid,seccion){
 
 
 	var newLabel 		= document.createElement('label');
-	newLabel.innerHTML  = field.fieldtitle;	
+	newLabel.innerHTML  = field.vineta + ' ' + field.fieldtitle;
 
 	var divTime = document.createElement('div');
 	divTime.className = 'input-group clockpicker';
@@ -335,7 +335,7 @@ function addTime(elmparent,field,formid,seccion){
 	newDiv.className = 'form-group ' +seccion.sectioncolumn;
 	
 	var newLabel 		= document.createElement('label');
-	newLabel.innerHTML  = field.fieldtitle;	
+	newLabel.innerHTML  = field.vineta + ' ' + field.fieldtitle;
 	
 	var divTime = document.createElement('div');
 	divTime.className = 'input-group clockpicker';
@@ -378,7 +378,7 @@ function addRadio(elmparent,field,formid,seccion){
 
 
 	var newLabel 		= document.createElement('label');
-	newLabel.innerHTML  = field.fieldtitle;
+	newLabel.innerHTML  = field.vineta + ' ' + field.fieldtitle;
 	newDiv.appendChild(newLabel);
 
 	//var newbr = document.createElement('br');
@@ -429,7 +429,7 @@ function addCombo(elmparent,field,formid,seccion){
 	
 
 	var newLabel 		= document.createElement('label');
-	newLabel.innerHTML  = field.fieldtitle;
+	newLabel.innerHTML  = field.vineta + ' ' + field.fieldtitle;
 	newDiv.appendChild(newLabel);
 
 	var newbr = document.createElement('br');
@@ -461,7 +461,7 @@ function addCheck(elmparent,field,formid,seccion){
 	newDiv.id        = 'div'+ formid+seccion.sectionid+field.fieldid;
 
 	var newLabel 		= document.createElement('label');
-	newLabel.innerHTML  = field.fieldtitle;
+	newLabel.innerHTML  = field.vineta + ' ' + field.fieldtitle;
 	newDiv.appendChild(newLabel);
 
 	var newbr = document.createElement('br');

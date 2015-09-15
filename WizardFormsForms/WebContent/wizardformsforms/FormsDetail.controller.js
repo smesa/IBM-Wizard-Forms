@@ -168,7 +168,8 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		      			sectionid: 		sectionid,
 		      			sectiontitle: 	sap.ui.getCore().byId("oSectionTitle").getValue(),
 		      			sectioncolumn:  sap.ui.getCore().byId("oSectionColumns").getSelectedItem().getKey()	,
-		      			fields: []
+		      			fields: [],
+		      			subsections:[]
 		      		})
 		      		
 		      		var forms = sap.ui.getCore().byId("app").getModel("forms").getData();		
@@ -218,13 +219,13 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 
 
   				for(s = 0; s < data.sections[i].fields[j].values.length; s++){
-  					if(data.sections[i].fields[j].values[s].status == false){
+  					if(data.sections[i].fields[j].values[s].status == false || data.sections[i].fields[j].values[s].status == "" ){
   						disables = data.sections[i].fields[j].values[s].valueext + '#,#' + disables;
   					}
   				}
   				
   				// Concateno reglas
-  				var field =  data.sections[i].fields[j].fieldid + "#RQ" + data.sections[i].fields[j].isrequired +  "#RQ" + disables + "#RLS";
+  				var field =  data.sections[i].fields[j].fieldid + "#RQ" + data.sections[i].fields[j].isrequired +  "#RQ" + disables + "#RQ" + data.sections[i].fields[j].vineta + "#RLS";
   				
   				// Recorro las reglas de los campos de las secciones
 				for(z = 0; z < data.sections[i].fields[j].rules.length; z++){ 		
@@ -249,7 +250,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
   			}
   			
   			// Agrego las secciones
-  			jsonsection.push({sectionid:data.sections[i].sectionid,sectiontitle:data.sections[i].sectiontitle, sectioncolumn: data.sections[i].sectioncolumn,sectionfields:fields})
+  			jsonsection.push({sectionid:data.sections[i].sectionid,sectiontitle:data.sections[i].sectiontitle, sectioncolumn: data.sections[i].sectioncolumn,sectionfields:fields, sectionvi: data.sections[i].sectionvi})
  			
   			
   			// Recorro las seubsecciones de la sección
@@ -274,7 +275,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	  				}
 	  				
 	  				// Concateno reglas
-	  				var field =  sectionscopy[w].fields[j].fieldid + "#RQ" + sectionscopy[w].fields[j].isrequired +  "#RQ" + disables + "#RLS";
+	  				var field =  sectionscopy[w].fields[j].fieldid + "#RQ" + sectionscopy[w].fields[j].isrequired +  "#RQ" + disables + "#RQ" + sectionscopy[w].fields[j].vineta +  "#RLS";
 	  				
 	  				// Recorro las reglas de los campos de las secciones
 					for(z = 0; z < sectionscopy[w].fields[j].rules.length; z++){ 		
@@ -299,7 +300,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	  			}
 
   				// Agrego la subseccion como una seccion normal pero con sectionroot
-  				jsonsection.push({ sectionid:sectionscopy[w].sectionid, sectiontitle:sectionscopy[w].sectiontitle, sectioncolumn: sectionscopy[w].sectioncolumn, sectionroot:data.sections[i].sectionid, sectionfields:fields});
+  				jsonsection.push({ sectionid:sectionscopy[w].sectionid, sectiontitle:sectionscopy[w].sectiontitle, sectioncolumn: sectionscopy[w].sectioncolumn, sectionroot:data.sections[i].sectionid, sectionfields:fields, sectionvi: sectionscopy[w].sectionvi});
   				
   			}  
 

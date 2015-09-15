@@ -36,7 +36,7 @@ body {
 
 @media (min-width: 768px) {
   .container {
-    width: 900px;
+    width: 95%;
     padding-right: 0; 
    	padding-left: 0; 
    	margin-right: 5px; 
@@ -46,12 +46,12 @@ body {
 
 @media (min-width: 992px) {
   .container {
-    width: 970px;
+    width: 95%;
   }
 }
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 95%;
     padding-right: 15px;
  	padding-left: 15px;
     margin-right: auto;

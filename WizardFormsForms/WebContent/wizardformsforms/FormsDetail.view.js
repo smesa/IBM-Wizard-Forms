@@ -482,14 +482,26 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 			id: "oTableSections",
 			inset: false,
 			columns: [
-			          //Value
-			          new sap.m.Column({
-			        	  halign: "left",
-			        	  width: "100px",
-			        	  demandPopin: true,
-			        	  popinDisplay: "Block",
-			        	  minScreenWidth: sap.m.ScreenSize.Medium
-			          })
+		            new sap.m.Column({
+						width: "10%",
+						header: new sap.m.Label({
+							text:"Viñeta",
+						})
+					}),
+					new sap.m.Column({
+						width: "50%",
+						header: new sap.m.Label({
+							text:"Titulo subsección",
+						})
+					}),
+					new sap.m.Column({
+						width: "20%",
+						header: new sap.m.Label({
+							text:"Nro.Columnas",
+						})
+					}),
+
+
 	        ]
 		});
 		
@@ -498,9 +510,22 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 		var oTemplate = new sap.m.ColumnListItem({
 			type: sap.m.ListType.Active ,
 			cells: [
-			        new sap.m.ObjectIdentifier({
-			        	title: "{forms>sectiontitle}"
+					new sap.m.Input({
+			        	value: "{forms>sectionvi}"
 			        }),
+			        new sap.m.Input({
+			        	value: "{forms>sectiontitle}"
+			        }),
+			        new sap.m.ComboBox({
+						  selectedKey:"{forms>sectioncolumn}",
+						  width: "100%",
+						  items: [
+			                          new sap.ui.core.ListItem({text: "1 Columna", key:"1"}),
+			                          new sap.ui.core.ListItem({text: "2 Columnas",key:"2"}),
+			                          new sap.ui.core.ListItem({text: "3 Columnas",key:"3"}),
+			                          new sap.ui.core.ListItem({text: "4 Columnas",key:"4"})
+			                     ]
+			        }).bindProperty("value","StatusText")
 			        
 			]
 		});

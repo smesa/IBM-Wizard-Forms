@@ -57,9 +57,13 @@ sap.ui.jsview("wizardformsforms.SubSectionsDetail", {
 			id: "oTableFieldsSub",
 			inset: false,
 			columns: [
-			          
+		            new sap.m.Column({
+						width: "10%",
+						header: new sap.m.Label({
+							text:"Viñeta",
+						})
+					}),
 					new sap.m.Column({
-						width: "30%",
 						header: new sap.m.Label({
 							text:"Elemento",
 						})
@@ -69,6 +73,11 @@ sap.ui.jsview("wizardformsforms.SubSectionsDetail", {
 			        	header: new sap.m.Label({
 							text:"Descripción",
 						})
+			        }),			        
+			        new sap.m.Column({
+			        	header: new sap.m.Label({
+							text:"Obligatorio",
+						})
 			        })
 	        ]
 		});
@@ -77,13 +86,23 @@ sap.ui.jsview("wizardformsforms.SubSectionsDetail", {
 		var oTemplate = new sap.m.ColumnListItem({
 			type: sap.m.ListType.Active ,
 			cells: [
+					new sap.m.Input({
+			        	value: "{forms>vineta}"
+			        }),
 			        new sap.m.ObjectIdentifier({
 			        	title: "{forms>fieldtecname}"
 			        }),
 			        
 			        new sap.m.ObjectIdentifier({
 			        	title: "{forms>fieldtitle}"
-			        }),			        
+			        }),	
+			        new sap.m.Switch({
+							state:"{forms>isrequired}",
+							customTextOn:"Si", 
+							customTextOff:"No",
+							change: function(evt){
+						}
+					})		        
 			]
 		});	
 		

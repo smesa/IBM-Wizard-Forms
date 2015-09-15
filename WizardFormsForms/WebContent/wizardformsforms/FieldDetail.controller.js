@@ -190,7 +190,6 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 				window.history.go(-1);
 			}
 		}
- 
 		
 		
 		
@@ -200,10 +199,105 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 			content:[
 				new sap.m.Label({text:"Regla"}),
 				new sap.m.Input({value:"{forms>fldruldesc}"}),
-				new sap.m.Label({text:"Valor a asignar ( Para hacerlo obligatorio escribe REQUIRED )"}),
-				new sap.m.Input({value:"{forms>fldasignacion}", placeholder:"Ingrese el valor que se asignara al campo en caso de que se cumpla las condiciones"})
+				new sap.m.Label({text:"Acción a tomar"}),
+				new sap.m.ComboBox({
+						  id: "oCmbActionEdit",
+						  width: "100%",
+						  items: [
+			                          new sap.ui.core.ListItem({text: "Asignar valor", key:"VALUE"}).bindProperty("text","StatusText").bindProperty("key","Status"),
+			                          new sap.ui.core.ListItem({text: "Ocultar",key:"HIDE"}),
+			                          new sap.ui.core.ListItem({text: "Hacer visible",key:"SHOW"}),
+			                          new sap.ui.core.ListItem({text: "Hacer obligatorio",key:"REQUIRED"}),
+			                          new sap.ui.core.ListItem({text: "Hacer de solo lectura",key:"READ"}),
+			                          new sap.ui.core.ListItem({text: "Hacer de escritura/lectura",key:"INPUT"}),
+	                     ],
+	                     selectionChange: function(evt){
+
+	                     	switch ( this.getSelectedKey() ) {
+
+	                     		case 'VALUE':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(true);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(true);
+	                     			break;
+	                     		case 'HIDE':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(false);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(false);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setValue("HIDE");
+	                     			break;
+	                     		case 'SHOW':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(false);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(false);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setValue("SHOW");
+	                     			break;
+	                     		case 'READ':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(false);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(false);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setValue("READ");
+	                     			break;
+                     			case 'INPUT':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(false);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(false);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setValue("INPUT");
+	                     			break;
+	                     		case 'REQUIRED':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(false);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(false);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setValue("REQUIRED");
+	                     			break;
+	                     	}
+	                     	
+	                     }
+
+		        }).bindProperty("value","StatusText"),
+				new sap.m.Label({id: "oLbFldRulAsignacionEdit", text:"Valor a asignar ( Para hacerlo obligatorio escribe REQUIRED )"}),
+				new sap.m.Input({id: "oTxtFldRulAsignacionEdit", value:"{forms>fldasignacion}", placeholder:"Ingrese el valor que se asignara al campo en caso de que se cumpla las condiciones"})
 			]
 		}).addStyleClass("layPadding10");
+		
+		
+		if(!that.subSectionIndex){
+			var dato = sap.ui.getCore().byId("app").getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/fields/' + this.fieldIndex + '/rules/' + oId + '/');
+			var valor = dato[0].versions[this.versionIndex].sections[this.sectionIndex].fields[this.fieldIndex].rules[oId].fldasignacion;
+		}else{
+			var dato = sap.ui.getCore().byId("app").getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/subsections/' + this.subSectionIndex + '/fields/' + this.fieldIndex + '/rules/' + oId + '/');
+			var valor = dato[0].versions[this.versionIndex].sections[this.sectionIndex].fields[this.fieldIndex].rules[oId].fldasignacion;
+		}
+		
+		
+		switch ( valor ) {
+
+     		case 'HIDE':
+     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(false);
+     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(false);
+     			sap.ui.getCore().byId("oCmbActionEdit").setSelectedKey("HIDE");
+     			break;
+     		case 'SHOW':
+     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(false);
+     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(false);
+     			sap.ui.getCore().byId("oCmbActionEdit").setSelectedKey("SHOW");
+     			break;
+     		case 'READ':
+     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(false);
+     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(false);
+     			sap.ui.getCore().byId("oCmbActionEdit").setSelectedKey("READ");
+     			break;
+ 			case 'INPUT':
+     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(false);
+     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(false);
+     			sap.ui.getCore().byId("oCmbActionEdit").setSelectedKey("INPUT");
+     			break;
+     		case 'REQUIRED':
+     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(false);
+     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(false);
+     			sap.ui.getCore().byId("oCmbActionEdit").setSelectedKey("REQUIRED");
+     			break;
+
+     		default:
+     			sap.ui.getCore().byId("oCmbActionEdit").setSelectedKey("VALUE");
+     			sap.ui.getCore().byId("oTxtFldRulAsignacionEdit").setVisible(true);
+     			sap.ui.getCore().byId("oLbFldRulAsignacionEdit").setVisible(true);
+     	}	
+		
 		
 		var oTable = new sap.m.Table({
 			inset: false,
@@ -322,7 +416,58 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 			content:[
 				new sap.m.Label({text:"Titulo de la regla"}),
 				new sap.m.Input({id:"oTxtFldRulDesc",placeholder:"Ingrese un titulo descriptivo para la regla"}),
-				new sap.m.Label({text:"Valor a asignar ( Para hacerlo obligatorio escribe REQUIRED )"}),
+				new sap.m.Label({text:"Acción a tomar"}),
+				new sap.m.ComboBox({
+						  //selectedKey:"{forms>sectioncolumn}",
+						  width: "100%",
+						  items: [
+			                          new sap.ui.core.ListItem({text: "Asignar valor", key:"VALUE"}).bindProperty("text","StatusText").bindProperty("key","Status"),
+			                          new sap.ui.core.ListItem({text: "Ocultar",key:"HIDE"}),
+			                          new sap.ui.core.ListItem({text: "Hacer visible",key:"SHOW"}),
+			                          new sap.ui.core.ListItem({text: "Hacer obligatorio",key:"REQUIRED"}),
+			                          new sap.ui.core.ListItem({text: "Hacer de solo lectura",key:"READ"}),
+			                          new sap.ui.core.ListItem({text: "Hacer de escritura/lectura",key:"INPUT"}),
+	                     ],
+	                     selectionChange: function(evt){
+
+	                     	switch ( this.getSelectedKey() ) {
+
+	                     		case 'VALUE':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setVisible(true);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacion").setVisible(true);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setValue("");
+	                     			break;
+	                     		case 'HIDE':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setVisible(false);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacion").setVisible(false);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setValue("HIDE");
+	                     			break;
+	                     		case 'SHOW':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setVisible(false);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacion").setVisible(false);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setValue("SHOW");
+	                     			break;
+	                     		case 'READ':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setVisible(false);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacion").setVisible(false);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setValue("READ");
+	                     			break;
+                     			case 'INPUT':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setVisible(false);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacion").setVisible(false);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setValue("INPUT");
+	                     			break;
+	                     		case 'REQUIRED':
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setVisible(false);
+	                     			sap.ui.getCore().byId("oLbFldRulAsignacion").setVisible(false);
+	                     			sap.ui.getCore().byId("oTxtFldRulAsignacion").setValue("REQUIRED");
+	                     			break;
+	                     	}
+	                     	
+	                     }
+
+		        }).bindProperty("value","StatusText"),
+				new sap.m.Label({id: "oLbFldRulAsignacion", text:"Valor a asignar ( Para hacerlo obligatorio escribe REQUIRED )"}),
 				new sap.m.Input({id:"oTxtFldRulAsignacion",placeholder:"Ingrese el valor que se asignara al campo en caso de que se cumpla las condiciones"})
 			]
 		}).addStyleClass("layPadding10");

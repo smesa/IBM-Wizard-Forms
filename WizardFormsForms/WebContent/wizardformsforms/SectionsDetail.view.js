@@ -56,20 +56,47 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 			id: "oTableSub",
 			inset: false,
 			columns: [
-			          
+			        
+			        new sap.m.Column({
+						width: "10%",
+						header: new sap.m.Label({
+							text:"Viñeta",
+						})
+					}),
 					new sap.m.Column({
-						width: "100%"
-					})
-	        ]
+						width: "50%",
+						header: new sap.m.Label({
+							text:"Titulo subsección",
+						})
+					}),
+					new sap.m.Column({
+						width: "20%",
+						header: new sap.m.Label({
+							text:"Nro.Columnas",
+						})
+					}),	        ]
 		});
 		
 		
 		var oTemplateSub = new sap.m.ColumnListItem({
 			type: sap.m.ListType.Active ,
 			cells: [
-			        new sap.m.ObjectIdentifier({
-			        	title: "{forms>sectiontitle}"
-			        }),		        
+					new sap.m.Input({
+			        	value: "{forms>sectionvi}"
+			        }),	
+			        new sap.m.Input({
+			        	value: "{forms>sectiontitle}"
+			        }),		
+			        new sap.m.ComboBox({
+						  selectedKey:"{forms>sectioncolumn}",
+						  width: "100%",
+						  items: [
+			                          new sap.ui.core.ListItem({text: "1 Columna", key:"1"}),
+			                          new sap.ui.core.ListItem({text: "2 Columnas",key:"2"}),
+			                          new sap.ui.core.ListItem({text: "3 Columnas",key:"3"}),
+			                          new sap.ui.core.ListItem({text: "4 Columnas",key:"4"})
+			                     ]
+			        }).bindProperty("value","StatusText")        
 			]
 		});	
 		
@@ -112,7 +139,12 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 			id: "oTableFields",
 			inset: false,
 			columns: [
-			          
+			        new sap.m.Column({
+						width: "10%",
+						header: new sap.m.Label({
+							text:"Viñeta",
+						})
+					}),
 					new sap.m.Column({
 						width: "30%",
 						header: new sap.m.Label({
@@ -124,7 +156,13 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 			        	header: new sap.m.Label({
 							text:"Descripción",
 						})
-			        })
+			        }),
+			        new sap.m.Column({
+			        	header: new sap.m.Label({
+							text:"Obligatorio",
+						})
+			        }),
+
 	        ]
 		});
 		
@@ -132,13 +170,23 @@ sap.ui.jsview("wizardformsforms.SectionsDetail", {
 		var oTemplate = new sap.m.ColumnListItem({
 			type: sap.m.ListType.Active ,
 			cells: [
+					new sap.m.Input({
+			        	value: "{forms>vineta}"
+			        }),
 			        new sap.m.ObjectIdentifier({
 			        	title: "{forms>fieldtecname}"
 			        }),
 			        
 			        new sap.m.ObjectIdentifier({
 			        	title: "{forms>fieldtitle}"
-			        }),			        
+			        }),		
+			        new sap.m.Switch({
+							state:"{forms>isrequired}",
+							customTextOn:"Si", 
+							customTextOff:"No",
+							change: function(evt){
+						}
+					})	        
 			]
 		});	
 		

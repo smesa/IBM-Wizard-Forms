@@ -141,7 +141,7 @@ sap.ui.controller("wizardformsforms.SubSectionsDetail", {
 									var filters = [];
 									var query = evt.getParameter("newValue");
 									if (query && query.length > 0) {
-										var filter = new sap.ui.model.Filter("fieldtitle", sap.ui.model.FilterOperator.Contains, query);
+										var filter = new sap.ui.model.Filter("fieldtecname", sap.ui.model.FilterOperator.Contains, query);
 										filters.push(filter);
 									}
 									var binding = sap.ui.getCore().byId('listFieldSection').getBinding("items");
@@ -189,6 +189,13 @@ sap.ui.controller("wizardformsforms.SubSectionsDetail", {
 	        			
 		        			var fieldIndx = items[index].getBindingContextPath().substring(items[index].getBindingContextPath().lastIndexOf('/') + 1,items[index].getBindingContextPath().length)
 		        		  	var field 	  = that.getView().getModel('fields').getData('/')[fieldIndx];
+
+		        		  	for( i = 0; i < field.values.length; i++){
+		        		  		field.values[i].status = true;
+		        		  	}
+
+		        		  	field.isrequired = false;
+		        		  	
 		        			data.fields.push(field)
 		        	  }	
 		        	  
