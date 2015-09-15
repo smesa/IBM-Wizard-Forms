@@ -306,8 +306,8 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 	addValuesSAPDialog: function(evt){
 		
 		var that = this; 
-		var oLblSAPTable  = new sap.m.Label({ text : "Tabla SAP" });  
-		var oTxtSAPTable  = new sap.m.Input({ id: "oTxtSAPTable", placeholder: "Ingresa el nombre de la tabla de SAP" });  
+		var oLblSAPTable    = new sap.m.Label({ text : "Tabla SAP" });  
+		var oTxtSAPTable    = new sap.m.Input({ id: "oTxtSAPTable", placeholder: "Ingresa el nombre de la tabla de SAP" });  
 		var oLblSAPCode     = new sap.m.Label({ text : "Campo código" }); 
 		var oTxtSAPCode     = new sap.m.Input({ id: "oTxtSAPCode", placeholder: "Ingresa el campo de código de valor de la tabla SAP" });  
 		var oLblSAPDesc     = new sap.m.Label({ text : "Campo Descripción" });
@@ -325,7 +325,7 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 		      beginButton: new sap.m.Button({
 		          text: 'Agregar',
 		          press: function (evt) {
-		        	//that.addGroup(evt);
+		        	that.loadValueDialog(evt);
 		            dialog.close();
 		          }
 		        }),
@@ -343,6 +343,76 @@ sap.ui.controller("wizardformsfields.FieldsCreate", {
 		    this.getView().addDependent(dialog);
 		    dialog.open();
 		
+	},
+
+	loadValueDialog: function(evt){	
+
+
+		var that = this;
+
+		var oGroup = sap.ui.getCore().byId("oTxtGroupNew");
+		
+		var oParameters = {
+	           "option" : 'get_values',
+	           "table"	: sap.ui.getCore().byId("oTxtSAPTable").getValue(),
+	           "code" 	: sap.ui.getCore().byId("oTxtSAPCode").getValue(),
+	           "desc" 	: sap.ui.getCore().byId("oTxtSAPDesc").getValue(),
+		};
+
+		var oModel = new myJSONModel;
+		
+		var dialog = new sap.m.Dialog({
+	      title: 'Confirmación',
+	      type: 'Message',
+	      content: new sap.m.Text({ text: 'Esta carga puede tomar un momento,¿Esta seguro continuar?' }),
+	      beginButton: new sap.m.Button({
+	        text: 'Cargar',
+	        press: function () {
+
+	        	// Llamo el metodo POST para crear los datos
+		    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/fields_data/fields/", function(oData){
+		    			
+		    			console.log(oData)		 
+
+
+    					var oGroup  = sap.ui.getCore().byId("oTxtGroupNew");
+						var model   = sap.ui.getCore().byId("app").getModel("data");
+						var data    = model.getData();
+						
+						for(i = 0; i<oData.length;i++){
+
+							data.push({
+								value: oData[i].value,
+								valueext: oData[i].valueext,
+								groupid: "",
+								grouptitle: "",
+							})
+						}						
+						
+						sap.ui.getCore().byId("app").getModel('data').setData(data);    	
+				    	sap.m.MessageToast.show('Valores de elemento agregados desde SAP');   			
+		    			
+		    		},function(){
+		    			sap.ui.commons.MessageBox.alert('Ocurrio un error agregando los valores desde SAP, por favor revise que la tabla y los campos ingresados existan.');
+		    		},oParameters, true,'GET');	
+
+    		  sap.m.MessageToast.show('Agregando valores desde SAP');
+    		  
+	          dialog.close();
+	        }
+	      }),
+	      endButton: new sap.m.Button({
+	        text: 'Cancelar',
+	        press: function () {
+	          dialog.close();
+	        }
+	      }),
+	      afterClose: function() {
+	        dialog.destroy();
+	      }
+	    });
+
+	    dialog.open();			
 	},
 	
 	addGroupDialog: function(evt){

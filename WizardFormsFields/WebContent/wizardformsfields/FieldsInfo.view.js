@@ -84,7 +84,14 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 	            new sap.m.Label({
 	            	text : "Grupos de valores"
 	            }), 
-	            new sap.m.ToolbarSpacer({}), 
+	            new sap.m.ToolbarSpacer({}),
+	            new sap.m.Button({
+	            	icon : "sap-icon://delete",
+	            	tooltip: 'Eliminar todos los grupos',
+	            	press: function(evt){
+	            		oController.deleteAllGroupDialog(evt)
+	            	}
+	            }), 
 	            new sap.m.Button({
 	            	icon : "sap-icon://add",
 	            	press: function(evt){
@@ -160,6 +167,20 @@ sap.ui.jsview("wizardformsfields.FieldsInfo", {
 	            	text : "Lista de valores del elemento"
 	            }), 
 	            new sap.m.ToolbarSpacer({}), 
+	            new sap.m.Button({
+	            	icon : "sap-icon://upload",
+	            	tooltip: 'Agregar desde tablas SAP',
+	            	press: function(evt){
+	            		oController.addValuesSAPDialog(evt)
+	            	}
+	            }),
+	            new sap.m.Button({
+	            	icon : "sap-icon://delete",
+	            	tooltip: 'Eliminar todos los valores',
+	            	press: function(evt){
+	            		oController.deleteAllValueDialog(evt)
+	            	}
+	            }),
 	            new sap.m.Button({
 	            	icon : "sap-icon://add",
 	            	press: function(evt){

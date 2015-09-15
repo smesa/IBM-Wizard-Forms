@@ -237,6 +237,154 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
     	
 	},
 	
+	deleteAllValueDialog: function(evt){	
+
+		var that = this;
+		var oTable    = sap.ui.getCore().byId('oValueTableNew');	
+		var app       = sap.ui.getCore().byId("app");
+		
+		try {  		
+			var context = app.getModel('fields').getData('/' + this.fieldIndex + '/values/');
+		
+		} catch(ex){  
+			window.history.go(-1);
+		}  
+		
+		var dialog = new sap.m.Dialog({
+	      title: 'Confirmación',
+	      type: 'Message',
+	      content: new sap.m.Text({ text: '¿Esta seguro de eliminar todos los valores del elemento?' }),
+	      beginButton: new sap.m.Button({
+	        text: 'Eliminar',
+	        press: function () {
+	         
+			  context[that.fieldIndex].values = [];		
+	    	  sap.ui.getCore().byId("app").getModel('fields').setData(context); 
+    		  sap.m.MessageToast.show('Valores de elemento eliminados');
+    		  
+	          dialog.close();
+	        }
+	      }),
+	      endButton: new sap.m.Button({
+	        text: 'Cancelar',
+	        press: function () {
+	          dialog.close();
+	        }
+	      }),
+	      afterClose: function() {
+	        dialog.destroy();
+	      }
+	    });
+
+	    dialog.open();			
+	},
+
+	addValuesSAPDialog: function(evt){
+		
+		var that = this; 
+		var oLblSAPTable    = new sap.m.Label({ text : "Tabla SAP" });  
+		var oTxtSAPTable    = new sap.m.Input({ id: "oTxtSAPTable", placeholder: "Ingresa el nombre de la tabla de SAP" });  
+		var oLblSAPCode     = new sap.m.Label({ text : "Campo código" }); 
+		var oTxtSAPCode     = new sap.m.Input({ id: "oTxtSAPCode", placeholder: "Ingresa el campo de código de valor de la tabla SAP" });  
+		var oLblSAPDesc     = new sap.m.Label({ text : "Campo Descripción" });
+		var oTxtSAPDesc     = new sap.m.Input({ id: "oTxtSAPDesc", placeholder: "Ingresa el campo de descripción de valor de la tabla SAP" });	
+		
+		// Formulario de valores
+		var oValueForm = new sap.ui.layout.VerticalLayout({
+			width: "100%",
+			content:[oLblSAPTable,oTxtSAPTable,oLblSAPCode,oTxtSAPCode,oLblSAPDesc,oTxtSAPDesc ]
+		}).addStyleClass("layPadding10");			
+		
+		var dialog = new sap.m.Dialog({
+		      title: 'Carga de valores desde Tablas SAP',
+		      content:[oValueForm],
+		      beginButton: new sap.m.Button({
+		          text: 'Agregar',
+		          press: function (evt) {
+		        	that.loadValueDialog(evt);
+		            dialog.close();
+		          }
+		        }),
+		        endButton: new sap.m.Button({
+		          text: 'Cerrar',
+				  type: "Reject",
+		          press: function () {
+		            dialog.close();
+		          }
+		        }),
+		        afterClose: function() {
+		          dialog.destroy();
+		        }
+		    });
+		    this.getView().addDependent(dialog);
+		    dialog.open();
+		
+	},
+
+	loadValueDialog: function(evt){	
+
+
+		var that = this;
+
+		var oGroup = sap.ui.getCore().byId("oTxtGroupNew");
+		
+		var oParameters = {
+	           "option" : 'get_values',
+	           "table"	: sap.ui.getCore().byId("oTxtSAPTable").getValue(),
+	           "code" 	: sap.ui.getCore().byId("oTxtSAPCode").getValue(),
+	           "desc" 	: sap.ui.getCore().byId("oTxtSAPDesc").getValue(),
+		};
+
+		var oModel = new myJSONModel;
+		
+		var dialog = new sap.m.Dialog({
+	      title: 'Confirmación',
+	      type: 'Message',
+	      content: new sap.m.Text({ text: 'Esta carga puede tomar un momento,¿Esta seguro continuar?' }),
+	      beginButton: new sap.m.Button({
+	        text: 'Cargar',
+	        press: function () {
+
+	        	// Llamo el metodo POST para crear los datos
+		    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/fields_data/fields/", function(oData){
+		    			
+						var fields = sap.ui.getCore().byId("app").getModel("fields").getData();	
+						
+						for(i = 0; i<oData.length;i++){
+
+							fields[that.fieldIndex].values.push({
+								value: oData[i].value,
+								valueext: oData[i].valueext,
+								groupid: "",
+								grouptitle: "",
+							})
+						}						
+
+						sap.ui.getCore().byId("app").getModel('fields').setData(fields); 
+						sap.m.MessageToast.show('Valores de elemento agregados desde SAP');  		
+		    			
+		    		},function(){
+		    			sap.ui.commons.MessageBox.alert('Ocurrio un error agregando los valores desde SAP, por favor revise que la tabla y los campos ingresados existan.');
+		    		},oParameters, true,'GET');	
+
+    		  sap.m.MessageToast.show('Agregando valores desde SAP');
+    		  
+	          dialog.close();
+	        }
+	      }),
+	      endButton: new sap.m.Button({
+	        text: 'Cancelar',
+	        press: function () {
+	          dialog.close();
+	        }
+	      }),
+	      afterClose: function() {
+	        dialog.destroy();
+	      }
+	    });
+
+	    dialog.open();			
+	},
 	
 	addGroupDialog: function(evt){
 		
@@ -330,6 +478,50 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 	          context[that.fieldIndex].groups.splice(oId,1);		
 	    	  sap.ui.getCore().byId("app").getModel('fields').setData(context);  
     		  sap.m.MessageToast.show('Grupo de valores eliminado');
+    		  
+	          dialog.close();
+	        }
+	      }),
+	      endButton: new sap.m.Button({
+	        text: 'Cancelar',
+	        press: function () {
+	          dialog.close();
+	        }
+	      }),
+	      afterClose: function() {
+	        dialog.destroy();
+	      }
+	    });
+
+	    dialog.open();			
+	},
+
+
+	deleteAllGroupDialog: function(evt){	
+		
+		
+		var that = this;	
+		var app       = sap.ui.getCore().byId("app");
+
+		try {  		
+			var context = app.getModel('fields').getData('/' + this.fieldIndex + '/groups/');
+		
+		} catch(ex){  
+			window.history.go(-1);
+		} 	         
+		  
+		
+		var dialog = new sap.m.Dialog({
+	      title: 'Confirmación',
+	      type: 'Message',
+	      content: new sap.m.Text({ text: '¿Esta seguro de eliminar estos los grupos?' }),
+	      beginButton: new sap.m.Button({
+	        text: 'Eliminar',
+	        press: function () {
+	        	
+			  context[that.fieldIndex].groups = [];		
+	    	  sap.ui.getCore().byId("app").getModel('fields').setData(context); 
+    		  sap.m.MessageToast.show('Grupos de valores eliminados');
     		  
 	          dialog.close();
 	        }

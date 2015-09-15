@@ -59,6 +59,8 @@ sap.ui.model.json.JSONModel.extend("myJSONModel", {
 				if (typeof fnError === 'function') {
                     fnError({message : textStatus, statusCode : XMLHttpRequest.status, statusText : XMLHttpRequest.statusText, responseText : XMLHttpRequest.responseText});
                 }
+
+                busyDialog.close();
 			  }
 			});
  
