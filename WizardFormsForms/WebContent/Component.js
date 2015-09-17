@@ -24,7 +24,7 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		                     {
 		                    	 pattern: "",
 							     name: "Blank",
-							     view: "blank",
+							     view: "blanco",
 							     targetAggregation: "detailPages",
 		                     },
 							{
@@ -125,6 +125,7 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		});
 		
 		oView.setModel(oModel,'forms');	
+		oView.setModel(oModel,'formsOri');	
 		
 		
 		// Elementos
@@ -180,6 +181,19 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		var json = []
 		var oModel6 = new sap.ui.model.json.JSONModel(json);
 		oView.setModel(oModel6,'rules');
+
+
+		var jsonv = []
+		var oModel7 = new sap.ui.model.json.JSONModel(jsonv);
+		oView.setModel(oModel6,'versions');
+
+		var jsons = []
+		var oModel8 = new sap.ui.model.json.JSONModel(jsons);
+		oView.setModel(oModel6,'secciones');
+
+		
+		
+
 		
 		
 		return oView;

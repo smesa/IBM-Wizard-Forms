@@ -260,7 +260,7 @@ sap.ui.controller("wizardformsforms.FieldDetail", {
 			var valor = dato[0].versions[this.versionIndex].sections[this.sectionIndex].fields[this.fieldIndex].rules[oId].fldasignacion;
 		}else{
 			var dato = sap.ui.getCore().byId("app").getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + this.sectionIndex + '/subsections/' + this.subSectionIndex + '/fields/' + this.fieldIndex + '/rules/' + oId + '/');
-			var valor = dato[0].versions[this.versionIndex].sections[this.sectionIndex].fields[this.fieldIndex].rules[oId].fldasignacion;
+			var valor = dato[0].versions[this.versionIndex].sections[this.sectionIndex].subsections[this.subSectionIndex].fields[this.fieldIndex].rules[oId].fldasignacion;
 		}
 		
 		

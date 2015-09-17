@@ -539,6 +539,13 @@ sap.ui.jsview("wizardformsforms.FormsDetail", {
 	            }), 
 	            new sap.m.ToolbarSpacer({}), 
 	            new sap.m.Button({
+	            	icon : "sap-icon://upload",
+	            	tooltip: "Copiar sección de un formulario",
+	            	press: function(evt){
+	            		oController.addSectionCopy(evt)
+	            	}
+	            }),
+	            new sap.m.Button({
 	            	icon : "sap-icon://add",
 	            	press: function(evt){
 	            		oController.addSection(evt)

@@ -79,9 +79,6 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 		var oLblGroup     = new sap.m.Label({ text : "Grupo de valores" });
 		var oCmbGroup     = new sap.m.ComboBox({id: "oCmbGroup", width: "100%"});
 		
-		var oListItem = evt.getParameters().listItem;
-		var oPath     = oListItem.getBindingContextPath();
-		var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));		
 		var app       = sap.ui.getCore().byId("app");
 		var valext    = "";
 		var value     = "";
@@ -89,6 +86,9 @@ sap.ui.controller("wizardformsfields.FieldsInfo", {
 		var context   = null;
 		
 		try {  		
+			var oListItem = evt.getParameters().listItem;
+			var oPath     = oListItem.getBindingContextPath();
+			var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));
 			context = app.getModel('fields').getData('/' + this.fieldIndex + '/values/' + oId + '/');	
 			if(context.length > 0){
 				value  = context[that.fieldIndex].values[oId].value;

@@ -25,6 +25,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 			window.history.go(-1);
 		}  
 	},	
+
 	
 	selectedTab: function(evt){
 		
@@ -194,6 +195,351 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		    dialog.open();
 		
 	},
+
+
+
+	addSectionCopy: function(evt){
+		
+		var that 	= this;
+	    var oModel  = new myJSONModel;
+	    var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex);
+	    var formidDest = context.oModel.oData[this.formIndex].formid;
+	    var veridDest  = context.oModel.oData[this.formIndex].versions[this.versionIndex].verformid;
+
+		
+		that.formOri = new sap.m.Input({
+	       	 id:"oFormOrigen",
+	    	 enabled:true,			        	 
+	    	 showValueHelp:true,
+	    	 placeholder:"Seleccione el formulario origen",
+	    	 valueHelpRequest: function(evt){
+	    		 that.getForms(evt)
+	    	 }
+		});
+		
+		that.versionOri = new sap.m.Input({
+	       	 id:"oVersionOri",
+	    	 enabled:true,			        	 
+	    	 showValueHelp:true,
+	    	 placeholder:"Seleccione la versión origen",
+	    	 valueHelpRequest: function(evt){
+	    		 that.getVersions(evt)
+	    	 }
+		});
+
+
+		that.sectionOri = new sap.m.Input({
+	       	 id:"oSectionOri",
+	    	 enabled:true,			        	 
+	    	 showValueHelp:true,
+	    	 placeholder:"Seleccione la sección a copiar",
+	    	 valueHelpRequest: function(evt){
+	    		 that.getSections(evt)
+	    	 }
+		});
+		
+		
+		// Formularios
+		that.oInfoDuplicate = new sap.ui.layout.VerticalLayout({
+			id: "oTypeVersion",
+			width: "100%",
+			placeholder: "Seleccione una opción",
+			content:[
+         	    	new sap.m.Label({text:"Formulario"}),
+		         	that.formOri,
+			        new sap.m.Label({text:"Versión"}),
+			        that.versionOri,
+			        new sap.m.Label({text:"Sección"}),
+			        that.sectionOri
+			]
+		}).addStyleClass("layPadding10");
+		
+		
+		var dialog = new sap.m.Dialog({
+		      title: 'Duplicar formulario',
+		      verticalScrolling: true,
+			  contentWidth: "500px",
+		      content:[that.oInfoDuplicate],
+		      beginButton: new sap.m.Button({
+		    	  id: "btnSaveNewDup",
+		          text: 'Crear',
+		          enabled: true,
+		          press: function (evt) {	
+		        	  
+
+		        	// Extraigo el id del formdest y la versiondest
+
+
+		        	  
+		      		var oParameters = {
+		      			   "option" 		: 'copy-section',
+		 	 	           "formori" 		: sap.ui.getCore().byId("oFormOrigen").getValue(),
+		 	 	           "formdest"  		: formidDest,
+		 	 	           "verori"	   		: sap.ui.getCore().byId("oVersionOri").getValue().substring(0, 3),
+		 	 	           "verdest"    	: veridDest,
+		 	 	           "sectionori"		: sap.ui.getCore().byId("oSectionOri").getValue().substring(0, 5),
+		      		};
+		        	  
+		        	// Llamo el metodo POST para crear los datos
+			    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+			    			
+			    						    			
+			    			// Consulto los datos actualizados			
+			    			var oModel2 = new myJSONModel;
+			    			
+			    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+			    				
+			    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
+			    				
+				    			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/');	
+				    			
+				    			// Limpio los campos
+				    	  		sap.ui.getCore().byId("oFormOrigen").setValue("");
+				    	  		sap.ui.getCore().byId("oVersionOri").setValue("");
+				    	  		sap.ui.getCore().byId("oSectionOri").setValue("");
+				    	  		
+				    	  		sap.m.MessageToast.show('Sección duplicada con exito');
+			    				
+			    			},function(){
+			    				sap.m.MessageToast.show('Error creando el formulario');
+			    			});		
+			    			
+
+			    			
+			    		},function(){
+			    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
+			    		},oParameters, true,'POST');	
+		            dialog.close();
+		          }
+		        }),
+		        endButton: new sap.m.Button({
+		          text: 'Cerrar',
+				  type: "Reject",
+		          press: function () {
+		            dialog.close();
+		          }
+		        }),
+		        afterClose: function() {
+		          dialog.destroy();
+		        }
+		    });
+		    dialog.open();		
+	},
+
+
+	getForms: function(evt){
+		
+		var that = this;
+		
+		var itemTemplate = new sap.m.StandardListItem({
+			title: "{formsOri>formtecname}",
+			description: "{formsOri>formtitle}",
+			active: true
+		});
+		
+		var dialog = new sap.m.SelectDialog({
+			title:"Formularios",
+		    class:"sapUiPopupWithPadding",
+		    liveChange: function(evt){
+		    	
+		    	var filters = [];
+				var query = evt.getParameter("value");
+				if (query && query.length > 0) {
+					var filter = new sap.ui.model.Filter("formtecname", sap.ui.model.FilterOperator.Contains, query);
+					filters.push(filter);
+				}
+				evt.getSource().getBinding("items").filter(filters);
+				that.validateRequiredField(evt)
+				
+		    },
+		    confirm: function(evt){
+		    	var oSelectedItem = evt.getParameter("selectedItem");
+
+		        if (oSelectedItem) {
+
+			        var oBindingContext = evt.getParameter("selectedContexts");
+					var path  	  		= oBindingContext[0].sPath;
+					var start     		= path.lastIndexOf('/') + 1;
+					that.formOriIndex 	= path.substring(start,path.length);		
+
+		            var oFormOrigen 	=  sap.ui.getCore().byId("oFormOrigen");
+		            oFormOrigen.setValue(oSelectedItem.getTitle());
+		            oFormOrigen.setValueState("None");
+
+
+
+		            var versiones = [];
+
+		            for(i=0; i<oBindingContext[0].oModel.oData[that.formOriIndex].versions.length; i++){		        	
+		        		
+			        	versiones.push({
+			        		verformid: oBindingContext[0].oModel.oData[that.formOriIndex].versions[i].verformid,
+			        		descpver:  oBindingContext[0].oModel.oData[that.formOriIndex].versions[i].descpver,
+			    		})
+
+		            }
+
+	    	  		sap.ui.getCore().byId("oVersionOri").setValue("");
+	    	  		sap.ui.getCore().byId("oSectionOri").setValue("");
+
+		            sap.ui.getCore().byId("app").getModel('versions').setData(versiones); 
+
+		          
+		        }
+		        evt.getSource().getBinding("items").filter([]);
+		    },
+		    cancel: function(evt){
+		    	var oSelectedItem = evt.getParameter("selectedItem");
+		        if (oSelectedItem) {
+		          var oFormOrigen =  sap.ui.getCore().byId("oFormOrigen");
+		          oFormOrigen.setValue(oSelectedItem.getTitle());
+		        }
+		        evt.getSource().getBinding("items").filter([]);
+		    }
+		});
+		
+		dialog.bindAggregation("items", "formsOri>/", itemTemplate);
+	
+	    this.getView().addDependent(dialog);
+	    dialog.open();
+
+	},
+
+	getVersions: function(evt){
+		
+		var that = this;
+		
+		var itemTemplate = new sap.m.StandardListItem({
+			title: "{versions>verformid} - {versions>descpver}",
+			active: true
+		});
+		
+		var dialog = new sap.m.SelectDialog({
+			title:"Versiones",
+		    class:"sapUiPopupWithPadding",
+		    liveChange: function(evt){
+		    	
+		    	var filters = [];
+				var query = evt.getParameter("value");
+				if (query && query.length > 0) {
+					var filter = new sap.ui.model.Filter("verformid", sap.ui.model.FilterOperator.Contains, query);
+					filters.push(filter);
+				}
+				evt.getSource().getBinding("items").filter(filters);
+				that.validateRequiredField(evt)
+				
+		    },
+		    confirm: function(evt){
+
+		    	var oSelectedItem = evt.getParameter("selectedItem");
+
+		        if (oSelectedItem) {
+
+			        var oBindingContext 	= evt.getParameter("selectedContexts");
+					var path  	  			= oBindingContext[0].sPath;
+					var start     			= path.lastIndexOf('/') + 1;
+					that.versionOriIndex	= path.substring(start,path.length);		
+
+		            var oVersionOri 		=  sap.ui.getCore().byId("oVersionOri");
+		            oVersionOri.setValue(oSelectedItem.getTitle());
+		            oVersionOri.setValueState("None");
+
+
+		            var context = sap.ui.getCore().byId("app").getModel('formsOri').getContext('/' + this.formOriIndex + '/versions/' + that.versionOriIndex);	
+
+		            var secciones = [];
+
+		            for(i=0; i<context.oModel.oData[that.formOriIndex].versions[that.versionOriIndex].sections.length; i++){
+		        	
+		        		
+			        	secciones.push({
+			        		sectionid: 	   context.oModel.oData[that.formOriIndex].versions[that.versionOriIndex].sections[i].sectionid,
+			        		sectiontitle:  context.oModel.oData[that.formOriIndex].versions[that.versionOriIndex].sections[i].sectiontitle,
+			    		})
+		            }
+
+	    	  		sap.ui.getCore().byId("oSectionOri").setValue("");
+
+		            sap.ui.getCore().byId("app").getModel('secciones').setData(secciones); 
+		          
+		        }
+		        evt.getSource().getBinding("items").filter([]);
+		    },
+		    cancel: function(evt){
+		    	var oSelectedItem = evt.getParameter("selectedItem");
+		        if (oSelectedItem) {
+		          var oVersionOri =  sap.ui.getCore().byId("oVersionOri");
+		          oVersionOri.setValue(oSelectedItem.getTitle());
+		        }
+		        evt.getSource().getBinding("items").filter([]);
+		    }
+		});
+		
+		dialog.bindAggregation("items", "versions>/", itemTemplate);
+	
+	    this.getView().addDependent(dialog);
+	    dialog.open();
+
+	},
+
+	getSections: function(evt){
+		
+		var that = this;
+		
+		var itemTemplate = new sap.m.StandardListItem({
+			title: "{secciones>sectionid} - {secciones>sectiontitle}",
+			active: true
+		});
+		
+		var dialog = new sap.m.SelectDialog({
+			title:"Versiones",
+		    class:"sapUiPopupWithPadding",
+		    liveChange: function(evt){
+		    	
+		    	var filters = [];
+				var query = evt.getParameter("value");
+				if (query && query.length > 0) {
+					var filter = new sap.ui.model.Filter("verformid", sap.ui.model.FilterOperator.Contains, query);
+					filters.push(filter);
+				}
+				evt.getSource().getBinding("items").filter(filters);
+				that.validateRequiredField(evt)
+				
+		    },
+		    confirm: function(evt){
+
+		    	var oSelectedItem = evt.getParameter("selectedItem");
+
+		        if (oSelectedItem) {
+
+			        var oBindingContext 	= evt.getParameter("selectedContexts");
+					var path  	  			= oBindingContext[0].sPath;
+					var start     			= path.lastIndexOf('/') + 1;
+					that.versionOriIndex	= path.substring(start,path.length);		
+
+		            var oSectionOri 		=  sap.ui.getCore().byId("oSectionOri");
+		            oSectionOri.setValue(oSelectedItem.getTitle());
+		            oSectionOri.setValueState("None");
+		          
+		        }
+		        evt.getSource().getBinding("items").filter([]);
+		    },
+		    cancel: function(evt){
+		    	var oSelectedItem = evt.getParameter("selectedItem");
+		        if (oSelectedItem) {
+		          var oSectionOri =  sap.ui.getCore().byId("oSectionOri");
+		          oSectionOri.setValue(oSelectedItem.getTitle());
+		        }
+		        evt.getSource().getBinding("items").filter([]);
+		    }
+		});
+		
+		dialog.bindAggregation("items", "secciones>/", itemTemplate);
+	
+	    this.getView().addDependent(dialog);
+	    dialog.open();
+
+	},
 	
 	saveData: function(evt){
 		
@@ -225,7 +571,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
   				}
   				
   				// Concateno reglas
-  				var field =  data.sections[i].fields[j].fieldid + "#RQ" + data.sections[i].fields[j].isrequired +  "#RQ" + disables + "#RQ" + data.sections[i].fields[j].vineta + "#RLS";
+  				var field =  data.sections[i].fields[j].fieldid + "#RQ" + data.sections[i].fields[j].isrequired +  "#RQ" + disables + "#RQ" + data.sections[i].fields[j].vineta + "#RQ" + data.sections[i].fields[j].type + "#RLS";
   				
   				// Recorro las reglas de los campos de las secciones
 				for(z = 0; z < data.sections[i].fields[j].rules.length; z++){ 		
@@ -275,7 +621,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	  				}
 	  				
 	  				// Concateno reglas
-	  				var field =  sectionscopy[w].fields[j].fieldid + "#RQ" + sectionscopy[w].fields[j].isrequired +  "#RQ" + disables + "#RQ" + sectionscopy[w].fields[j].vineta +  "#RLS";
+	  				var field =  sectionscopy[w].fields[j].fieldid + "#RQ" + sectionscopy[w].fields[j].isrequired +  "#RQ" + disables + "#RQ" + sectionscopy[w].fields[j].vineta + "#RQ" + sectionscopy[w].fields[j].type +  "#RLS";
 	  				
 	  				// Recorro las reglas de los campos de las secciones
 					for(z = 0; z < sectionscopy[w].fields[j].rules.length; z++){ 		

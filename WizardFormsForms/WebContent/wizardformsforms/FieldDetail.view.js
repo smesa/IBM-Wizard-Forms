@@ -22,6 +22,34 @@ sap.ui.jsview("wizardformsforms.FieldDetail", {
 			         new sap.m.Input({value:"{forms>fieldtecname}", enabled:false}).addStyleClass("textRedBold"),
 			         new sap.m.Label({text:"Titulo del elemento"}),
 			         new sap.m.Input({value:"{forms>fieldtitle}", enabled:false}).addStyleClass("textRedBold"),
+			         new sap.m.Label({text:"Tipo de elemento"}),
+			         new sap.m.ComboBox({
+						  selectedKey:"{forms>fieldtype}",
+						  width: "100%",
+						  enabled:false,
+						  items: [
+			                          new sap.ui.core.ListItem({text: "Text Input",key:"TEXT"}).bindProperty("text","StatusText").bindProperty("key","Status"),
+			                          new sap.ui.core.ListItem({text: "Combo Box",key:"COMBO"}),
+			                          new sap.ui.core.ListItem({text: "Radio Button",key:"RADIO"}),
+			                          new sap.ui.core.ListItem({text: "Check Box",key:"CHECK"}),
+			                          new sap.ui.core.ListItem({text: "Calendario",key:"CALE"}),
+			                          new sap.ui.core.ListItem({text: "Hora",key:"TIME"})
+			                     ]
+			         }).bindProperty("value","StatusText"),
+			         new sap.m.Label({text:"Tipo de elemento para el formulario"}),
+			         new sap.m.ComboBox({
+						  selectedKey:"{forms>type}",
+						  width: "100%",
+						  items: [		
+						  			  new sap.ui.core.ListItem({text: "Sin alterar",key:""}),
+			                          new sap.ui.core.ListItem({text: "Text Input",key:"TEXT"}),
+			                          new sap.ui.core.ListItem({text: "Combo Box",key:"COMBO"}),
+			                          new sap.ui.core.ListItem({text: "Radio Button",key:"RADIO"}),
+			                          new sap.ui.core.ListItem({text: "Check Box",key:"CHECK"}),
+			                          new sap.ui.core.ListItem({text: "Calendario",key:"CALE"}),
+			                          new sap.ui.core.ListItem({text: "Hora",key:"TIME"})
+			                     ]
+			         }).bindProperty("value","StatusText"),
 			         new sap.m.Label({text:"Elemento obligatorio"}),
 			         new sap.m.Switch({
 							state:"{forms>isrequired}",

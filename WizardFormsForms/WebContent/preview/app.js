@@ -143,6 +143,11 @@ angular.module('preview', ['ngRoute'])
   					
   					var nameelmparent = list.formid + section.sectionid + 'fields';
 					var elm = $('#'+nameelmparent);
+
+
+					if(field.type.length > 0){
+						field.fieldtype = field.type;
+					}
   					
 
   					// Evaluo que tipo de elemento es
@@ -218,6 +223,10 @@ angular.module('preview', ['ngRoute'])
 	  					// Elemento padre osea la seccion
 	  					var nameelmparent = list.formid + subsection.sectionid;
 	  					elm = $('#'+nameelmparent);
+
+	  					if(field.type.length > 0){
+							field.fieldtype = field.type;
+						}
 
 	  					// Evaluo que tipo de elemento es
 	  					switch(field.fieldtype) {
@@ -300,7 +309,7 @@ function addDate(elmparent,field,formid,seccion){
 	newInput.type = 'text';
 	newInput.id   =  formid+seccion.sectionid+field.fieldid;
 	newInput.className  = 'form-control';
-	newInput.placeholder = field.fieldplaceholder;
+	newInput.placeholder = 'dd/mm/aaaa';//field.fieldplaceholder;
 	newInput.required = true;
 	
 	var span = document.createElement('span');
