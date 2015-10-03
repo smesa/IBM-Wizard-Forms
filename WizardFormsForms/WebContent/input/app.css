@@ -3,6 +3,29 @@ body {
   padding-bottom: 20px;
 }
 
+
+.btn-primary.active, .btn-primary:active{
+    background-color: #EA1C1C;
+    border-color: #EA1C1C;
+}
+
+.btn-primary {
+  background-color: #337ab7;
+  background-image: none;
+  border-color: #fff;
+}
+
+.btn {
+
+  border-radius: 0px;
+}
+
+.radio, .checkbox {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -13,24 +36,24 @@ body {
 
 @media (min-width: 768px) {
   .container {
-    width: 900px;
+    width: 95%;
     padding-right: 0; 
-   	padding-left: 0; 
-   	margin-right: 5px; 
-   	margin-left: 5px;
+    padding-left: 0; 
+    margin-right: 5px; 
+    margin-left: 5px;
   }
 }
 
 @media (min-width: 992px) {
   .container {
-    width: 970px;
+    width: 95%;
   }
 }
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 95%;
     padding-right: 15px;
- 	padding-left: 15px;
+  padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
   }

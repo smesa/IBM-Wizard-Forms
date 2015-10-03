@@ -1,11 +1,11 @@
-angular.module('input', ['ngRoute'])
+angular.module('input', ['ngRoute', 'mgcrea.ngStrap'])
  
 
-.config(function($routeProvider) {
+.config(function($routeProvider, $datepickerProvider) {
   $routeProvider
     .when('/', {      
       templateUrl:'views/input.html',
-      controller:'InputCtrl'
+      controller:'PreviewCtrl'
     })
     .when('/get/:formid/:verformid/:inputs', {      
       templateUrl:'views/input.html',
@@ -14,6 +14,11 @@ angular.module('input', ['ngRoute'])
     .otherwise({
       redirectTo:'/'
     });
+  
+  angular.extend($datepickerProvider.defaults, {
+	    dateFormat: 'dd/MM/yyyy',
+	    startWeek: 1
+  });
   
   // Calendario en español
   $.fn.datepicker.dates['ES'] = {
@@ -25,15 +30,19 @@ angular.module('input', ['ngRoute'])
 		    today: "Hoy",
 		    clear: "Borrar"
 	};
+  
 })
 
-.controller('InputCtrl', function($scope,$compile, $routeParams, $http) {
+.controller('InputCtrl', function($scope, $compile, $routeParams, $http) {
 	
 	
 	var formid 			= $routeParams.formid;
 	var verformid		= $routeParams.verformid;
 	var inputs          = $routeParams.inputs;
 	var panel 			= $("#ppal");
+	
+	$scope.message 		= "Prueba de mensaje";
+	
 	
 	// Carga de campos 	
 	var sURLFields = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/fields_data/fields'
@@ -50,8 +59,7 @@ angular.module('input', ['ngRoute'])
 		  error: function(XMLHttpRequest, textStatus, errorThrown){
 
 		  }
-	});	
-
+	});		
 
 	// Evento init
 	if(inputs != 'NONE'){
@@ -81,73 +89,9 @@ angular.module('input', ['ngRoute'])
 		});	
 	}
 
-
-	// Evento Submit
-	$scope.submit = function(){
-		
-		
-		var dataSave = inputs;
-		
-		if(dataSave == 'NONE'){
-			dataSave = '';
-		}
-		
-		dataSave = dataSave + '#-H-#' + formid + '#-|-#' + verformid + '#-|-#';
-		
-		angular.forEach($scope.data.versions[0].sections, function(section){
-			
-			angular.forEach(section.fields, function(field){				
-				dataSave = dataSave +  field.fieldid + '#-:-#' + $scope['model'+field.fieldid] + '#-,-#';					
-			})	
-		})
-		
-		dataSave = dataSave.substring(0, dataSave.length - 5);
-		
-		var sURL  = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms';
-		var oParameters = {
-	           "data" 			: dataSave,
-	           "option"		    : 'save-data',
-	           "_method"		: 'POST',
-		 };
 	
-		jQuery.ajax({
-			  url: sURL,
-			  async: true,
-			  dataType: 'json',
-			  data: oParameters,
-			  type: 'GET',
-			  
-			  success: function(oData) {
-				  
-				  if(oData[0].messagetype == 'S'){
-					  $scope.message = oData[0].message ;
-					  $('#modalok').modal('show')
-				  }else{
-					  $scope.message = oData[0].message ;
-					  $('#modalerror').modal('show')
-				  }		
-				  
-				  angular.forEach($scope.data.versions[0].sections, function(section){
-						
-						angular.forEach(section.fields, function(field){				
-							$scope['model'+field.fieldid] = ' ';				
-						})	
-				  })
-				  
-				  $scope.$apply();
 
-			  },
-			  error: function(XMLHttpRequest, textStatus, errorThrown){
-				  
-				  $scope.message = "The following problem occurred: " + textStatus, XMLHttpRequest.responseText + ","	+ XMLHttpRequest.status + "," + XMLHttpRequest.statusText;
-				  $('#modalerror').modal('show')
-			  }
-		});
-		
-	}
-
-
-	// Evento change(osea para las formulas)
+	
 	$scope.change = function(id){
 		
 		var find = false;
@@ -255,11 +199,8 @@ angular.module('input', ['ngRoute'])
 				
 			}
 			
-		} )	
-		
+		} )			
 	}
-
-
 	
 	var sURL  = 'http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms?formid=' + formid + '&verformid=' + verformid;
 		
@@ -273,9 +214,9 @@ angular.module('input', ['ngRoute'])
 			$scope.data.colorbase 			= list.versions[0].colorbase;
 			$scope.data.colorsections 		= list.versions[0].colorsections;
 			$scope.data.showtitle 			= list.versions[0].showtitle;
-			$scope.data.sizetitlehead		= list.versions[0].sizetitlehead;
+			$scope.data.sizetitlehead 		= list.versions[0].sizetitlehead;
 			$scope.data.showtitlesection 	= list.versions[0].showtitlesection;
-			$scope.data.sizetitlesections 	= list.versions[0].sizetitlesections;		
+			$scope.data.sizetitlesections 	= list.versions[0].sizetitlesections;			
 			
 			
 			// Se muestra titulo
@@ -303,15 +244,13 @@ angular.module('input', ['ngRoute'])
 			try{
 				document.getElementById('panel-head').style.border = 'none';
 				document.getElementById('panel-head').style.backgroundColor = $scope.data.colorhead;
-			}catch(err){}	
-
-
+			}catch(err){}		
+			
 			// Color de modal
 			try{
 				document.getElementById('modal-content-ok').style.border = 'none';
 				document.getElementById('modal-content-ok').style.backgroundColor = $scope.data.colorsections;
 			}catch(err){}	
-
 			
 			
 			// Recorro las secciones
@@ -321,7 +260,7 @@ angular.module('input', ['ngRoute'])
 					
 				// Agrego la seccion al panel
 				if($scope.data.showtitlesection){
-					var titlesection = section.sectionvi + ' ' + section.sectiontitle
+					var titlesection = section.sectiontitle
 				}
 				
 				var elmsection = '<div class="panel panel-default" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + 
@@ -346,29 +285,15 @@ angular.module('input', ['ngRoute'])
 	  			    	section.sectioncolumn = 'col-md-3 col-sm-3'
 	  			    		break;
   				}
-
-
-				// Elemento padre osea la seccion
-				var nameelmparent = list.formid + section.sectionid;
-				var elm = $('#'+nameelmparent);
   				
-  				var elmsection = '<div class="panel panel-default" style="border: none;"><div class="panel-body" id="'+
-					list.formid + section.sectionid + 'fields' +'"></div></div>';
-					
-  				elm.append(elmsection);	  				
-
   				
   				// Agrego los campos
   				angular.forEach(section.fields, function(field){
   					
-  					var nameelmparent = list.formid + section.sectionid + 'fields';
-					var elm = $('#'+nameelmparent);
 
-
-					if(field.type.length > 0){
-						field.fieldtype = field.type;
-					}
-  					
+  					// Elemento padre osea la seccion
+  					var nameelmparent = list.formid + section.sectionid;
+  					var elm = $('#'+nameelmparent);
 
   					// Evaluo que tipo de elemento es
   					switch(field.fieldtype) {
@@ -379,130 +304,53 @@ angular.module('input', ['ngRoute'])
 					    	addDate(elm,field,list.formid,section,$scope, $compile);
 					        break;
 					    case 'TIME':
-					    	addTime(elm,field,list.formid,section,$scope, $compile);
+					    	addTime(elm,field,list.formid,section, $scope, $compile);
 					        break;
 					    case 'RADIO':
-					        addRadio(elm,field,list.formid,section,$scope, $compile);
+					        addRadio(elm,field,list.formid,section, $scope, $compile);
 					        break;
 					    case 'CHECK':
-					        addCheck(elm,field,list.formid,section,$scope, $compile);
+					        addCheck(elm,field,list.formid,section, $scope, $compile);
 					        break;
 					    case 'COMBO':
-					        addCombo(elm,field,list.formid,section,$scope, $compile);
+					        addCombo(elm,field,list.formid,section, $scope, $compile);
 					        break;
 					    default:
-					        addInput(elm,field,list.formid,section,$scope, $compile);
+					        addInput(elm,field,list.formid,section, $scope, $compile);
 					}  					
 
   				})
-
-  				// Agrego las subsecciones
-  				angular.forEach(section.subsections, function(subsection){
-
-
-  					//# de columnas
-	  				switch(subsection.sectioncolumn) {
-		  			    case '1':
-		  			    	subsection.sectioncolumn = 'col-md-12 col-sm-12'
-		  			        break;
-		  			    case '2':
-		  			    	subsection.sectioncolumn = 'col-md-6 col-sm-6'
-		  			        break;
-		  			    case '3':
-		  			    	subsection.sectioncolumn = 'col-md-4 col-sm-4'
-	  			    		break;
-		  			    case '4':
-		  			    	subsection.sectioncolumn = 'col-md-3 col-sm-3'
-	  			    		break;
-	  				}
-  					
-
-  					var titlesection = ""
-
-  					// Elemento padre osea la seccion
-  					var nameelmparent = list.formid + section.sectionid;
-  					var elm = $('#'+nameelmparent);
-					
-					// Agrego la seccion al panel
-					if($scope.data.showtitlesection){
-						var titlesection = subsection.sectionvi + ' ' + subsection.sectiontitle
-					}
-
-					//var elmsection = '<div class="panel panel-default '+ section.sectioncolumn + '" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + 
-					
-					var elmsection = '<div class="panel panel-default" style="border: none;"><div class="panel-heading"style="border: none;background-image:none; background-color: ' + 
-						$scope.data.colorsections + ';"><'+$scope.data.sizetitlesections+' >'+titlesection+'</'+$scope.data.sizetitlesections+'></div><div class="panel-body" id="'+
-						list.formid + subsection.sectionid+'"></div></div>';
-					
-	  				elm.append(elmsection);				
-
-	  				// Agrego los campos
-  					angular.forEach(subsection.fields, function(field){
-  					
-
-	  					// Elemento padre osea la seccion
-	  					var nameelmparent = list.formid + subsection.sectionid;
-	  					elm = $('#'+nameelmparent);
-
-	  					if(field.type.length > 0){
-							field.fieldtype = field.type;
-						}
-
-	  					// Evaluo que tipo de elemento es
-	  					switch(field.fieldtype) {
-						    case 'TEXT':
-						        addInput(elm,field,list.formid,subsection,$scope, $compile);
-						        break;
-						    case 'CALE':
-						    	addDate(elm,field,list.formid,subsection,$scope, $compile);
-						        break;
-						    case 'TIME':
-						    	addTime(elm,field,list.formid,subsection,$scope, $compile);
-						        break;
-						    case 'RADIO':
-						        addRadio(elm,field,list.formid,subsection,$scope, $compile);
-						        break;
-						    case 'CHECK':
-						        addCheck(elm,field,list.formid,subsection,$scope, $compile);
-						        break;
-						    case 'COMBO':
-						        addCombo(elm,field,list.formid,subsection,$scope, $compile);
-						        break;
-						    default:
-						        addInput(elm,field,list.formid,subsection,$scope, $compile);
-						}  					
-
-  					})
-
-  				})	
 				
-			})		
-
+			})	
+			
 			
 			// Recorro los eventos init para asignar los valores	
 			angular.forEach($scope.initial, function(init){
 		    	$scope['model'+init.fieldid] = init.value;
-			})			
+			})
+			
 			
 		});	
+	
 });
 
 function addInput(elmparent,field,formid,seccion,$scope, $compile){	
 	
+	// Creo el DIV del Input
 	var newDiv 				= document.createElement('div');
 	newDiv.className 		= 'form-group ' +seccion.sectioncolumn;
-
-
+	
+	// Agrego un label
 	var newLabel 			= document.createElement('label');
-	newLabel.innerHTML  	= field.vineta + ' ' + field.fieldtitle;	
+	newLabel.innerHTML  	= field.fieldtitle;	
 
+	// Creo el Input con sus propiedades
 	var newInput 			= document.createElement('input');
 	newInput.type 			= 'text';
-	newInput.id   			=  formid+seccion.sectionid+field.fieldid;
+	newInput.id   			=  field.fieldid;
 	newInput.className  	= 'form-control';
 	newInput.placeholder 	= field.fieldplaceholder;
 	newInput.required 		= field.isrequired;	
-
 
 	// Nombre del modelo
 	var model = 'model' + field.fieldid;
@@ -511,35 +359,47 @@ function addInput(elmparent,field,formid,seccion,$scope, $compile){
 	newInput.setAttribute("ng-change","change('"+ model +"')");
 	newInput.setAttribute("ng-model", model );
 	newInput.setAttribute("isRequired", field.isrequired );
-
-
+	
+	
 	$compile(newInput)($scope);
 
+	// Adiciono a el div
 	newDiv.appendChild(newLabel);
 	newDiv.appendChild(newInput);
-
+	
+	// Agrego al parent
 	elmparent.append(newDiv);
 }
 
 
 function addDate(elmparent,field,formid,seccion,$scope, $compile){	
 
-	var newDiv 				= document.createElement('div');
-	newDiv.className 		= 'form-group ' +seccion.sectioncolumn;
+	var newDiv = document.createElement('div');
+	newDiv.className = 'form-group ' +seccion.sectioncolumn;
 
 
-	var newLabel 			= document.createElement('label');
-	newLabel.innerHTML  	= field.vineta + ' ' + field.fieldtitle;
+	var newLabel 		= document.createElement('label');
+	newLabel.innerHTML  = field.fieldtitle;	
 
-	var divTime 			= document.createElement('div');
-	divTime.className 		= 'input-group clockpicker';
+	var divTime = document.createElement('div');
+	divTime.className = 'input-group clockpicker';
 	
-	var newInput 			= document.createElement('input');
-	newInput.type 			= 'text';
-	newInput.id   			=  formid+seccion.sectionid+field.fieldid;
-	newInput.className  	= 'form-control';
-	newInput.placeholder 	= 'dd/mm/aaaa';
-	newInput.required 		= field.isrequired;
+	var newInput = document.createElement('input');
+	newInput.type = 'text';
+	newInput.id   =  field.fieldid;
+	newInput.className  = 'form-control';
+	newInput.placeholder = field.fieldplaceholder;
+	newInput.required = field.isrequired;
+	
+	// Nombre del modelo
+	var model = 'model' + field.fieldid;
+	
+	// Le agrego modelo y evento change
+	newInput.setAttribute("ng-change","change('"+ model +"')");
+	newInput.setAttribute("ng-model", model );
+	newInput.setAttribute("isRequired", field.isrequired );
+	
+	$compile(newInput)($scope);
 	
 	var span = document.createElement('span');
 	span.className = 'input-group-addon';
@@ -547,15 +407,6 @@ function addDate(elmparent,field,formid,seccion,$scope, $compile){
 	var span2 = document.createElement('span');
 	span2.className = 'glyphicon glyphicon-calendar';
 
-	// Nombre del modelo
-	var model = 'model' + field.fieldid;
-	
-	// Le agrego modelo y evento change
-	newInput.setAttribute("ng-change","change('"+ model +"')");
-	newInput.setAttribute("ng-model", model );
-	newInput.setAttribute("isRequired", field.isrequired );
-
-	$compile(newInput)($scope);
 
 	span.appendChild(span2);
 	divTime.appendChild(newInput);
@@ -572,29 +423,32 @@ function addDate(elmparent,field,formid,seccion,$scope, $compile){
 		todayHighlight: true,
 		enableOnReadonly: true,
 		format: "dd/mm/yyyy",
-		keyboardNavigation: false
+		keyboardNavigation: false,
+		autoclose: true
 	});
 }
 
-function addTime(elmparent,field,formid,seccion,$scope, $compile){	
+function addTime(elmparent,field,formid,seccion, $scope, $compile){	
 
 	var newDiv 				= document.createElement('div');
 	newDiv.className 		= 'form-group ' +seccion.sectioncolumn;
 	
 	var newLabel 			= document.createElement('label');
-	newLabel.innerHTML  	= field.vineta + ' ' + field.fieldtitle;
+	newLabel.innerHTML  	= field.fieldtitle;	
 	
 	var divTime 			= document.createElement('div');
-	divTime.className 		= 'input-group clockpicker';
+	divTime.className 		= 'input-group clockpicker';	
+	divTime.setAttribute("data-placement","right");
+	divTime.setAttribute("data-align","top");
+	divTime.setAttribute("data-autoclose","true");
 	
 	var newInput 			= document.createElement('input');
 	newInput.type 			= 'text';
-	newInput.id   			=  formid+seccion.sectionid+field.fieldid;
+	newInput.id   			=  field.fieldid;
 	newInput.className  	= 'form-control';
 	newInput.placeholder 	= field.fieldplaceholder;
-	newInput.required 		= field.isrequired;
-
-
+	newInput.required = field.isrequired;
+	
 	// Nombre del modelo
 	var model = 'model' + field.fieldid;
 	
@@ -605,15 +459,25 @@ function addTime(elmparent,field,formid,seccion,$scope, $compile){
 	
 	$compile(newInput)($scope);
 	
-	var span 				= document.createElement('span');
-	span.className 			= 'input-group-addon';
+	var span = document.createElement('span');
+	span.className = 'input-group-addon';
 	
-	var span2 				= document.createElement('span');
-	span2.className 		= 'glyphicon glyphicon-time';
+	var span2 = document.createElement('span');
+	span2.className = 'glyphicon glyphicon-time';
 	
 	span.appendChild(span2);
 	divTime.appendChild(newInput);
 	divTime.appendChild(span);
+	
+	
+
+	var text = "";
+	angular.forEach(field.values, function(value){
+
+		text = text + ' ' + value.value;
+		newInput.value = text;
+
+	})
 
 	newDiv.appendChild(newLabel);
 	newDiv.appendChild(divTime);
@@ -628,7 +492,6 @@ function addTime(elmparent,field,formid,seccion,$scope, $compile){
 	});
 }
 
-
 function addRadio(elmparent,field,formid,seccion,$scope,$compile){	
 
 	var newDiv 				= document.createElement('div');
@@ -636,41 +499,38 @@ function addRadio(elmparent,field,formid,seccion,$scope,$compile){
 
 
 	var newLabel 			= document.createElement('label');
-	newLabel.innerHTML  	= field.vineta + ' ' + field.fieldtitle;
+	newLabel.innerHTML  	= field.fieldtitle;
 	newDiv.appendChild(newLabel);
 
+	var newbr 				= document.createElement('br');
+	newDiv.appendChild(newbr);
 
 	var newDivButton 		= document.createElement('div');
-	newDivButton.className  = "radio";
-	newDivButton.id  		= 'div' + formid+seccion.sectionid+field.fieldid;
+	newDivButton.className  = "btn-group";
+	newDivButton.id  		= 'div' + field.fieldid;
 	newDivButton.setAttribute('data-toggle','buttons');
 
 
 	angular.forEach(field.values, function(value){
 
-		if(value.status == true){
-
-			var newLabelBtn 		= document.createElement('label');
-			newLabelBtn.className 	= "btn btn-primary";
-			newLabelBtn.innerHTML 	= value.value;
+		var newLabelBtn = document.createElement('label');
+		newLabelBtn.className = "btn btn-primary";
+		newLabelBtn.innerHTML = value.value;
 
 
-			var option 				= document.createElement("input");
-			option.type 			= "radio";
-			option.name 			= formid+seccion.sectionid+field.fieldid;
-			option.value 			= value.valueext;
-			option.setAttribute('autocomplete','off');
-
-
-			newLabelBtn.appendChild(option);
-			newDivButton.appendChild(newLabelBtn);
-
-		}
+		var option = document.createElement("input");
+		option.type = "radio";
+		option.name = field.fieldid;
+		option.value = value.value;
+		option.setAttribute('autocomplete','off');
+		
+		newLabelBtn.appendChild(option);
+		newDivButton.appendChild(newLabelBtn);
 
 	})
-
+	
 	// Nombre del modelo
-	var model 						= 'model' + field.fieldid;
+	var model = 'model' + field.fieldid;
 	
 	// Le agrego modelo y evento change
 	newDivButton.setAttribute("ng-click","change('"+ model +"')");
@@ -683,40 +543,40 @@ function addRadio(elmparent,field,formid,seccion,$scope,$compile){
 }
 
 
-function addCombo(elmparent,field,formid,seccion,$scope,$compile){	
+function addCombo(elmparent,field,formid,seccion ,$scope,$compile){	
 	
 	if(field.fieldplaceholder == ''){
 		field.fieldplaceholder = 'Seleccione un valor'
 	}
 
-	var newDiv 				= document.createElement('div');
-	newDiv.className 		= 'form-group ' +seccion.sectioncolumn;
+	var newDiv = document.createElement('div');
+	newDiv.className = 'form-group ' +seccion.sectioncolumn;
 	
 
-	var newLabel 			= document.createElement('label');
-	newLabel.innerHTML  	= field.vineta + ' ' + field.fieldtitle;
+	var newLabel 		= document.createElement('label');
+	newLabel.innerHTML  = field.fieldtitle;
 	newDiv.appendChild(newLabel);
 
-	var newbr 				= document.createElement('br');
+	var newbr = document.createElement('br');
 	newDiv.appendChild(newbr);
 
 
-	var newselect 			= document.createElement('SELECT');
-	newselect.className 	= "form-control";
-	newselect.id        	= formid+seccion.sectionid+field.fieldid;
+	var newselect = document.createElement('SELECT');
+	newselect.className = "form-control";
+	newselect.id        = field.fieldid;
 
 	angular.forEach(field.values, function(value){
 
-		var newoption 		= document.createElement('option');
-		newoption.text 		= value.value;
-		newoption.value 	= value.value;
+		var newoption = document.createElement('option');
+		newoption.text = value.value;
+		newoption.value = value.valueext;
 		newselect.add(newoption);
 
 
 	})
-
-	newselect.required 		= field.isrequired;
-
+	
+	newselect.required = field.isrequired;
+	
 	// Nombre del modelo
 	var model = 'model' + field.fieldid;
 	
@@ -726,55 +586,51 @@ function addCombo(elmparent,field,formid,seccion,$scope,$compile){
 	newselect.setAttribute("isRequired", field.isrequired );
 	
 	$compile(newselect)($scope);
-
+	
 	newDiv.appendChild(newselect);
 	elmparent.append(newDiv);
 }
 
-function addCheck(elmparent,field,formid,seccion,$scope,$compile){	
+function addCheck(elmparent,field,formid,seccion, $scope, $compile){	
 	
-	var newDiv 				= document.createElement('div');
-	newDiv.className 		= 'form-group ' +seccion.sectioncolumn;
-	newDiv.id        		= 'div'+ formid+seccion.sectionid+field.fieldid;
+	var newDiv = document.createElement('div');
+	newDiv.className = 'form-group ' +seccion.sectioncolumn;
+	newDiv.id        = 'div'+ field.fieldid;
 
-	var newLabel 			= document.createElement('label');
-	newLabel.innerHTML  	= field.vineta + ' ' + field.fieldtitle;
+	var newLabel 		= document.createElement('label');
+	newLabel.innerHTML  = field.fieldtitle;
 	newDiv.appendChild(newLabel);
 
-	var newbr 				= document.createElement('br');
+	var newbr = document.createElement('br');
 	newDiv.appendChild(newbr);
 
-	var newDivButton 		= document.createElement('div');
-	newDivButton.className  = "btn-group";
-	newDivButton.id  		= 'div' + formid+seccion.sectionid+field.fieldid;
+	var newDivButton = document.createElement('div');
+	newDivButton.className = "btn-group";
+	newDivButton.id  = 'div' + field.fieldid;
 	newDivButton.setAttribute('data-toggle','buttons');
 
 
 	angular.forEach(field.values, function(value){
 
-		if(value.status == true){
-
-			var newLabelBtn 		= document.createElement('label');
-			newLabelBtn.className 	= "btn btn-primary";
-			newLabelBtn.innerHTML 	= value.value;
+		var newLabelBtn = document.createElement('label');
+		newLabelBtn.className = "btn btn-primary";
+		newLabelBtn.innerHTML = value.value;
 
 
-			var option 				= document.createElement("input");
-			option.type 			= "checkbox";
-			option.name 			= formid+seccion.sectionid+field.fieldid;
-			option.value 			= value.value;
-			option.setAttribute('autocomplete','off');
+		var option = document.createElement("input");
+		option.type = "checkbox";
+		option.name = field.fieldid;
+		option.value = value.value;
+		option.setAttribute('autocomplete','off');
 
 
-			newLabelBtn.appendChild(option);
-			newDivButton.appendChild(newLabelBtn);
-
-		}
+		newLabelBtn.appendChild(option);
+		newDivButton.appendChild(newLabelBtn);
 
 	})
-
+	
 	// Nombre del modelo
-	var model 			= 'model' + field.fieldid;
+	var model = 'model' + field.fieldid;
 	
 	// Le agrego modelo y evento change
 	newDivButton.setAttribute("ng-click","change('"+ model +"')");

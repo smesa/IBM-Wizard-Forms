@@ -54,17 +54,17 @@ angular.module('preview', ['ngRoute'])
 		
 	$http.get( sURL ).
 		success(function(list){
-			list 		= list[0];
-			$scope.data = list;
-			$scope.data.logoimg = list.versions[0].logoimg;
-			$scope.data.colorfondo = list.versions[0].colorfondo;
-			$scope.data.colorhead = list.versions[0].colorhead;
-			$scope.data.colorbase = list.versions[0].colorbase;
-			$scope.data.colorsections = list.versions[0].colorsections;
-			$scope.data.showtitle = list.versions[0].showtitle;
-			$scope.data.sizetitlehead = list.versions[0].sizetitlehead;
-			$scope.data.showtitlesection = list.versions[0].showtitlesection;
-			$scope.data.sizetitlesections = list.versions[0].sizetitlesections;		
+			list 							= list[0];
+			$scope.data 					= list;
+			$scope.data.logoimg 			= list.versions[0].logoimg;
+			$scope.data.colorfondo 			= list.versions[0].colorfondo;
+			$scope.data.colorhead 			= list.versions[0].colorhead;
+			$scope.data.colorbase 			= list.versions[0].colorbase;
+			$scope.data.colorsections 		= list.versions[0].colorsections;
+			$scope.data.showtitle 			= list.versions[0].showtitle;
+			$scope.data.sizetitlehead		= list.versions[0].sizetitlehead;
+			$scope.data.showtitlesection 	= list.versions[0].showtitlesection;
+			$scope.data.sizetitlesections 	= list.versions[0].sizetitlesections;		
 			
 			
 			// Se muestra titulo
@@ -92,7 +92,16 @@ angular.module('preview', ['ngRoute'])
 			try{
 				document.getElementById('panel-head').style.border = 'none';
 				document.getElementById('panel-head').style.backgroundColor = $scope.data.colorhead;
-			}catch(err){}			
+			}catch(err){}	
+
+
+			// Color de modal
+			try{
+				document.getElementById('modal-content-ok').style.border = 'none';
+				document.getElementById('modal-content-ok').style.backgroundColor = $scope.data.colorsections;
+			}catch(err){}	
+
+			
 			
 			// Recorro las secciones
 			angular.forEach(list.versions[0].sections, function(section){				
@@ -265,18 +274,18 @@ angular.module('preview', ['ngRoute'])
 function addInput(elmparent,field,formid,seccion){	
 	//var elm = ' <div class="form-group"><label for="'+formid+sectionid+field.fieldid+'">'+field.fieldtitle+'</label><input type="text" class="form-control" id="'+formid+sectionid+field.fieldid+'"placeholder="'+field.fieldplaceholder+'"></div>';
 	
-	var newDiv = document.createElement('div');
-	newDiv.className = 'form-group ' +seccion.sectioncolumn;
+	var newDiv 				= document.createElement('div');
+	newDiv.className 		= 'form-group ' +seccion.sectioncolumn;
 
 
-	var newLabel 		= document.createElement('label');
-	newLabel.innerHTML  = field.vineta + ' ' + field.fieldtitle;	
+	var newLabel 			= document.createElement('label');
+	newLabel.innerHTML  	= field.vineta + ' ' + field.fieldtitle;	
 
-	var newInput = document.createElement('input');
-	newInput.type = 'text';
-	newInput.id   =  formid+seccion.sectionid+field.fieldid;
-	newInput.className  = 'form-control';
-	newInput.placeholder = field.fieldplaceholder;
+	var newInput 			= document.createElement('input');
+	newInput.type 			= 'text';
+	newInput.id   			=  formid+seccion.sectionid+field.fieldid;
+	newInput.className  	= 'form-control';
+	newInput.placeholder 	= field.fieldplaceholder;
 
 	var text = "";
 	angular.forEach(field.values, function(value){
