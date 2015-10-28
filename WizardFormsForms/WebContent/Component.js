@@ -1,11 +1,11 @@
 jQuery.sap.declare("ibm.wizardforms.forms.Component");
 
 sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
-	
+
 	metadata: {
-		
+
 		routing: {
-			
+
 			config: {
 				viewType: "JS",
 				viewPath: "wizardformsforms",
@@ -13,8 +13,8 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 				clearTarget: false,
 				transition: "slide"
 			},
-			
-			routes: [					 
+
+			routes: [
 			         {
 				         pattern: "",
 				         name: "Default",
@@ -32,16 +32,16 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 							    name: "FormCreate",
 							    view: "FormCreate",
 							    targetAggregation: "detailPages",
-							}  
+							}
 				         ]
 			         },
-			        
+
 		         	 {
 			        	 pattern: "form/{formIndex}",
 				         name: "FormsVersions",
 				         view: "FormsVersions",
 				         targetAggregation: "masterPages",
-				         subroutes: [		                     
+				         subroutes: [
 		                     {
 		                    	 pattern: "form/{formIndex}/{versionIndex}",
 							     name: "FormsDetail",
@@ -71,113 +71,113 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 														  name: "SubFieldDetail",
 														  view: "FieldDetail",
 													      targetAggregation: "detailPages",
-												      }      
+												      }
 												]
 
-										      }        
+										      }
 										]
-					                 }							
+					                 }
 							     ]
 		                     },
 				         ]
 		         	}
-			         
+
 	        ]
-			
+
 		}
-		
+
 	},
-	
+
 	init: function() {
-		
+
 		jQuery.sap.require("sap.m.routing.RouteMatchedHandler");
-		jQuery.sap.require("sap.ui.core.routing.HashChanger");		
-		
+		jQuery.sap.require("sap.ui.core.routing.HashChanger");
+
 		//call createContent
 		sap.ui.core.UIComponent.prototype.init.apply(this, arguments);
-		
+
 		this._router = this.getRouter();
-		
+
 		//initlialize the router
 		this._routeHandler = new sap.m.routing.RouteMatchedHandler(this._router);
 		this._router.initialize();
-		
-		
+
+
 	},
-	
+
 	createContent: function() {
-		
+
 		var oView = sap.ui.view({
 			id: "app",
 			viewName: "wizardformsforms.App",
 			type: "JS",
 			viewData: {component: this}
-		});		
-		
-		
+		});
+
+
 		// Formularios
 		var oModel = new myJSONModel;
-		
-		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-			
+
+		oModel.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 		},function(){
 			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
 		});
-		
-		oView.setModel(oModel,'forms');	
-		oView.setModel(oModel,'formsOri');	
-		
-		
+
+		oView.setModel(oModel,'forms');
+		oView.setModel(oModel,'formsOri');
+
+
 		// Elementos
 		var oModel2 = new myJSONModel;
-		
-		oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/fields_data/fields/", function(oData){
-			
+
+		oModel2.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/field_services/", function(oData){
+
 		},function(){
 			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
 		});
-		
-		oView.setModel(oModel2,'fields');	
-		
-		
+
+		oView.setModel(oModel2,'fields');
+
+
 		// Ordenes
-		var oParaOrders  = { "option" : "orders" };  
-		
+		var oParaOrders  = { "option" : "orders" };
+
 		var oModel3 = new myJSONModel;
-		
-		oModel3.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-			
+
+		oModel3.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 		},function(){
 			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
 		},oParaOrders);
-		
-		oView.setModel(oModel3,'orders');	
-		
+
+		oView.setModel(oModel3,'orders');
+
 		// Paquetes
-		var oParaPackages  = { "option" : "packages" };  
-		
+		var oParaPackages  = { "option" : "packages" };
+
 		var oModel4 = new myJSONModel;
-		
-		oModel4.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-			
+
+		oModel4.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 		},function(){
 			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
 		},oParaPackages);
-		
-		oView.setModel(oModel4,'packages');	
-		
-		// Imagenes		
+
+		oView.setModel(oModel4,'packages');
+
+		// Imagenes
 		var oModel5 = new myJSONModel;
-		
-		oModel5.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/images_data/images", function(oData){
-			
+
+		/*oModel5.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/images_data/images", function(oData){
+
 		},function(){
 			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
-		});
-		
-		oView.setModel(oModel5,'images');	
-		
-		
+		});*/
+
+		oView.setModel(oModel5,'images');
+
+
 		var json = []
 		var oModel6 = new sap.ui.model.json.JSONModel(json);
 		oView.setModel(oModel6,'rules');
@@ -191,15 +191,15 @@ sap.ui.core.UIComponent.extend("ibm.wizardforms.forms.Component",{
 		var oModel8 = new sap.ui.model.json.JSONModel(jsons);
 		oView.setModel(oModel6,'secciones');
 
-		
-		
 
-		
-		
+
+
+
+
 		return oView;
-		
+
 	},
 
-	
-	
+
+
 })

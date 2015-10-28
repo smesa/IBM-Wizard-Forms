@@ -4,113 +4,113 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
 		this.router = sap.ui.core.UIComponent.getRouterFor(this);
 		this.router.attachRoutePatternMatched(this._handleRouteMatched,this);
 	},
-	
+
 	_handleRouteMatched: function(evt){
-		
-		this.formIndex = evt.getParameter("arguments").formIndex;			
-		var app = sap.ui.getCore().byId("app");			
-		
-		try {  		
-			var context = app.getModel('forms').getContext('/' + this.formIndex);		
+
+		this.formIndex = evt.getParameter("arguments").formIndex;
+		var app = sap.ui.getCore().byId("app");
+
+		try {
+			var context = app.getModel('forms').getContext('/' + this.formIndex);
 			this.getView().setBindingContext(context,'forms');
-		
-		} catch(ex){  
+
+		} catch(ex){
 			window.history.go(-1);
 		}
 	},
-	
+
 	goBack: function(){
 		this.router.navTo("FormsMaster")
 	},
-	
+
 	onChangeSearch: function(evt){
 		var filters = [];
 		var query = evt.getParameter("newValue");
 		if (query && query.length > 0) {
 			var filter = new sap.ui.model.Filter("verformid", sap.ui.model.FilterOperator.Contains, query);
 			filters.push(filter);	}
-		
+
 		// update list binding
 		var list = this.getView().oTableVersion;
 		var binding = list.getBinding("items");
 		binding.filter(filters);
 	},
-	
+
 	versionPress: function(evt){
 		var oBindingContext = evt.getSource().getBindingContext('forms');
-		var sPath = oBindingContext.sPath;		
+		var sPath = oBindingContext.sPath;
 		var start = sPath.lastIndexOf("/") + 1;
 		var versionIndex = sPath.substring(start,sPath.length);
-		this.router.navTo("FormsDetail",{formIndex: this.formIndex, versionIndex: versionIndex});		
+		this.router.navTo("FormsDetail",{formIndex: this.formIndex, versionIndex: versionIndex});
 	},
-	
+
 	activeVersion: function(evt){
 		var that 			= this;
 		var oBindingContext = evt.getSource().getBindingContext('forms');
 		var path            = oBindingContext.sPath;
 		var start 		    = path.lastIndexOf('/') + 1;
-		var versionIndex    = path.substring(start,path.length);	
-		var status  	 	= evt.getParameter("state");		
+		var versionIndex    = path.substring(start,path.length);
+		var status  	 	= evt.getParameter("state");
 		var app     	 	= sap.ui.getCore().byId("app")
 		var context 	 	= app.getModel('forms').getData('/' + this.formIndex + '/');
 		var version 	 	= context[this.formIndex].versions[versionIndex].verformid;
 		var form    	 	= context[this.formIndex].formid;
-		
+
 		var mensaje         = "";
-		
+
 		if(status === true){
 			mensaje = 'Si activa esta versión las otras versiones quedaran inactivas,¿Esta seguro de continuar?'
 		}else{
 			mensaje = 'Si desactiva esta versión no quedara ninguna versión activa para el formulario,¿Esta seguro de continuar?'
-		}		
-		
-		
-		var oModel       = new myJSONModel;  		
+		}
+
+
+		var oModel       = new myJSONModel;
   		var oParameters  = {
  	           "formid" 			: form,
  	           "verformid"			: version,
  	           "option"				: "active-version"
- 		};  		
-		
+ 		};
+
 		var dialog = new sap.m.Dialog({
 		      title: 'Confirmación',
 		      type: 'Message',
-		      content: new sap.m.Text({ text: mensaje }), 
+		      content: new sap.m.Text({ text: mensaje }),
 		      beginButton: new sap.m.Button({
 		        text: 'Aceptar',
-		        press: function () {	        	
+		        press: function () {
 
-		      		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-		    			
+		      		oModel.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 		    			sap.m.MessageToast.show('Versión modificada');
-		    			
-		    			// Consulto los datos actualizados			
+
+		    			// Consulto los datos actualizados
 		    			var oModel2 = new myJSONModel;
-		    			
-		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+
+		    			oModel2.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
 		    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
 		    			},function(){
 		    				sap.m.MessageToast.show('Error activando la versión');
-		    			});		
-		    			
+		    			});
+
 		    		},function(){
 		    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
 		    		},oParameters, true,'POST');
-	    		  
+
 		          dialog.close();
 		        }
 		      }),
 		      endButton: new sap.m.Button({
 		        text: 'Cancelar',
 		        press: function () {
-		        	// Consulto los datos actualizados			
+		        	// Consulto los datos actualizados
 	    			var oModel2 = new myJSONModel;
-	    			
-	    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+
+	    			oModel2.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
 	    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
 	    			},function(){
 	    				sap.m.MessageToast.show('Error activando la versión');
-	    			});	
+	    			});
 		          dialog.close();
 		        }
 		      }),
@@ -119,12 +119,12 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
 	      }
 	    });
 
-	    dialog.open();		
-		
+	    dialog.open();
+
 	},
-	
+
 	newVersion: function(evt){
-		
+
 		var that = this;
 		that.oTypeVersion = new sap.m.ComboBox({
 			  width: "100%",
@@ -134,12 +134,12 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
                     new sap.ui.core.ListItem({text: "Basada en ultima versión creada",key:"LAST"})
               ]
           }).bindProperty("value","StatusText");
-		
-		
-		var model =  sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex);	
-		var path  =  evt.getSource().getBindingContext('forms').getPath();	
-		that.data  = model.getProperty(path);	
-		
+
+
+		var model =  sap.ui.getCore().byId("app").getModel('forms').getContext('/' + that.formIndex);
+		var path  =  evt.getSource().getBindingContext('forms').getPath();
+		that.data  = model.getProperty(path);
+
 		// Formularios
 		var oInfoVersion = new sap.ui.layout.VerticalLayout({
 			id: "oTypeVersion",
@@ -147,10 +147,10 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
 			placeholder: "Seleccione una opción",
 			content:[
 		         	new sap.m.Label({ text : "Seleccione una forma de crear la versión" }),
-		         	that.oTypeVersion,				
+		         	that.oTypeVersion,
 			]
 		}).addStyleClass("layPadding10");
-		
+
 		var dialog = new sap.m.Dialog({
 		      title: 'Crear versión',
 		      verticalScrolling: true,
@@ -158,35 +158,35 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
 		      content:[oInfoVersion],
 		      beginButton: new sap.m.Button({
 		          text: 'Crear',
-		          press: function (evt) {		
-		        	  
+		          press: function (evt) {
+
 		        	var oModel       = new myJSONModel;
-		        		
+
 	        		var oParameters = {
 		        		 "formid" 	: that.data.formid,
 		                 "typever" 	: that.oTypeVersion.getSelectedItem().getKey(),
 		                 "option"	: "new-version"
 	        		};
-	        		
+
 	        		// Llamo el metodo POST para crear los datos
-		    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-		    			
+		    		oModel.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 		    			sap.m.MessageToast.show('Versión creada exitosamente');
-		    			
-		    			// Consulto los datos actualizados			
+
+		    			// Consulto los datos actualizados
 		    			var oModel2 = new myJSONModel;
-		    			
-		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+
+		    			oModel2.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
 		    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
 		    			},function(){
 		    				sap.m.MessageToast.show('Error creando el elemento');
-		    			});		
-		    			
+		    			});
+
 		    		},function(){
 		    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
-		    		},oParameters, true,'POST');	
-		    		
-		    		
+		    		},oParameters, true,'POST');
+
+
 		            dialog.close();
 		          }
 		        }),
@@ -201,9 +201,9 @@ sap.ui.controller("wizardformsforms.FormsVersions", {
 		          dialog.destroy();
 		        }
 		    });
-		    dialog.open();	
-		
-		
+		    dialog.open();
+
+
 	}
 
 

@@ -1,13 +1,17 @@
 <div id="panel" class="panel panel-primary" style="border: none; background-color: {{data.colorfondo}};">
 	<div id="panel-head" class="panel-heading" style="background-image:none;border-color:{{data.colorhead}} ;background-color: {{data.colorhead}};">
-		<h3 class="page-header">				
+		<h3 class="page-header">
 			<div class="row">
   				<div class="col-md-4 vcenter">
-  					<img ng-src="{{data.logoimg}}" width="200px" >
+  					<!--<img ng-src="{{data.logoimg}}" width="200px" >-->
+  					<img ng-src="http://www.hgm.gov.co/images/HospitalGeneralMedellinLogo.png" width="200px" >
  					</div>
   				<div id="headerTitle" class="col-md-4 vcenter">
   				</div>
-			</div>			
+					<div class="col-md-4 vcenter">            <!--<img ng-src="{{data.logoimg}}" width="200px" >-->
+						<img ng-src="img/logo_INS.png" width="150px" >
+					</div>
+			</div>
 			<div class="pull-right">
 				<div class="btn-group" role="group">
 				  <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="left" title="Cerrar pantalla completa" ng-click="openForm()">

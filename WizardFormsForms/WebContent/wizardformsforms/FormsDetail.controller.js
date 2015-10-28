@@ -3,7 +3,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	onInit: function() {
 		this.router = sap.ui.core.UIComponent.getRouterFor(this);
 		this.router.attachRoutePatternMatched(this._handleRouteMatched,this);
-		
+
 		var view = sap.ui.getCore();
 		var view = sap.ui.getCore();
 	},
@@ -12,84 +12,84 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		if(evt.getParameter("name") !== "FormsDetail"){
 			return;
 		}
-		
-		this.formIndex = evt.getParameter("arguments").formIndex;
-		this.versionIndex = evt.getParameter("arguments").versionIndex;	
-		var app = sap.ui.getCore().byId("app");		
-		
-		try {  		
-			var context = app.getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex);		
-			this.getView().setBindingContext(context,'forms');
-		
-		} catch(ex){  
-			window.history.go(-1);
-		}  
-	},	
 
-	
+		this.formIndex = evt.getParameter("arguments").formIndex;
+		this.versionIndex = evt.getParameter("arguments").versionIndex;
+		var app = sap.ui.getCore().byId("app");
+
+		try {
+			var context = app.getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex);
+			this.getView().setBindingContext(context,'forms');
+
+		} catch(ex){
+			window.history.go(-1);
+		}
+	},
+
+
 	selectedTab: function(evt){
-		
+
 		var oTab  		= sap.ui.getCore().byId('TabForm');
 		var oPreview	= sap.ui.getCore().byId('oItemBarPreviewForm');
 		var sel         = oTab.getSelectedKey();
-		
+
 		if(sel === 'preview'){
-			
+
 			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex + '/versions/' + this.versionIndex);
-	  		var path         = evt.getSource().getBindingContext('forms').getPath();			
-	  		var data         = model.getProperty(path);  
-			
+	  		var path         = evt.getSource().getBindingContext('forms').getPath();
+	  		var data         = model.getProperty(path);
+
 			var iFrame 		= new sap.ui.core.HTML({
 	     		preferDOM:true,
 	     		content:"<iframe id='iframeid' src='./preview/index.html#/get/" + data.formid + "/" + data.verformid + "' width='100%' height='" + document.body.clientHeight + "' zoom='0.5' position='fixed' frameborder='0' border='none'></iframe>"
-			})		
-					
+			})
+
 			oPreview.removeAllContent();
-			oPreview.addContent(iFrame);			
+			oPreview.addContent(iFrame);
 		}
-		
+
 		if(sel === 'customizing'){
-			
+
 			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex + '/versions/' + this.versionIndex);
-	  		var path         = evt.getSource().getBindingContext('forms').getPath();			
-	  		var data         = model.getProperty(path);  
-			
+	  		var path         = evt.getSource().getBindingContext('forms').getPath();
+	  		var data         = model.getProperty(path);
+
 	  		jQuery.sap.byId('inpColorBase-inner').css('background-color',data.colorbase);
 			jQuery.sap.byId('inpColorFondo-inner').css('background-color',data.colorfondo);
 			jQuery.sap.byId('inpColorHead-inner').css('background-color',data.colorhead);
-			jQuery.sap.byId('inpColorSection-inner').css('background-color',data.colorsection);		
+			jQuery.sap.byId('inpColorSection-inner').css('background-color',data.colorsection);
 		}
-		
+
 	},
 
-	sectionPress: function(oEvent){		
-		
+	sectionPress: function(oEvent){
+
 		var oTable       = sap.ui.getCore().byId('oTableSections');
 		var oListItem    = oEvent.getParameters().listItem;
 		var oPath        = oListItem.getBindingContextPath();
 		var start        = oPath.lastIndexOf('/') + 1;
-		var sectionIndex = oPath.substring(start,oPath.length);		
+		var sectionIndex = oPath.substring(start,oPath.length);
 		this.router.navTo("SectionsDetail",{formIndex:this.formIndex, versionIndex: this.versionIndex, sectionIndex: sectionIndex});
 	},
-	
+
 	deleteSection: function(evt){
-		
-		
+
+
 		var that = this;
-		
+
 		var oTable    = sap.ui.getCore().byId('oTableSections');
 		var oListItem = evt.getParameters().listItem;
 		var oPath     = oListItem.getBindingContextPath();
-		var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));		
+		var oId       = parseInt(oPath.substring(oPath.lastIndexOf('/') +1));
 		var app       = sap.ui.getCore().byId("app");
-		
-		try {  		
+
+		try {
 			var context = app.getModel('forms').getData('/' + this.formIndex + '/versions/' + this.versionIndex + '/sections/' + oId + '/');
-		
-		} catch(ex){  
+
+		} catch(ex){
 			window.history.go(-1);
-		}  
-		
+		}
+
 		var dialog = new sap.m.Dialog({
 	      title: 'Confirmación',
 	      type: 'Message',
@@ -97,10 +97,10 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	      beginButton: new sap.m.Button({
 	        text: 'Eliminar',
 	        press: function () {
-	        	
-	          context[that.formIndex].versions[that.versionIndex].sections.splice(oId,1);		
-	    	  sap.ui.getCore().byId("app").getModel('forms').setData(context);  
-    		  sap.m.MessageToast.show('Sección eliminada');    		  
+
+	          context[that.formIndex].versions[that.versionIndex].sections.splice(oId,1);
+	    	  sap.ui.getCore().byId("app").getModel('forms').setData(context);
+    		  sap.m.MessageToast.show('Sección eliminada');
 	          dialog.close();
 	        }
 	      }),
@@ -116,15 +116,15 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	    });
 
 	    dialog.open();
-		
+
 	},
-	
+
 	addSection: function(evt){
-		
-		var that = this; 
+
+		var that = this;
 		// Formularios
 		var oInfoSection = new sap.ui.layout.VerticalLayout({
-			width: "100%",			
+			width: "100%",
 			content:[
 		         	 new sap.m.Label({}),
 			         new sap.m.Label({text:"Titulo de la sección"}),
@@ -141,30 +141,30 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 			                          new sap.ui.core.ListItem({text: "4 Columnas",key:"4"})
 			                     ]
 			        }).bindProperty("value","StatusText")
-			         
+
 			]
 		}).addStyleClass("layPadding10");
-	
+
 		var dialog = new sap.m.Dialog({
 		      title: 'Creación de nueva sección',
 		      content:[oInfoSection],
 		      beginButton: new sap.m.Button({
 		          text: 'Agregar',
 		          press: function (evt) {
-		        	
-		        	  
-		        	var oTitle    = sap.ui.getCore().byId("oSectionTitle");	
+
+
+		        	var oTitle    = sap.ui.getCore().byId("oSectionTitle");
 		        	var oColumns  = sap.ui.getCore().byId("oSectionColumns").getSelectedItem().getKey();
-		        	
+
 		      		var model = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex);
-		      		var path  = evt.getSource().getBindingContext('forms').getPath();			
+		      		var path  = evt.getSource().getBindingContext('forms').getPath();
 		      		var data  = model.getProperty(path);
 		      		var sectionid = 90000;
 
 		      		try{
 		      			sectionid = data.sections[data.sections.length - 1].sectionid + 1;
 		      		}catch(ex){}
-		      			
+
 		      		data.sections.push({
 		      			sectionid: 		sectionid,
 		      			sectiontitle: 	sap.ui.getCore().byId("oSectionTitle").getValue(),
@@ -172,11 +172,11 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		      			fields: [],
 		      			subsections:[]
 		      		})
-		      		
-		      		var forms = sap.ui.getCore().byId("app").getModel("forms").getData();		
-		      		sap.ui.getCore().byId("app").getModel('forms').setData(forms);    	
-		          	sap.m.MessageToast.show('Seccion creada');  
-		        	  
+
+		      		var forms = sap.ui.getCore().byId("app").getModel("forms").getData();
+		      		sap.ui.getCore().byId("app").getModel('forms').setData(forms);
+		          	sap.m.MessageToast.show('Seccion creada');
+
 		            dialog.close();
 		          }
 		        }),
@@ -193,33 +193,33 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		    });
 		    this.getView().addDependent(dialog);
 		    dialog.open();
-		
+
 	},
 
 
 
 	addSectionCopy: function(evt){
-		
+
 		var that 	= this;
 	    var oModel  = new myJSONModel;
 	    var context = sap.ui.getCore().byId("app").getModel('forms').getContext('/' + this.formIndex + '/versions/' + this.versionIndex);
 	    var formidDest = context.oModel.oData[this.formIndex].formid;
 	    var veridDest  = context.oModel.oData[this.formIndex].versions[this.versionIndex].verformid;
 
-		
+
 		that.formOri = new sap.m.Input({
 	       	 id:"oFormOrigen",
-	    	 enabled:true,			        	 
+	    	 enabled:true,
 	    	 showValueHelp:true,
 	    	 placeholder:"Seleccione el formulario origen",
 	    	 valueHelpRequest: function(evt){
 	    		 that.getForms(evt)
 	    	 }
 		});
-		
+
 		that.versionOri = new sap.m.Input({
 	       	 id:"oVersionOri",
-	    	 enabled:true,			        	 
+	    	 enabled:true,
 	    	 showValueHelp:true,
 	    	 placeholder:"Seleccione la versión origen",
 	    	 valueHelpRequest: function(evt){
@@ -230,15 +230,15 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 
 		that.sectionOri = new sap.m.Input({
 	       	 id:"oSectionOri",
-	    	 enabled:true,			        	 
+	    	 enabled:true,
 	    	 showValueHelp:true,
 	    	 placeholder:"Seleccione la sección a copiar",
 	    	 valueHelpRequest: function(evt){
 	    		 that.getSections(evt)
 	    	 }
 		});
-		
-		
+
+
 		// Formularios
 		that.oInfoDuplicate = new sap.ui.layout.VerticalLayout({
 			id: "oTypeVersion",
@@ -253,8 +253,8 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 			        that.sectionOri
 			]
 		}).addStyleClass("layPadding10");
-		
-		
+
+
 		var dialog = new sap.m.Dialog({
 		      title: 'Duplicar formulario',
 		      verticalScrolling: true,
@@ -264,13 +264,13 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		    	  id: "btnSaveNewDup",
 		          text: 'Crear',
 		          enabled: true,
-		          press: function (evt) {	
-		        	  
+		          press: function (evt) {
+
 
 		        	// Extraigo el id del formdest y la versiondest
 
 
-		        	  
+
 		      		var oParameters = {
 		      			   "option" 		: 'copy-section',
 		 	 	           "formori" 		: sap.ui.getCore().byId("oFormOrigen").getValue(),
@@ -279,36 +279,36 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		 	 	           "verdest"    	: veridDest,
 		 	 	           "sectionori"		: sap.ui.getCore().byId("oSectionOri").getValue().substring(0, 5),
 		      		};
-		        	  
+
 		        	// Llamo el metodo POST para crear los datos
-			    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-			    			
-			    						    			
-			    			// Consulto los datos actualizados			
+			    		oModel.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
+
+			    			// Consulto los datos actualizados
 			    			var oModel2 = new myJSONModel;
-			    			
-			    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-			    				
+
+			    			oModel2.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 			    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
-			    				
-				    			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/');	
-				    			
+
+				    			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/');
+
 				    			// Limpio los campos
 				    	  		sap.ui.getCore().byId("oFormOrigen").setValue("");
 				    	  		sap.ui.getCore().byId("oVersionOri").setValue("");
 				    	  		sap.ui.getCore().byId("oSectionOri").setValue("");
-				    	  		
+
 				    	  		sap.m.MessageToast.show('Sección duplicada con exito');
-			    				
+
 			    			},function(){
 			    				sap.m.MessageToast.show('Error creando el formulario');
-			    			});		
-			    			
+			    			});
 
-			    			
+
+
 			    		},function(){
 			    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
-			    		},oParameters, true,'POST');	
+			    		},oParameters, true,'POST');
 		            dialog.close();
 		          }
 		        }),
@@ -323,25 +323,25 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		          dialog.destroy();
 		        }
 		    });
-		    dialog.open();		
+		    dialog.open();
 	},
 
 
 	getForms: function(evt){
-		
+
 		var that = this;
-		
+
 		var itemTemplate = new sap.m.StandardListItem({
 			title: "{formsOri>formtecname}",
 			description: "{formsOri>formtitle}",
 			active: true
 		});
-		
+
 		var dialog = new sap.m.SelectDialog({
 			title:"Formularios",
 		    class:"sapUiPopupWithPadding",
 		    liveChange: function(evt){
-		    	
+
 		    	var filters = [];
 				var query = evt.getParameter("value");
 				if (query && query.length > 0) {
@@ -350,7 +350,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 				}
 				evt.getSource().getBinding("items").filter(filters);
 				that.validateRequiredField(evt)
-				
+
 		    },
 		    confirm: function(evt){
 		    	var oSelectedItem = evt.getParameter("selectedItem");
@@ -360,7 +360,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 			        var oBindingContext = evt.getParameter("selectedContexts");
 					var path  	  		= oBindingContext[0].sPath;
 					var start     		= path.lastIndexOf('/') + 1;
-					that.formOriIndex 	= path.substring(start,path.length);		
+					that.formOriIndex 	= path.substring(start,path.length);
 
 		            var oFormOrigen 	=  sap.ui.getCore().byId("oFormOrigen");
 		            oFormOrigen.setValue(oSelectedItem.getTitle());
@@ -370,8 +370,8 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 
 		            var versiones = [];
 
-		            for(i=0; i<oBindingContext[0].oModel.oData[that.formOriIndex].versions.length; i++){		        	
-		        		
+		            for(i=0; i<oBindingContext[0].oModel.oData[that.formOriIndex].versions.length; i++){
+
 			        	versiones.push({
 			        		verformid: oBindingContext[0].oModel.oData[that.formOriIndex].versions[i].verformid,
 			        		descpver:  oBindingContext[0].oModel.oData[that.formOriIndex].versions[i].descpver,
@@ -382,9 +382,9 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	    	  		sap.ui.getCore().byId("oVersionOri").setValue("");
 	    	  		sap.ui.getCore().byId("oSectionOri").setValue("");
 
-		            sap.ui.getCore().byId("app").getModel('versions').setData(versiones); 
+		            sap.ui.getCore().byId("app").getModel('versions').setData(versiones);
 
-		          
+
 		        }
 		        evt.getSource().getBinding("items").filter([]);
 		    },
@@ -397,28 +397,28 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		        evt.getSource().getBinding("items").filter([]);
 		    }
 		});
-		
+
 		dialog.bindAggregation("items", "formsOri>/", itemTemplate);
-	
+
 	    this.getView().addDependent(dialog);
 	    dialog.open();
 
 	},
 
 	getVersions: function(evt){
-		
+
 		var that = this;
-		
+
 		var itemTemplate = new sap.m.StandardListItem({
 			title: "{versions>verformid} - {versions>descpver}",
 			active: true
 		});
-		
+
 		var dialog = new sap.m.SelectDialog({
 			title:"Versiones",
 		    class:"sapUiPopupWithPadding",
 		    liveChange: function(evt){
-		    	
+
 		    	var filters = [];
 				var query = evt.getParameter("value");
 				if (query && query.length > 0) {
@@ -427,7 +427,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 				}
 				evt.getSource().getBinding("items").filter(filters);
 				that.validateRequiredField(evt)
-				
+
 		    },
 		    confirm: function(evt){
 
@@ -438,20 +438,20 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 			        var oBindingContext 	= evt.getParameter("selectedContexts");
 					var path  	  			= oBindingContext[0].sPath;
 					var start     			= path.lastIndexOf('/') + 1;
-					that.versionOriIndex	= path.substring(start,path.length);		
+					that.versionOriIndex	= path.substring(start,path.length);
 
 		            var oVersionOri 		=  sap.ui.getCore().byId("oVersionOri");
 		            oVersionOri.setValue(oSelectedItem.getTitle());
 		            oVersionOri.setValueState("None");
 
 
-		            var context = sap.ui.getCore().byId("app").getModel('formsOri').getContext('/' + this.formOriIndex + '/versions/' + that.versionOriIndex);	
+		            var context = sap.ui.getCore().byId("app").getModel('formsOri').getContext('/' + this.formOriIndex + '/versions/' + that.versionOriIndex);
 
 		            var secciones = [];
 
 		            for(i=0; i<context.oModel.oData[that.formOriIndex].versions[that.versionOriIndex].sections.length; i++){
-		        	
-		        		
+
+
 			        	secciones.push({
 			        		sectionid: 	   context.oModel.oData[that.formOriIndex].versions[that.versionOriIndex].sections[i].sectionid,
 			        		sectiontitle:  context.oModel.oData[that.formOriIndex].versions[that.versionOriIndex].sections[i].sectiontitle,
@@ -460,8 +460,8 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 
 	    	  		sap.ui.getCore().byId("oSectionOri").setValue("");
 
-		            sap.ui.getCore().byId("app").getModel('secciones').setData(secciones); 
-		          
+		            sap.ui.getCore().byId("app").getModel('secciones').setData(secciones);
+
 		        }
 		        evt.getSource().getBinding("items").filter([]);
 		    },
@@ -474,28 +474,28 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		        evt.getSource().getBinding("items").filter([]);
 		    }
 		});
-		
+
 		dialog.bindAggregation("items", "versions>/", itemTemplate);
-	
+
 	    this.getView().addDependent(dialog);
 	    dialog.open();
 
 	},
 
 	getSections: function(evt){
-		
+
 		var that = this;
-		
+
 		var itemTemplate = new sap.m.StandardListItem({
 			title: "{secciones>sectionid} - {secciones>sectiontitle}",
 			active: true
 		});
-		
+
 		var dialog = new sap.m.SelectDialog({
 			title:"Versiones",
 		    class:"sapUiPopupWithPadding",
 		    liveChange: function(evt){
-		    	
+
 		    	var filters = [];
 				var query = evt.getParameter("value");
 				if (query && query.length > 0) {
@@ -504,7 +504,7 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 				}
 				evt.getSource().getBinding("items").filter(filters);
 				that.validateRequiredField(evt)
-				
+
 		    },
 		    confirm: function(evt){
 
@@ -515,12 +515,12 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 			        var oBindingContext 	= evt.getParameter("selectedContexts");
 					var path  	  			= oBindingContext[0].sPath;
 					var start     			= path.lastIndexOf('/') + 1;
-					that.versionOriIndex	= path.substring(start,path.length);		
+					that.versionOriIndex	= path.substring(start,path.length);
 
 		            var oSectionOri 		=  sap.ui.getCore().byId("oSectionOri");
 		            oSectionOri.setValue(oSelectedItem.getTitle());
 		            oSectionOri.setValueState("None");
-		          
+
 		        }
 		        evt.getSource().getBinding("items").filter([]);
 		    },
@@ -533,33 +533,33 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		        evt.getSource().getBinding("items").filter([]);
 		    }
 		});
-		
+
 		dialog.bindAggregation("items", "secciones>/", itemTemplate);
-	
+
 	    this.getView().addDependent(dialog);
 	    dialog.open();
 
 	},
-	
+
 	saveData: function(evt){
-		
+
 		var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.formIndex + '/versions/' + this.versionIndex);
-  		//var path         = evt.getSource().getBindingContext('forms').getPath();			
+  		//var path         = evt.getSource().getBindingContext('forms').getPath();
   		//var data         = model.getProperty(path);
-  		var data         = model.oModel.oData[evt.oController.formIndex].versions[evt.oController.versionIndex];  	
+  		var data         = model.oModel.oData[evt.oController.formIndex].versions[evt.oController.versionIndex];
   		var jsonsection  = [];
   		var jsonenha     = [];
-  		
-  		
-  		
+
+
+
   		// Conversion a json
-  		for(i = 0; i < data.sections.length; i++){ 	
-  			
+  		for(i = 0; i < data.sections.length; i++){
+
   			// Campos de sección
-  			var fields       = "";  			
-  			
+  			var fields       = "";
+
   			// Recorro los campos
-  			for(j = 0; j < data.sections[i].fields.length; j++ ){	
+  			for(j = 0; j < data.sections[i].fields.length; j++ ){
 
 				var disables	 = "";
 
@@ -569,47 +569,47 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
   						disables = data.sections[i].fields[j].values[s].valueext + '#,#' + disables;
   					}
   				}
-  				
+
   				// Concateno reglas
   				var field =  data.sections[i].fields[j].fieldid + "#RQ" + data.sections[i].fields[j].isrequired +  "#RQ" + disables + "#RQ" + data.sections[i].fields[j].vineta + "#RQ" + data.sections[i].fields[j].type + "#RLS";
-  				
+
   				// Recorro las reglas de los campos de las secciones
-				for(z = 0; z < data.sections[i].fields[j].rules.length; z++){ 		
-					
+				for(z = 0; z < data.sections[i].fields[j].rules.length; z++){
+
 					field = field + data.sections[i].fields[j].rules[z].fldrulid + '#-|-#' + data.sections[i].fields[j].rules[z].fldruldesc + '#-|-#' + data.sections[i].fields[j].rules[z].fldasignacion + '#-|-#';
-						
+
 						for ( p = 0; p < data.sections[i].fields[j].rules[z].conditions.length; p++){
-							
+
 							field = field + data.sections[i].fields[j].rules[z].conditions[p].field + ' ' +
 											data.sections[i].fields[j].rules[z].conditions[p].option + ' ' +
 											data.sections[i].fields[j].rules[z].conditions[p].value + ' ' +
-											data.sections[i].fields[j].rules[z].conditions[p].connector + '#-?-#';	
-							
-						}		
-						
-						field = field + '#-$-#';							
+											data.sections[i].fields[j].rules[z].conditions[p].connector + '#-?-#';
+
+						}
+
+						field = field + '#-$-#';
   				}
-  				
+
   				// Concateno los campos
   				fields = field + '#-/-#' + fields  ;
- 				
+
   			}
-  			
+
   			// Agrego las secciones
   			jsonsection.push({sectionid:data.sections[i].sectionid,sectiontitle:data.sections[i].sectiontitle, sectioncolumn: data.sections[i].sectioncolumn,sectionfields:fields, sectionvi: data.sections[i].sectionvi})
- 			
-  			
+
+
   			// Recorro las seubsecciones de la sección
 
-  			var sectionscopy = data.sections[i].subsections;	
+  			var sectionscopy = data.sections[i].subsections;
 
   			for(w = 0; w < sectionscopy.length; w++){
 
   				// Campos de subsección
 	  			var fields       = "";
-	  			
+
 	  			// Recorro los campos
-	  			for(j = 0; j < sectionscopy[w].fields.length; j++ ){	
+	  			for(j = 0; j < sectionscopy[w].fields.length; j++ ){
 
 	  				var disables	 = "";
 
@@ -619,52 +619,52 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	  						disables = sectionscopy[w].fields[j].values[s].valueext + '#,#' + disables;
 	  					}
 	  				}
-	  				
+
 	  				// Concateno reglas
 	  				var field =  sectionscopy[w].fields[j].fieldid + "#RQ" + sectionscopy[w].fields[j].isrequired +  "#RQ" + disables + "#RQ" + sectionscopy[w].fields[j].vineta + "#RQ" + sectionscopy[w].fields[j].type +  "#RLS";
-	  				
+
 	  				// Recorro las reglas de los campos de las secciones
-					for(z = 0; z < sectionscopy[w].fields[j].rules.length; z++){ 		
-						
+					for(z = 0; z < sectionscopy[w].fields[j].rules.length; z++){
+
 						field = field + sectionscopy[w].fields[j].rules[z].fldrulid + '#-|-#' + sectionscopy[w].fields[j].rules[z].fldruldesc + '#-|-#' + sectionscopy[w].fields[j].rules[z].fldasignacion + '#-|-#';
-							
+
 							for ( p = 0; p < sectionscopy[w].fields[j].rules[z].conditions.length; p++){
-								
+
 								field = field + sectionscopy[w].fields[j].rules[z].conditions[p].field + ' ' +
 												sectionscopy[w].fields[j].rules[z].conditions[p].option + ' ' +
 												sectionscopy[w].fields[j].rules[z].conditions[p].value + ' ' +
-												sectionscopy[w].fields[j].rules[z].conditions[p].connector + '#-?-#';	
-								
-							}		
-							
-							field = field + '#-$-#';							
+												sectionscopy[w].fields[j].rules[z].conditions[p].connector + '#-?-#';
+
+							}
+
+							field = field + '#-$-#';
 	  				}
-	  				
+
 	  				// Concateno los campos
 	  				fields = field + '#-/-#' + fields  ;
-	 				
+
 	  			}
 
   				// Agrego la subseccion como una seccion normal pero con sectionroot
   				jsonsection.push({ sectionid:sectionscopy[w].sectionid, sectiontitle:sectionscopy[w].sectiontitle, sectioncolumn: sectionscopy[w].sectioncolumn, sectionroot:data.sections[i].sectionid, sectionfields:fields, sectionvi: sectionscopy[w].sectionvi});
-  				
-  			}  
+
+  			}
 
 
 
   		}
-  		
+
   		jsonsection = (JSON.stringify(jsonsection)).replace(/{"/g, '{').replace(/,"/g, ',').replace(/":/g, ':');
-  		
+
   		// Conversion a json
   		for(i = 0; i < data.enhancement.length; i++){
   			jsonenha.push({method:data.enhancement[i].method,name:data.enhancement[i].name,active:data.enhancement[i].active})
   		}
-  		
+
   		jsonenha = (JSON.stringify(jsonenha)).replace(/{"/g, '{').replace(/,"/g, ',').replace(/":/g, ':').replace(/true/g, '"true"').replace(/false/g, '"false"');
-  		
+
   		var oModel       = new myJSONModel;
-  		
+
   		var oParameters = {
            "formid" 			: data.formid,
            "formtitle" 		    : data.formtitle,
@@ -683,39 +683,39 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
            "sizetitlesections" 	: data.sizetitlesections,
            "showfooter" 		: data.showfooter,
            "logo" 				: data.logo,
-           "logoimg" 			: data.logoimg,  
+           "logoimg" 			: data.logoimg,
            "formintroduction"	: data.formintroduction,
            "formfooter"			: data.formfooter,
            "sections" 			: jsonsection,
            "enhancement"		: jsonenha
  		};
-  		
+
   		var dialog = new sap.m.Dialog({
 		      title: 'Confirmación',
 		      type: 'Message',
 		      content: new sap.m.Text({ text: '¿Esta seguro de guardar estos cambios?' }),
 		      beginButton: new sap.m.Button({
 		        text: 'Aceptar',
-		        press: function () {	        	
+		        press: function () {
 
 		    		// Llamo el metodo POST para crear los datos
-		    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-		    			
+		    		oModel.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 		    			sap.m.MessageToast.show('Los datos fueron guardados con exito');
-		    			
-		    			// Consulto los datos actualizados			
+
+		    			// Consulto los datos actualizados
 		    			var oModel2 = new myJSONModel;
-		    			
-		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
+
+		    			oModel2.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
 		    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
 		    			},function(){
 		    				sap.m.MessageToast.show('Error creando el elemento');
-		    			});		
-		    			
+		    			});
+
 		    		},function(){
 		    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
-		    		},oParameters, true,'PUT');	
-	    		  
+		    		},oParameters, true,'PUT');
+
 		          dialog.close();
 		        }
 		      }),
@@ -730,58 +730,58 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 	      }
 	    });
 
-	    dialog.open();	
-		
-	},
-	
-	deleteData: function(evt){	
-		
-		var that = evt;
-		var model = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.fieldIndex + '/');		
-		//var path  = evt.getSource().getBindingContext('forms').getPath();			
-		//var dataVal  = model.getProperty(path);		
+	    dialog.open();
 
-		var dataVal     = model.oModel.oData[evt.oController.formIndex].versions[evt.oController.versionIndex]; 
-		
+	},
+
+	deleteData: function(evt){
+
+		var that = evt;
+		var model = sap.ui.getCore().byId("app").getModel("forms").getContext('/' + this.fieldIndex + '/');
+		//var path  = evt.getSource().getBindingContext('forms').getPath();
+		//var dataVal  = model.getProperty(path);
+
+		var dataVal     = model.oModel.oData[evt.oController.formIndex].versions[evt.oController.versionIndex];
+
 		// Creo objeto del modelo
-		var oModel = new myJSONModel;		
-		
+		var oModel = new myJSONModel;
+
 		// Parametros del registro
 		var oParameters = {
 	           "formid"    : dataVal.formid,
 	           "verformid" : dataVal.verformid
 		};
-		
-		
+
+
 		var dialog = new sap.m.Dialog({
 		      title: 'Confirmación',
 		      type: 'Message',
 		      content: new sap.m.Text({ text: '¿Esta seguro de eliminar esta version del formulario?' }),
 		      beginButton: new sap.m.Button({
 		        text: 'Aceptar',
-		        press: function () {	        	
+		        press: function () {
 
 		    		// Llamo el metodo POST para crear los datos
-		    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/" + dataVal.fieldid, function(oData){
-		    			
-		    			sap.m.MessageToast.show('El formulario fue eliminado con exito');	
+		    		oModel.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/" + dataVal.fieldid, function(oData){
+
+		    			sap.m.MessageToast.show('El formulario fue eliminado con exito');
 		    			that.oController.router.navTo("Blank");
-		    			
-		    			// Consulto los datos actualizados			
+
+		    			// Consulto los datos actualizados
 		    			var oModel2 = new myJSONModel;
-		    			
-		    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-		    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);		
-		    				
+
+		    			oModel2.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+		    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
+
 		    			},function(){
 		    				sap.m.MessageToast.show('Error eliminando el formulario');
-		    			});			    			
-		    			
-		    			
+		    			});
+
+
 		    		},function(){
 		    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
-		    		},oParameters, false,'DELETE');	
-	    		  
+		    		},oParameters, false,'DELETE');
+
 		          dialog.close();
 		        }
 		      }),
@@ -798,24 +798,24 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 
 	    dialog.open();
 	},
-	
-	getLogo: function(evt){		
-		
-		var view = sap.ui.getCore();		
-		
+
+	getLogo: function(evt){
+
+		var view = sap.ui.getCore();
+
 		var itemTemplate = new sap.m.StandardListItem({
 			title: "{images>namefld}",
 			description: "{images>descpfld}",
-			icon:"{images>imagen}", 
+			icon:"{images>imagen}",
 			iconDensityAware:false,
 		    iconInset:false,
 			active: true
 		});
-		
+
 		var dialog = new sap.m.SelectDialog({
 			title:"Selección de imagenes",
 		    class:"sapUiPopupWithPadding",
-		    liveChange: function(evt){	    	
+		    liveChange: function(evt){
 
 		    	var filters = [];
 				var query = evt.getParameter("value");
@@ -842,14 +842,14 @@ sap.ui.controller("wizardformsforms.FormsDetail", {
 		        evt.getSource().getBinding("items").filter([]);
 		    }
 		});
-		
+
 		dialog.bindAggregation("items", "images>/", itemTemplate);
-	
+
 	    this.getView().addDependent(dialog);
 	    dialog.open();
 
 	},
-	
+
 
 
 });

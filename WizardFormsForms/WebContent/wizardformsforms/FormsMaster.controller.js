@@ -1,26 +1,26 @@
 sap.ui.controller("wizardformsforms.FormsMaster", {
-	
+
 	onInit: function() {
 		this.router = sap.ui.core.UIComponent.getRouterFor(this);
 		this.router.attachRoutePatternMatched(this._handleRouteMatched,this);
 	},
-	
+
 	_handleRouteMatched: function(evt){
 		if(evt.getParameter("name") !== "FormsMaster"){
 			return;
 		}
-		
+
 	},
-	
+
 	fieldListItemPress: function(oEvent){
 		var oBindingContext = oEvent.getSource().getBindingContext('forms');
 		var path = oBindingContext.sPath;
 		var start = path.lastIndexOf('/') + 1;
-		var formIndex = path.substring(start,path.length);		
+		var formIndex = path.substring(start,path.length);
 		this.router.navTo("FormsVersions",{formIndex:formIndex});
-		
-	},	
-	
+
+	},
+
 	onChangeSearch: function(evt){
 		var filters = [];
 		var query = evt.getParameter("newValue");
@@ -29,7 +29,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			filters.push(filter);
 			//var filter = new sap.ui.model.Filter("formid", sap.ui.model.FilterOperator.Contains, query);
 			filters.push(filter);		}
-		
+
 		// update list binding
 		var list = this.getView().oList;
 		var binding = list.getBinding("items");
@@ -39,11 +39,11 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 	onBeforeRendering: function(){
 		this.bindingList();
 	},
-	
+
 	bindingList: function(){
-		
+
 		var that = this;
-		
+
 		this.getView().oList.bindItems({
 			path: "forms>/",
 			template: new sap.m.StandardListItem({
@@ -55,9 +55,9 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 					that.fieldListItemPress(evt);
 				}
 			})
-		})		
+		})
 	},
-	
+
 	handleResponsivePopoverPress: function (oEvent) {
 		var that = this;
 	    if (! this._oPopover) {
@@ -89,7 +89,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 	    		    }),
 	    		]
 	    	})
-	    	
+
 	      this.getView().addDependent(this._oPopover);
 	    }
 
@@ -99,15 +99,15 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
     handleCloseButton: function (oEvent) {
 	    this._oPopover.close();
     },
-	  
+
 	duplicateForm: function(evt){
-		
+
 		var that 	= this;
 	    var oModel  = new myJSONModel;
-		
+
 		that.formOri = new sap.m.Input({
 	       	 id:"formOri",
-	    	 enabled:true,			        	 
+	    	 enabled:true,
 	    	 showValueHelp:true,
 	    	 placeholder:"Seleccione el formulario origen",
 	    	 valueHelpRequest: function(evt){
@@ -117,10 +117,10 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
         		 that.validateRequiredField(evt)
         	 }
 		});
-		
+
 		that.oInputPackage = new sap.m.Input({
 	       	 id:"formPackageNewDup",
-	    	 enabled:true,			        	 
+	    	 enabled:true,
 	    	 showValueHelp:true,
 	    	 placeholder:"Seleccione el paquete del formulario",
 	    	 valueHelpRequest: function(evt){
@@ -130,10 +130,10 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 	    		 that.validateRequiredField(evt)
 	    	 }
 		});
-		
+
 		that.oInputOrders = new sap.m.Input({
 	       	 id:"formOrderNewDup",
-	    	 enabled:true, 
+	    	 enabled:true,
 	    	 showValueHelp:true,
 	    	 placeholder:"Seleccione la orden de transporte",
 	    	 valueHelpRequest: function(evt){
@@ -142,7 +142,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 	    	 liveChange: function(evt){
 	    		 that.validateRequiredField(evt)
 	    	 }
-		});		
+		});
 
 		// Formularios
 		that.oInfoDuplicate = new sap.ui.layout.VerticalLayout({
@@ -166,8 +166,8 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			        that.oInputOrders,
 			]
 		}).addStyleClass("layPadding10");
-		
-		
+
+
 		var dialog = new sap.m.Dialog({
 		      title: 'Duplicar formulario',
 		      verticalScrolling: true,
@@ -177,9 +177,9 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		    	  id: "btnSaveNewDup",
 		          text: 'Crear',
 		          enabled: false,
-		          press: function (evt) {	
-		        	  
-		        	  
+		          press: function (evt) {
+
+
 		      		var oParameters = {
 		 	 	           "formori" 		: sap.ui.getCore().byId("formOri").getValue(),
 		 	 	           "formdest"  		: sap.ui.getCore().byId("formDest").getValue(),
@@ -187,38 +187,38 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		 	 	           "package"    	: sap.ui.getCore().byId("formPackageNewDup").getValue(),
 		 	 	           "option"			: 'duplicate-form',
 		      		};
-		        	  
+
 		        	// Llamo el metodo POST para crear los datos
-			    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-			    			
+			    		oModel.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 			    			sap.m.MessageToast.show('Formulario creado exitosamente');
-			    			
-			    			// Consulto los datos actualizados			
+
+			    			// Consulto los datos actualizados
 			    			var oModel2 = new myJSONModel;
-			    			
-			    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-			    				
+
+			    			oModel2.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 			    				sap.ui.getCore().byId("app").getModel('forms').setData(oData);
-			    				
-				    			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/');	
-				    			
+
+				    			var model        = sap.ui.getCore().byId("app").getModel("forms").getContext('/');
+
 				    			// Limpio los campos
 				    	  		sap.ui.getCore().byId("formOri").setValue("");
 				    	  		sap.ui.getCore().byId("formDest").setValue("");
 				    	  		sap.ui.getCore().byId("formOrderNewDup").setValue("");
 				    	  		sap.ui.getCore().byId("formPackageNewDup").setValue("");
-				    	  		
 
-			    				
+
+
 			    			},function(){
 			    				sap.m.MessageToast.show('Error creando el formulario');
-			    			});		
-			    			
+			    			});
 
-			    			
+
+
 			    		},function(){
 			    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
-			    		},oParameters, true,'POST');	
+			    		},oParameters, true,'POST');
 		            dialog.close();
 		          }
 		        }),
@@ -233,16 +233,16 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		          dialog.destroy();
 		        }
 		    });
-		    dialog.open();		
+		    dialog.open();
 	},
-	
+
 	validateRequiredField: function(evt){
 		var that = this;
 	    var view  = sap.ui.getCore();
-	    var modelForm = view.byId("app").getModel("forms").getContext('/').oModel.oData;	
-	    var modelPack = view.byId("app").getModel("packages").getContext('/').oModel.oData;	
-	    var modelOrde = view.byId("app").getModel("orders").getContext('/').oModel.oData;	
-	    
+	    var modelForm = view.byId("app").getModel("forms").getContext('/').oModel.oData;
+	    var modelPack = view.byId("app").getModel("packages").getContext('/').oModel.oData;
+	    var modelOrde = view.byId("app").getModel("orders").getContext('/').oModel.oData;
+
 	    // Armo el array de campos
 	    var inputs = [
 	      view.byId("formPackageNewDup"),
@@ -250,15 +250,15 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 	      view.byId("formOri"),
 	      view.byId("formDest"),
 	    ];
-	    
+
 	    // Armo el array de campos
 	    var inputsOT = [
 	      view.byId("otDesc")
 	    ];
-	    
-	    
+
+
 	    // Recorro cada campo para validar
-	    
+
 	    if(inputsOT.length){
 		    jQuery.each(inputsOT, function (i, input) {
 		    	if(input){
@@ -269,7 +269,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			        else{
 			        	input.setValueState("None");
 			        }
-		    	    
+
 					// Valido si algun campo tiene error
 				    var canContinueOT = true;
 				    jQuery.each(inputsOT, function (i, input) {
@@ -278,20 +278,20 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 				        return false;
 				      }
 				    });
-				    
+
 				    view.byId("btnSaveNewOT").setEnabled(canContinueOT);
-		    	    
+
 		    	}
 		    });
-		    
-	  
-		};	
-		
+
+
+		};
+
 	    // Recorro cada campo para validar
 		if(inputs.length){
 		    jQuery.each(inputs, function (i, input) {
 		    	if(input){
-		    	
+
 			        if (!input.getValue()) {
 			          input.setValueState("Error");
 			          input.setValueStateText("Campo obligatorio");
@@ -299,8 +299,8 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			        else{
 			        	input.setValueState("None");
 			        }
-			        
-			        
+
+
 			        if(input.sId == "formDest"){
 			        	jQuery.each(modelForm, function (j, data) {
 			        		if(data.formtecname === input.getValue()){
@@ -308,8 +308,8 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			      	          input.setValueStateText("El nombre del formulario ya ha sido usado");
 			        		}
 			        	})
-			        }	 
-			        
+			        }
+
 			        if(input.sId == "formOri"){
 			        	input.setValueState("Error");
 		    	        input.setValueStateText("Formulario invalido o inexistente");
@@ -318,9 +318,9 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			        		  input.setValueState("None");
 			        		}
 			        	})
-			        }	
-			        
-			        
+			        }
+
+
 			        if(input.sId == "formPackageNewDup"){
 			        	input.setValueState("Error");
 		    	        input.setValueStateText("Paquete invalido o inexistente");
@@ -330,7 +330,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			        		}
 			        	})
 			        }
-			        
+
 			        if(input.sId == "formOrderNewDup"){
 			        	input.setValueState("Error");
 		    	        input.setValueStateText("Orden invalida o inexistente");
@@ -340,7 +340,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 			        		}
 			        	})
 			        }
-			        
+
 				    // Valido si algun campo tiene error
 				    var canContinue = true;
 				    jQuery.each(inputs, function (i, input) {
@@ -350,31 +350,31 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 				      }
 				    });
 
-				    view.byId("btnSaveNewDup").setEnabled(canContinue);	 	
-		        
+				    view.byId("btnSaveNewDup").setEnabled(canContinue);
+
 		    	}
-		        
-		    });	    
-   
+
+		    });
+
 		}
 
 	},
-	
+
 	getPackages: function(evt){
-		
+
 		var that = this;
-		
+
 		var itemTemplate = new sap.m.StandardListItem({
 			title: "{packages>devclass}",
 			description: "{packages>ctext}",
 			active: true
 		});
-		
+
 		var dialog = new sap.m.SelectDialog({
 			title:"Paquetes",
 		    class:"sapUiPopupWithPadding",
 		    liveChange: function(evt){
-		    	
+
 		    	var filters = [];
 				var query = evt.getParameter("value");
 				if (query && query.length > 0) {
@@ -383,16 +383,16 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 				}
 				evt.getSource().getBinding("items").filter(filters);
 				that.validateRequiredField(evt)
-				
+
 		    },
 		    confirm: function(evt){
 		    	var oSelectedItem = evt.getParameter("selectedItem");
-		    	
+
 		        if (oSelectedItem) {
 		          var packageInput =  sap.ui.getCore().byId("formPackageNewDup");
 		          packageInput.setValue(oSelectedItem.getTitle());
 		          packageInput.setValueState("None");
-		          
+
 		        }
 		        evt.getSource().getBinding("items").filter([]);
 		    },
@@ -405,29 +405,29 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		        evt.getSource().getBinding("items").filter([]);
 		    }
 		});
-		
+
 		dialog.bindAggregation("items", "packages>/", itemTemplate);
-	
+
 	    this.getView().addDependent(dialog);
 	    dialog.open();
 
 	},
 
 	getTransportOrder: function(evt){
-		
+
 		var that = this;
-	
+
 		var itemTemplate = new sap.m.StandardListItem({
 			title: "{orders>trkorr}",
 			description: "{orders>as4text}",
 			active: true
 		});
-		
+
 		var dialog = new sap.m.SelectDialog({
 			title:"Ordenes de tranporte",
 		    class:"sapUiPopupWithPadding",
 		    liveChange: function(evt){
-		    	
+
 		    	var filters = [];
 				var query = evt.getParameter("value");
 				if (query && query.length > 0) {
@@ -435,7 +435,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 					filters.push(filter);
 				}
 				evt.getSource().getBinding("items").filter(filters);
-				
+
 		    },
 		    confirm: function(evt){
 		    	var oSelectedItem = evt.getParameter("selectedItem");
@@ -456,27 +456,27 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		        evt.getSource().getBinding("items").filter([]);
 		    }
 		});
-		
+
 		dialog.bindAggregation("items", "orders>/", itemTemplate);
-	
+
 	    this.getView().addDependent(dialog);
 	    dialog.open();
 
 	},
-	
+
 	getForms: function(evt){
-		
+
 		var itemTemplate = new sap.m.StandardListItem({
 			title: "{forms>formtecname}",
 			description: "{forms>formtitle}",
 			active: true
 		});
-		
+
 		var dialog = new sap.m.SelectDialog({
 			title:"Formularios",
 		    class:"sapUiPopupWithPadding",
 		    liveChange: function(evt){
-		    	
+
 		    	var filters = [];
 				var query = evt.getParameter("value");
 				if (query && query.length > 0) {
@@ -484,7 +484,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 					filters.push(filter);
 				}
 				evt.getSource().getBinding("items").filter(filters);
-				
+
 		    },
 		    confirm: function(evt){
 		    	var oSelectedItem = evt.getParameter("selectedItem");
@@ -503,21 +503,21 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		        evt.getSource().getBinding("items").filter([]);
 		    }
 		});
-		
+
 		dialog.bindAggregation("items", "forms>/", itemTemplate);
-	
+
 	    this.getView().addDependent(dialog);
 	    dialog.open();
 
 	},
-	
+
 	createTransport: function(evt){
-		
+
 		var that 	= this;
 	    var oModel  = new myJSONModel;
 
 		// Formularios
-		that.oInfoDuplicate = new sap.ui.layout.VerticalLayout({			
+		that.oInfoDuplicate = new sap.ui.layout.VerticalLayout({
 			width: "100%",
 			//placeholder: "Crear orden de tranporte",
 			content:[
@@ -531,8 +531,8 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		         	})
 			]
 		}).addStyleClass("layPadding10");
-		
-		
+
+
 		var dialog = new sap.m.Dialog({
 		      title: 'Crear orden de transporte',
 		      verticalScrolling: true,
@@ -542,41 +542,41 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		    	  id: "btnSaveNewOT",
 		          text: 'Crear',
 		          enabled: false,
-		          press: function (evt) {	
-		        	  
-		        	  
+		          press: function (evt) {
+
+
 		      		var oParameters = {
 		 	 	           "text" 		: sap.ui.getCore().byId("otDesc").getValue(),
 	 	 	               "option"		: 'create-ot',
 		      		};
-		        	  
+
 		        	// Llamo el metodo POST para crear los datos
-			    		oModel.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-			    			
+			    		oModel.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 			    			sap.m.MessageToast.show('Orden creada exitosamente');
-			    			
-			    			
+
+
 			    			// Ordenes
-			    			var oParaOrders  = { "option" : "orders" };  
-			    			
+			    			var oParaOrders  = { "option" : "orders" };
+
 			    			var oModel2 = new myJSONModel;
-			    			
-			    			oModel2.loadDataNew("http://hgmsapdev01.hgm.com:8000/sap/bc/ibmformwizard/forms_data/forms/", function(oData){
-			    				
+
+			    			oModel2.loadDataNew("http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_forms/forms_services/", function(oData){
+
 		    					sap.ui.getCore().byId("app").getModel('orders').setData(oData);
-			    				
-				    			var model = sap.ui.getCore().byId("app").getModel("orders").getContext('/');	
-				    			
+
+				    			var model = sap.ui.getCore().byId("app").getModel("orders").getContext('/');
+
 				    			// Limpio los campos
-				    	  		sap.ui.getCore().byId("otDesc").setValue("");   
-			    				
+				    	  		sap.ui.getCore().byId("otDesc").setValue("");
+
 			    			},function(){
 			    				sap.ui.commons.MessageBox.alert(arguments[0].statusText);
 			    			},oParaOrders);
-			    			
-			    			  			
 
-			    			
+
+
+
 			    		},function(){
 			    			sap.ui.commons.MessageBox.alert(arguments[0].statusText);
 			    		},oParameters, true,'POST');
@@ -594,7 +594,7 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 		          dialog.destroy();
 		        }
 		    });
-		    dialog.open();		
+		    dialog.open();
 	},
 
 });
