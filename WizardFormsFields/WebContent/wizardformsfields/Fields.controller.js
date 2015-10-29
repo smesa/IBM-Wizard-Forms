@@ -1,5 +1,5 @@
 sap.ui.controller("wizardformsfields.Fields", {
-	
+
 	onInit: function() {
 		this.router = sap.ui.core.UIComponent.getRouterFor(this);
 		this.router.attachRoutePatternMatched(this._handleRouteMatched,this);
@@ -10,41 +10,42 @@ sap.ui.controller("wizardformsfields.Fields", {
 			return;
 		}
 		//var context = sap.ui.getCore().byId("app").getModel('fields').getContext('/');
-		//this.getView().setBindingContext(context,'fields');		
-		
+		//this.getView().setBindingContext(context,'fields');
+
 	},
 
 	fieldListItemPress: function(oEvent){
 		var oBindingContext = oEvent.getSource().getBindingContext('fields');
 		var path = oBindingContext.sPath;
 		var start = path.lastIndexOf('/') + 1;
-		var fieldIndex = path.substring(start,path.length);		
+		var fieldIndex = path.substring(start,path.length);
 		this.router.navTo("FieldsInfo",{fieldIndex:fieldIndex});
-		
+
 	},
-	
+
 	onChangeSearch: function(evt){
 		var filters = [];
 		var query = evt.getParameter("newValue");
-		if (query && query.length > 0) {
-			var filter = new sap.ui.model.Filter("fieldtecname", sap.ui.model.FilterOperator.Contains, query);
-			filters.push(filter);
-		}
-		
+
 		// update list binding
 		var list = this.getView().oList;
 		var binding = list.getBinding("items");
-		binding.filter(filters);
+
+		binding.filter( [ new sap.ui.model.Filter([
+			new sap.ui.model.Filter("fieldtitle", sap.ui.model.FilterOperator.Contains, query ),
+			new sap.ui.model.Filter("fieldtecname", sap.ui.model.FilterOperator.Contains, query )
+	  ],false)])
+
 	},
 
 	onBeforeRendering: function(){
 		this.bindingList();
 	},
-	
+
 	bindingList: function(){
-		
+
 		var that = this;
-		
+
 		this.getView().oList.bindItems({
 			path: "fields>/",
 			template: new sap.m.StandardListItem({
@@ -56,9 +57,9 @@ sap.ui.controller("wizardformsfields.Fields", {
 					that.fieldListItemPress(evt);
 				}
 			})
-		})		
+		})
 	}
-	
-	
+
+
 
 });

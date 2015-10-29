@@ -136,12 +136,14 @@ sap.ui.controller("wizardformsforms.SectionsDetail", {
 								liveChange:function(evt,obj){
 									var filters = [];
 									var query = evt.getParameter("newValue");
-									if (query && query.length > 0) {
-										var filter = new sap.ui.model.Filter("fieldtecname", sap.ui.model.FilterOperator.Contains, query);
-										filters.push(filter);
-									}
+									
 									var binding = sap.ui.getCore().byId('listFieldSection').getBinding("items");
-									binding.filter(filters);
+
+									binding.filter( [ new sap.ui.model.Filter([
+										new sap.ui.model.Filter("fieldtitle", sap.ui.model.FilterOperator.Contains, query ),
+										new sap.ui.model.Filter("fieldtecname", sap.ui.model.FilterOperator.Contains, query )
+								  ],false)])
+
 								},
 							    width:"100%",
 							    placeholder:"Filtro de elementos",

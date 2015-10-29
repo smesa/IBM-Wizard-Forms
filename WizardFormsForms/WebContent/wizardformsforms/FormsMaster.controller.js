@@ -24,16 +24,16 @@ sap.ui.controller("wizardformsforms.FormsMaster", {
 	onChangeSearch: function(evt){
 		var filters = [];
 		var query = evt.getParameter("newValue");
-		if (query && query.length > 0) {
-			var filter = new sap.ui.model.Filter("formtitle", sap.ui.model.FilterOperator.Contains, query);
-			filters.push(filter);
-			//var filter = new sap.ui.model.Filter("formid", sap.ui.model.FilterOperator.Contains, query);
-			filters.push(filter);		}
 
 		// update list binding
 		var list = this.getView().oList;
 		var binding = list.getBinding("items");
-		binding.filter(filters);
+
+		binding.filter( [ new sap.ui.model.Filter([
+      new sap.ui.model.Filter("formtitle", sap.ui.model.FilterOperator.Contains, query ),
+      new sap.ui.model.Filter("formtecname", sap.ui.model.FilterOperator.Contains, query )
+   ],false)])
+
 	},
 
 	onBeforeRendering: function(){

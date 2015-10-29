@@ -790,7 +790,13 @@
 		    	var filters = [];
 				var query = evt.getParameter("value");
 				if (query && query.length > 0) {
-					var filter = new sap.ui.model.Filter("fieldtecname", sap.ui.model.FilterOperator.Contains, query);
+
+					var filter = new sap.ui.model.Filter([
+						new sap.ui.model.Filter("fieldtitle", sap.ui.model.FilterOperator.Contains, query ),
+						new sap.ui.model.Filter("fieldtecname", sap.ui.model.FilterOperator.Contains, query )
+					],false)
+
+					//var filter = new sap.ui.model.Filter("fieldtecname", sap.ui.model.FilterOperator.Contains, query);
 					filters.push(filter);
 				}
 				evt.getSource().getBinding("items").filter(filters);
