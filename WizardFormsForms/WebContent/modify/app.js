@@ -7,7 +7,7 @@ angular.module('input', ['ngRoute'])
       templateUrl:'views/input.html',
       controller:'InputCtrl'
     })
-    .when('/get/:mandt/:formid/:verformid/:inputs', {
+    .when('/get/:mandt/:formid/:verformid/:token', {
       templateUrl:'views/input.html',
       controller:'InputCtrl'
     })
@@ -29,10 +29,11 @@ angular.module('input', ['ngRoute'])
 
 .controller('InputCtrl', function($scope,$compile, $routeParams, $http) {
   var origin      = document.location.origin;
+  //var origin      = 'http://hgmsapdev01.hgm.com:8000';
   var mandt       = $routeParams.mandt;
 	var formid 			= $routeParams.formid;
 	var verformid		= $routeParams.verformid;
-	var inputs      = $routeParams.inputs;
+  var token       = $routeParams.token;
 	var panel 			= $("#ppal");
 
 	// Carga de campos
@@ -53,15 +54,16 @@ angular.module('input', ['ngRoute'])
 	});
 
 
-	// Evento init
-	if(inputs != 'NONE'){
+	// Evento read
+	if(token != 'NONE'){
 		var sURLInit  = origin + '/sap/bc/ibmformwizard/forms_data/forms?sap-client=' + mandt;
 		var oParameters = {
-	           "inputs" 		: inputs,
-	           "option"		  : 'event_init',
-	           "formid"			: formid,
-	           "_method"		: 'GET',
-		 };
+            "token" 			: token,
+            "option"		  : 'read',
+            "formid"			: formid,
+            "verformid"		: verformid,
+	          "_method"		  : 'GET',
+    };
 
 		jQuery.ajax({
 			  url: sURLInit,
@@ -81,21 +83,22 @@ angular.module('input', ['ngRoute'])
 		});
 	}
 
+
+  $scope.pressRadio = function(data){
+    var val = $scope['model008161'];
+    var elem = $('#008161');
+    console.log(elem)
+  }
+
 	// Evento Submit
 	$scope.submit = function(){
-
-		var dataSave = inputs;
-
-		if(dataSave == 'NONE'){
-			dataSave = '';
-		}
+	  dataSave = '';
 
 		dataSave = dataSave + '#-H-#' + formid + '#-|-#' + verformid + '#-|-#';
 
 		angular.forEach($scope.data.versions[0].sections, function(section){
 
 			angular.forEach(section.fields, function(field){
-
 
         switch (field.fieldtype) {
           case 'RADIO':
@@ -117,7 +120,6 @@ angular.module('input', ['ngRoute'])
             }
             break;
         }
-
 			})
 		})
 
@@ -126,7 +128,8 @@ angular.module('input', ['ngRoute'])
 		var sURL  = origin + '/sap/bc/ibmformwizard/forms_data/forms?sap-client=' + mandt;
 		var oParameters = {
 	           "data" 			: dataSave,
-	           "option"		    : 'save-data',
+	           "option"		  : 'save-data',
+             "token"      : token,
 	           "_method"		: 'POST',
 		 };
 
@@ -140,7 +143,7 @@ angular.module('input', ['ngRoute'])
 			  success: function(oData) {
 
 				  if(oData[0].messagetype == 'S'){
-					  $scope.message = oData[0].message ;
+					  $scope.message = 'El formulario fue actualizado con exito.';
 					  $('#modalok').modal('show')
 				  }else{
 					  $scope.message = oData[0].message ;
@@ -517,13 +520,21 @@ angular.module('input', ['ngRoute'])
   					})
 
   				})
-
 			})
-
 
 			// Recorro los eventos init para asignar los valores
 			angular.forEach($scope.initial, function(init){
+        if(init.value.substring(0,5) == 'CHECK'){
+          var char = init.value.substring(6,init.value.length);
+          var values = char.split(/~/);
+          angular.forEach(values,function(val){
+            var nam = '#model'+ init.fieldid + val;
+            $(nam).addClass('active');
+            console.log($(nam));
+          })
+        }else{
 		    	$scope['model'+init.fieldid] = init.value;
+        }
 			})
 
 		});
@@ -737,6 +748,7 @@ function addCheck(elmparent,field,formid,seccion,$scope,$compile){
       newLabelBtn.className 	= "btn btn-primary";
       newLabelBtn.innerHTML 	= value.value;
       newLabelBtn.type 	   		= "button";
+      newLabelBtn.id          = 'model' + field.fieldid + value.valueext;
       newLabelBtn.setAttribute('value',value.valueext);
 
       newDiv.appendChild(newLabelBtn);
@@ -749,8 +761,6 @@ function addCheck(elmparent,field,formid,seccion,$scope,$compile){
 
 	elmparent.append(newDiv);
 }
-
-
 
 function addRadio(elmparent,field,formid,seccion,$scope,$compile){
 
@@ -784,16 +794,19 @@ function addRadio(elmparent,field,formid,seccion,$scope,$compile){
 			option.value 			      = value.valueext;
 			option.setAttribute('autocomplete','off');
 
+
 			newLabelBtn.appendChild(option);
 			newDivButton.appendChild(newLabelBtn);
+
 		}
 
 	})
 
 	// Nombre del modelo
-	var model = 'model' + field.fieldid;
+	var model 						     = 'model' + field.fieldid;
 
 	// Le agrego modelo y evento change
+	newDivButton.setAttribute("ng-click","pressRadio('"+ model +"')");
 	newDivButton.setAttribute("ng-model", model );
 
 	$compile(newDivButton)($scope);

@@ -16,9 +16,7 @@
 	</div>
 	<div class="panel-body">
 		<form id="ppal" ng-submit="submit()">
-			<div class="form-group" >
-    			<button type="submit" class="btn btn-info">Enviar</button>
-  			</div>
+
 		</form>
 	</div>
 </div>
@@ -35,7 +33,7 @@
         <p>{{message}}</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="close()">Cerrar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="javascript:window.open('','_self').close();">Cerrar</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

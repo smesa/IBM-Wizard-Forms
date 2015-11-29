@@ -54,16 +54,16 @@ angular.module('preview', ['ngRoute'])
 
 	$http.get( sURL ).
 		success(function(list){
-			list 							= list[0];
-			$scope.data 					= list;
-			$scope.data.logoimg 			= list.versions[0].logoimg;
-			$scope.data.colorfondo 			= list.versions[0].colorfondo;
-			$scope.data.colorhead 			= list.versions[0].colorhead;
-			$scope.data.colorbase 			= list.versions[0].colorbase;
-			$scope.data.colorsections 		= list.versions[0].colorsections;
-			$scope.data.showtitle 			= list.versions[0].showtitle;
-			$scope.data.sizetitlehead		= list.versions[0].sizetitlehead;
-			$scope.data.showtitlesection 	= list.versions[0].showtitlesection;
+			list 							              = list[0];
+			$scope.data 					          = list;
+			$scope.data.logoimg 			      = list.versions[0].logoimg;
+			$scope.data.colorfondo 			    = list.versions[0].colorfondo;
+			$scope.data.colorhead 			    = list.versions[0].colorhead;
+			$scope.data.colorbase 			    = list.versions[0].colorbase;
+			$scope.data.colorsections 	    = list.versions[0].colorsections;
+			$scope.data.showtitle 			    = list.versions[0].showtitle;
+			$scope.data.sizetitlehead		    = list.versions[0].sizetitlehead;
+			$scope.data.showtitlesection 	  = list.versions[0].showtitlesection;
 			$scope.data.sizetitlesections 	= list.versions[0].sizetitlesections;
 
 
